@@ -37,7 +37,6 @@ contract MoonlightCrowdsale is ModifiedCrowdsale{
         require(getState() == State.Purchased);
         _;
     } 
-    
 
     function migration(uint256 _newOpeningTime, uint256 _newClosingTime) public onlyOwner{
         // INSTANTIATE MARKETWRAPPER VARIABLE HERE
