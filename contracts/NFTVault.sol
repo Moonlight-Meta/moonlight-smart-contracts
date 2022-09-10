@@ -9,17 +9,11 @@ contract NFTVault is Ownable {
 
     enum State { Active, Closed}
     
-    //individuals who deposited money and wanted a refund in the event of a migration
     mapping (address => uint256) public refundableBalances;
-    
-    //public wallet
-    address payable public wallet;
 
-    //state of crowdsale
     State public state;
 
     event Closed();
-    event Migration();
     event Refunded(address indexed beneficiary, uint256 weiAmount);
 
     modifier ifActive{
@@ -27,24 +21,24 @@ contract NFTVault is Ownable {
         _;
     }
 
-    constructor(address payable _wallet){
-        require(_wallet != address(0));
-        wallet = _wallet;
+    receive() external payable {}
+
+    fallback() external payable {}
+
+    constructor(){
         state = State.Active;
     }
 
-    function deposit(address investor, bool refundable) ifActive onlyOwner public payable {
-        if(refundable)
-            refundableBalances[investor] = refundableBalances[investor].add(msg.value);
+    function updateRefundableBalances(address investor, uint256 weiAmount) ifActive onlyOwner external{
+        refundableBalances[investor] = refundableBalances[investor].add(weiAmount);
     }
 
     function close() onlyOwner ifActive public {
         state = State.Closed;
         emit Closed();
-        wallet.transfer(address(this).balance);
     }
 
-    function refund(address payable investor) public {
+    function refund(address payable investor) ifActive onlyOwner external {
         require(refundableBalances[investor] > 0);
         uint256 depositedValue = refundableBalances[investor];
         refundableBalances[investor] = 0;

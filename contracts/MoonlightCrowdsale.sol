@@ -12,7 +12,7 @@ contract MoonlightCrowdsale is ModifiedCrowdsale{
     State private state;
 
     uint256 public buyNowPriceInWei;
-    uint256 public refundableWei = 0;
+    uint256 public currentRefundableWei = 0;
 
     uint256 public migrationCount = 0;
     mapping(uint256 => mapping(address => uint256)) public currentRefundableBalances;
@@ -20,23 +20,22 @@ contract MoonlightCrowdsale is ModifiedCrowdsale{
     
     NFTVault public vault;
     //CREATE MARKETWRAPPER VARIABLE HERE
-    
-    constructor(
-        uint256 _rate,
-        address payable _wallet,
-        NFTToken _token,
-        uint256 _openingTime,
-        uint256 _closingTime
-    ) ModifiedCrowdsale(_rate, _wallet, _token, _openingTime, _closingTime){
-        // INSTANTIATE MARKETWRAPPER VARIABLE HERE
-        // INSERT MARKETWRAPPER SETTING BUY NOW PRICE
-        vault = new NFTVault(wallet);
-    }
 
     modifier onlyAfterPurchase {
         require(getState() == State.Purchased);
         _;
     } 
+
+    constructor(
+        uint256 _rate,
+        MoonlightToken _token,
+        uint256 _openingTime,
+        uint256 _closingTime
+    ) ModifiedCrowdsale(_rate, _token, _openingTime, _closingTime){
+        // INSTANTIATE MARKETWRAPPER VARIABLE HERE
+        // INSERT MARKETWRAPPER SETTING BUY NOW PRICE
+        vault = new NFTVault();
+    }
 
     function migration(uint256 _newOpeningTime, uint256 _newClosingTime) public onlyOwner{
         // INSTANTIATE MARKETWRAPPER VARIABLE HERE
@@ -44,8 +43,8 @@ contract MoonlightCrowdsale is ModifiedCrowdsale{
 
         openingTime = _newOpeningTime;
         closingTime = _newClosingTime;
-        weiRaised = weiRaised - refundableWei;
-        refundableWei = 0;
+        payable(address(vault)).transfer(currentRefundableWei);
+        currentRefundableWei = 0;
         migrationCount+=1;
     }
 
@@ -60,7 +59,7 @@ contract MoonlightCrowdsale is ModifiedCrowdsale{
     function getState() public returns (State){
         if(state == State.Purchased) return state;
     
-        if(weiRaised < getMinBidInWei()) 
+        if(address(this).balance < getMinBidInWei()) 
             state = State.Running;
         else 
             state = State.Bidded;
@@ -69,29 +68,21 @@ contract MoonlightCrowdsale is ModifiedCrowdsale{
     }
 
     function collectTokens() public onlyAfterPurchase{
-        uint256 weiAmount;
-        weiAmount += currentRefundableBalances[migrationCount][msg.sender];
-        weiAmount += nonRefundableBalances[msg.sender];
-        require(weiAmount > 0);
+        uint256 contributionInWei;
+        contributionInWei = currentRefundableBalances[migrationCount][msg.sender] + nonRefundableBalances[msg.sender];
+        require(contributionInWei > 0);
 
         currentRefundableBalances[migrationCount][msg.sender] = 0;
         nonRefundableBalances[msg.sender] = 0;
-        
-        uint256 tokenAmount;
-        tokenAmount = _getTokenAmount(weiAmount);
-        _deliverTokens(msg.sender, tokenAmount);
-    }
 
-    function canBeRefunded(address _refundee) view public returns (bool){
-        if (currentRefundableBalances[migrationCount][_refundee] == 0 && 
-            nonRefundableBalances[_refundee] == 0)
-            return true;
-        
-        return false;
+        _deliverTokens(msg.sender, _getTokenAmount(contributionInWei));
     }
 
     function refund() public payable{
-        require(canBeRefunded(msg.sender));
+        require(
+            currentRefundableBalances[migrationCount][msg.sender] > 0 || 
+            nonRefundableBalances[msg.sender] > 0);
+
         vault.refund(payable(msg.sender));
     }
 
@@ -103,39 +94,36 @@ contract MoonlightCrowdsale is ModifiedCrowdsale{
         super._preValidatePurchase(_beneficiary, _weiAmount);
 
         require(getState() == State.Running);
-        require(weiRaised + _weiAmount <= buyNowPriceInWei);
+        require(address(this).balance + _weiAmount <= buyNowPriceInWei);
     }
 
-    function _postValidatePurchase(address _beneficiary, uint256 _weiAmount) internal override
-    {
-        // FOR ROLLBACK LOGIC IF NEEDED
+    function _processPurchase(address _beneficiary, uint256 _weiAmount, bool _refundable) internal override{
+        if (_refundable){
+            currentRefundableBalances[migrationCount][_beneficiary] += _weiAmount;
+            vault.updateRefundableBalances(_beneficiary, _weiAmount);
+        }
+        else{
+            nonRefundableBalances[_beneficiary] += _weiAmount;
+            currentRefundableWei += _weiAmount;
+        }
     }
 
     function _updatePurchasingState() internal override{
-        if(weiRaised == buyNowPriceInWei){
+        if(address(this).balance == buyNowPriceInWei){
             //INSERT MARKETWRAPPER PURCHASING NFT
-            uint256 coinsToMint = _getTokenAmount(weiRaised);
+            uint256 coinsToMint = _getTokenAmount(address(this).balance);
             token.mint(address(this), coinsToMint);
             vault.close();
             state = State.Purchased;
         }
-        else if(weiRaised > getMinBidInWei()){
+        else if(address(this).balance > getMinBidInWei()){
             //INSERT MARKETWRAPPER BIDDING ON NFT
             state = State.Bidded;
         }
     }
 
-    function _processPurchase(address _beneficiary, uint256 _weiAmount, bool _refundable) internal override{
-        if (_refundable)
-            currentRefundableBalances[migrationCount][_beneficiary] += _weiAmount;
-        else{
-            nonRefundableBalances[_beneficiary] += _weiAmount;
-            refundableWei += _weiAmount;
-        }
-    }
-
     function _forwardFunds(bool _refundable) internal override{
-        vault.deposit{value: msg.value}(msg.sender, _refundable);
+        
     }
 
 }

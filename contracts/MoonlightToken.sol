@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
-contract NFTToken is ERC20, AccessControl {
+contract MoonlightToken is ERC20, AccessControl {
     using SafeMath for uint256;
 
     string private _name;

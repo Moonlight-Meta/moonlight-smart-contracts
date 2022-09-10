@@ -17,14 +17,13 @@ contract MoonlightFactory is Ownable{
 
     function startMoonlightCrowdsale(
         uint256 _rate,
-        address payable _wallet,
         string memory name,
         string memory symbol,
         uint256 _openingTime,
         uint256 _closingTime) public onlyOwner
     {
         NFTToken token = new NFTToken(name, symbol);
-        MoonlightCrowdsale crowdsale = new MoonlightCrowdsale(_rate, _wallet, token, _openingTime, _closingTime);
+        MoonlightCrowdsale crowdsale = new MoonlightCrowdsale(_rate, token, _openingTime, _closingTime);
         token.grantMintability(address(crowdsale));
 
         moonlightCrowdsales.push(payable(crowdsale));

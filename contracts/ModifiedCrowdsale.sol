@@ -3,35 +3,16 @@ pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./NFTToken.sol";
-
-/**
- * @title Modified Crowdsale
- * @dev Crowdsale is a base contract for managing a token crowdsale,
- * allowing investors to purchase tokens with ether. This contract implements
- * such functionality in its most fundamental form and can be extended to provide additional
- * functionality and/or custom behavior.
- * The external interface represents the basic interface for purchasing tokens, and conform
- * the base architecture for crowdsales. They are *not* intended to be modified / overriden.
- * The internal interface conforms the extensible and modifiable surface of crowdsales. Override
- * the methods to add functionality. Consider using 'super' where appropiate to concatenate
- * behavior.
- */
+import "./MoonlightToken.sol";
 
 contract ModifiedCrowdsale is Ownable{
     using SafeMath for uint256;
 
     // The token being sold
-    NFTToken public token;
-
-    // Address where funds are collected
-    address payable public wallet;
+    MoonlightToken public token;
 
     // How many token units a buyer gets per wei
     uint256 public rate;
-
-    // Amount of wei raised
-    uint256 public weiRaised;
 
     // Opening time for crowdsale
     uint256 public openingTime;
@@ -48,19 +29,16 @@ contract ModifiedCrowdsale is Ownable{
 
     constructor(
         uint256 _rate,
-        address payable _wallet,
-        NFTToken _token,
+        MoonlightToken _token,
         uint256 _openingTime,
         uint256 _closingTime
     ) {
         require(_rate > 0);
-        require(_wallet != address(0));
         require(address(_token) != address(0));
         require(_openingTime >= block.timestamp);
         require(_closingTime >= _openingTime);
 
         rate = _rate;
-        wallet = _wallet;
         token = _token;
         openingTime = _openingTime;
         closingTime = _closingTime;
@@ -82,18 +60,13 @@ contract ModifiedCrowdsale is Ownable{
         uint256 weiAmount = msg.value;
         _preValidatePurchase(_beneficiary, weiAmount);
 
-        // calculate token amount to be created
         uint256 tokens = _getTokenAmount(weiAmount);
-
-        // update state
-        weiRaised = weiRaised.add(weiAmount);
 
         _processPurchase(_beneficiary, weiAmount, _refundable);
         emit TokenPurchase(msg.sender, _beneficiary, weiAmount, tokens);
 
         _updatePurchasingState();
 
-        _forwardFunds(_refundable);
         _postValidatePurchase(_beneficiary, weiAmount);
     }
 
@@ -117,6 +90,7 @@ contract ModifiedCrowdsale is Ownable{
     {
         token.transfer(_beneficiary, _tokenAmount);
     }
+
     function _preValidatePurchase(address _beneficiary, uint256 _weiAmount) virtual
         internal 
     {
