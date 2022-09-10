@@ -3,13 +3,13 @@ pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./MoonlightToken.sol";
+import "./MoonlightNFT.sol";
 
 contract ModifiedCrowdsale is Ownable{
     using SafeMath for uint256;
 
     // The token being sold
-    MoonlightToken public token;
+    MoonlightNFT public token;
 
     // How many token units a buyer gets per wei
     uint256 public rate;
@@ -29,7 +29,7 @@ contract ModifiedCrowdsale is Ownable{
 
     constructor(
         uint256 _rate,
-        MoonlightToken _token,
+        MoonlightNFT _token,
         uint256 _openingTime,
         uint256 _closingTime
     ) {
@@ -88,7 +88,7 @@ contract ModifiedCrowdsale is Ownable{
    function _deliverTokens(address _beneficiary, uint256 _tokenAmount)
         internal
     {
-        token.transfer(_beneficiary, _tokenAmount);
+        token.mint(_beneficiary, _tokenAmount);
     }
 
     function _preValidatePurchase(address _beneficiary, uint256 _weiAmount) virtual

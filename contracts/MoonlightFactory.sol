@@ -4,13 +4,13 @@ pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./NFTToken.sol";
+import "./MoonlightNFT.sol";
 import "./MoonlightCrowdsale.sol";
 
 contract MoonlightFactory is Ownable{
 
     address payable[] moonlightCrowdsales;
-    mapping(address => NFTToken) public crowdsaleToToken;
+    mapping(address => MoonlightNFT) public crowdsaleToToken;
 
     constructor(){
     }
@@ -19,10 +19,11 @@ contract MoonlightFactory is Ownable{
         uint256 _rate,
         string memory name,
         string memory symbol,
+        uint256 NFTbaseId,
         uint256 _openingTime,
         uint256 _closingTime) public onlyOwner
     {
-        NFTToken token = new NFTToken(name, symbol);
+        MoonlightNFT token = new MoonlightNFT(name, symbol, NFTbaseId);
         MoonlightCrowdsale crowdsale = new MoonlightCrowdsale(_rate, token, _openingTime, _closingTime);
         token.grantMintability(address(crowdsale));
 
@@ -32,13 +33,12 @@ contract MoonlightFactory is Ownable{
 
     function migration(
         address payable crowdsale,
-        string memory name,
-        string memory symbol,
+        uint256 NFTbaseId,
         uint256 _openingTime,
         uint256 _closingTime
     ) public onlyOwner{
-        NFTToken token = crowdsaleToToken[crowdsale];
-        token.migration(name, symbol);
+        MoonlightNFT token = crowdsaleToToken[crowdsale];
+        token.migration(NFTbaseId);
         MoonlightCrowdsale(crowdsale).migration(_openingTime, _closingTime);
     }
 

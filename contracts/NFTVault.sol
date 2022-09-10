@@ -7,14 +7,14 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract NFTVault is Ownable {
     using SafeMath for uint256;
 
-    enum State { Active, Closed}
-    
-    mapping (address => uint256) public refundableBalances;
-
-    State public state;
-
     event Closed();
     event Refunded(address indexed beneficiary, uint256 weiAmount);
+
+    enum State { Active, Closed}
+    State public state;
+
+    mapping (address => uint256) public refundableBalances;
+
 
     modifier ifActive{
         require(state == State.Active);
@@ -38,7 +38,7 @@ contract NFTVault is Ownable {
         emit Closed();
     }
 
-    function refund(address payable investor) ifActive onlyOwner external {
+    function refund(address payable investor) onlyOwner external {
         require(refundableBalances[investor] > 0);
         uint256 depositedValue = refundableBalances[investor];
         refundableBalances[investor] = 0;

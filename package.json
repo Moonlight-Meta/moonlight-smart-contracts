@@ -15,6 +15,7 @@
     "@typechain/ethers-v5": "^10.1.0",
     "@typechain/hardhat": "^6.1.2",
     "chai": "^4.2.0",
+    "erc721psi": "^0.6.1",
     "ethers": "^5.4.7",
     "hardhat": "^2.10.2",
     "hardhat-gas-reporter": "^1.0.8",

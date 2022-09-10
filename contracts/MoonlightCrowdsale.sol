@@ -28,7 +28,7 @@ contract MoonlightCrowdsale is ModifiedCrowdsale{
 
     constructor(
         uint256 _rate,
-        MoonlightToken _token,
+        MoonlightNFT _token,
         uint256 _openingTime,
         uint256 _closingTime
     ) ModifiedCrowdsale(_rate, _token, _openingTime, _closingTime){
@@ -36,6 +36,10 @@ contract MoonlightCrowdsale is ModifiedCrowdsale{
         // INSERT MARKETWRAPPER SETTING BUY NOW PRICE
         vault = new NFTVault();
     }
+
+    // -----------------------------------------
+    // New Functions
+    // -----------------------------------------
 
     function migration(uint256 _newOpeningTime, uint256 _newClosingTime) public onlyOwner{
         // INSTANTIATE MARKETWRAPPER VARIABLE HERE
@@ -48,10 +52,6 @@ contract MoonlightCrowdsale is ModifiedCrowdsale{
         migrationCount+=1;
     }
 
-    // -----------------------------------------
-    // New Functions
-    // -----------------------------------------
-
     function getMinBidInWei() public returns (uint256){
         // INSERT MARKETWRAPPER GETTING MINIMUM BID HERE
     }
@@ -61,8 +61,6 @@ contract MoonlightCrowdsale is ModifiedCrowdsale{
     
         if(address(this).balance < getMinBidInWei()) 
             state = State.Running;
-        else 
-            state = State.Bidded;
 
         return state;
     }
@@ -101,18 +99,16 @@ contract MoonlightCrowdsale is ModifiedCrowdsale{
         if (_refundable){
             currentRefundableBalances[migrationCount][_beneficiary] += _weiAmount;
             vault.updateRefundableBalances(_beneficiary, _weiAmount);
-        }
-        else{
-            nonRefundableBalances[_beneficiary] += _weiAmount;
             currentRefundableWei += _weiAmount;
         }
+        else
+            nonRefundableBalances[_beneficiary] += _weiAmount;
+            
     }
 
     function _updatePurchasingState() internal override{
         if(address(this).balance == buyNowPriceInWei){
             //INSERT MARKETWRAPPER PURCHASING NFT
-            uint256 coinsToMint = _getTokenAmount(address(this).balance);
-            token.mint(address(this), coinsToMint);
             vault.close();
             state = State.Purchased;
         }
@@ -120,10 +116,6 @@ contract MoonlightCrowdsale is ModifiedCrowdsale{
             //INSERT MARKETWRAPPER BIDDING ON NFT
             state = State.Bidded;
         }
-    }
-
-    function _forwardFunds(bool _refundable) internal override{
-        
     }
 
 }
