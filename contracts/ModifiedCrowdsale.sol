@@ -21,7 +21,6 @@ contract ModifiedCrowdsale is Ownable{
     uint256 public closingTime;
 
     event TokenPurchase(
-        address indexed purchaser,
         address indexed beneficiary,
         uint256 value,
         uint256 amount
@@ -63,7 +62,7 @@ contract ModifiedCrowdsale is Ownable{
         uint256 tokens = _getTokenAmount(weiAmount);
 
         _processPurchase(_beneficiary, weiAmount, _refundable);
-        emit TokenPurchase(msg.sender, _beneficiary, weiAmount, tokens);
+        emit TokenPurchase(_beneficiary, weiAmount, tokens);
 
         _updatePurchasingState();
 
@@ -74,10 +73,6 @@ contract ModifiedCrowdsale is Ownable{
     // Internal interface (extensible)
     // -----------------------------------------
 
-    function _hasClosed() public view returns (bool){
-        // solium-disable-next-line security/no-block-members
-        return block.timestamp > closingTime;
-    }
 
     function _getTokenAmount(uint256 _weiAmount) view
         internal returns (uint256)
@@ -94,7 +89,7 @@ contract ModifiedCrowdsale is Ownable{
     function _preValidatePurchase(address _beneficiary, uint256 _weiAmount) virtual
         internal 
     {
-        require( !(_hasClosed()) );
+        require( block.timestamp < closingTime );
         require(_beneficiary != address(0));
         require(_weiAmount != 0);
     }

@@ -41,25 +41,26 @@ contract MoonlightCrowdsale is ModifiedCrowdsale{
     // New Functions
     // -----------------------------------------
 
-    function migration(uint256 _newOpeningTime, uint256 _newClosingTime) public onlyOwner{
+    function migration(uint256 _newClosingTime) public onlyOwner{
         // INSTANTIATE MARKETWRAPPER VARIABLE HERE
         // INSERT MARKETWRAPPER SETTING BUY NOW PRICE
 
-        openingTime = _newOpeningTime;
-        closingTime = _newClosingTime;
         payable(address(vault)).transfer(currentRefundableWei);
         currentRefundableWei = 0;
         migrationCount+=1;
+        openingTime = block.timestamp;
+        closingTime = _newClosingTime;
+        _updatePurchasingState();
     }
 
-    function getMinBidInWei() public returns (uint256){
+    function getMaxBidInWei() public returns (uint256){
         // INSERT MARKETWRAPPER GETTING MINIMUM BID HERE
     }
 
     function getState() public returns (State){
         if(state == State.Purchased) return state;
     
-        if(address(this).balance < getMinBidInWei()) 
+        if(address(this).balance < getMaxBidInWei()) 
             state = State.Running;
 
         return state;
@@ -70,6 +71,7 @@ contract MoonlightCrowdsale is ModifiedCrowdsale{
         contributionInWei = currentRefundableBalances[migrationCount][msg.sender] + nonRefundableBalances[msg.sender];
         require(contributionInWei > 0);
 
+        vault.deductRefundableBalances(msg.sender, currentRefundableBalances[migrationCount][msg.sender]);
         currentRefundableBalances[migrationCount][msg.sender] = 0;
         nonRefundableBalances[msg.sender] = 0;
 
@@ -77,9 +79,7 @@ contract MoonlightCrowdsale is ModifiedCrowdsale{
     }
 
     function refund() public payable{
-        require(
-            currentRefundableBalances[migrationCount][msg.sender] > 0 || 
-            nonRefundableBalances[msg.sender] > 0);
+        require(currentRefundableBalances[migrationCount][msg.sender] == 0);
 
         vault.refund(payable(msg.sender));
     }
@@ -92,7 +92,9 @@ contract MoonlightCrowdsale is ModifiedCrowdsale{
         super._preValidatePurchase(_beneficiary, _weiAmount);
 
         require(getState() == State.Running);
+        require(_getTokenAmount(_weiAmount) >= 1);
         require(address(this).balance + _weiAmount <= buyNowPriceInWei);
+        
     }
 
     function _processPurchase(address _beneficiary, uint256 _weiAmount, bool _refundable) internal override{
@@ -112,7 +114,7 @@ contract MoonlightCrowdsale is ModifiedCrowdsale{
             vault.close();
             state = State.Purchased;
         }
-        else if(address(this).balance > getMinBidInWei()){
+        else if(address(this).balance > getMaxBidInWei()){
             //INSERT MARKETWRAPPER BIDDING ON NFT
             state = State.Bidded;
         }
