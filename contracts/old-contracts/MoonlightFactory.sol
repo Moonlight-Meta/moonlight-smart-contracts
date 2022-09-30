@@ -7,6 +7,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./MoonlightNFT.sol";
 import "./MoonlightCrowdsale.sol";
 
+//abstract contracts for implementation
+
 contract MoonlightFactory is Ownable{
 
     address payable[] moonlightCrowdsales;
@@ -34,12 +36,11 @@ contract MoonlightFactory is Ownable{
     function migration(
         address payable crowdsale,
         uint256 NFTbaseId,
-        uint256 _openingTime,
         uint256 _closingTime
     ) public onlyOwner{
         MoonlightNFT token = crowdsaleToToken[crowdsale];
         token.migration(NFTbaseId);
-        MoonlightCrowdsale(crowdsale).migration(_openingTime, _closingTime);
+        MoonlightCrowdsale(crowdsale).migration( _closingTime);
     }
 
 }

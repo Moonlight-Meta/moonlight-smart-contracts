@@ -45,6 +45,8 @@ contract NFTVault is Ownable {
         require(refundableBalances[investor] > 0);
         uint256 depositedValue = refundableBalances[investor];
         refundableBalances[investor] = 0;
+        
+        //use call not .transfer
         investor.transfer(depositedValue);
         emit Refunded(investor, depositedValue);
     }

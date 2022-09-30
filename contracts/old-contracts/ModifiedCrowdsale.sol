@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./MoonlightNFT.sol";
 
-contract ModifiedCrowdsale is Ownable{
+contract ModifiedCrowdsale is Ownable {
     using SafeMath for uint256;
 
     // The token being sold
@@ -32,10 +32,10 @@ contract ModifiedCrowdsale is Ownable{
         uint256 _openingTime,
         uint256 _closingTime
     ) {
-        require(_rate > 0);
+        require(_rate >= 1);
         require(address(_token) != address(0));
         require(_openingTime >= block.timestamp);
-        require(_closingTime >= _openingTime);
+        require(_closingTime > _openingTime);
 
         rate = _rate;
         token = _token;
@@ -55,7 +55,7 @@ contract ModifiedCrowdsale is Ownable{
         buyTokens(msg.sender, true);
     }
 
-    function buyTokens(address _beneficiary, bool _refundable) public payable {
+    function buyTokens(address _beneficiary, bool _refundable) payable public{
         uint256 weiAmount = msg.value;
         _preValidatePurchase(_beneficiary, weiAmount);
 
@@ -113,9 +113,4 @@ contract ModifiedCrowdsale is Ownable{
         // optional override
     }
 
-    function _forwardFunds(bool _refundable) virtual
-        internal 
-    {
-        // optional override
-    }
 }

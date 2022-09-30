@@ -45,7 +45,9 @@ contract MoonlightCrowdsale is ModifiedCrowdsale{
         // INSTANTIATE MARKETWRAPPER VARIABLE HERE
         // INSERT MARKETWRAPPER SETTING BUY NOW PRICE
 
+        //check security
         payable(address(vault)).transfer(currentRefundableWei);
+
         currentRefundableWei = 0;
         migrationCount+=1;
         openingTime = block.timestamp;
@@ -67,8 +69,7 @@ contract MoonlightCrowdsale is ModifiedCrowdsale{
     }
 
     function collectTokens() public onlyAfterPurchase{
-        uint256 contributionInWei;
-        contributionInWei = currentRefundableBalances[migrationCount][msg.sender] + nonRefundableBalances[msg.sender];
+        uint256 contributionInWei = currentRefundableBalances[migrationCount][msg.sender] + nonRefundableBalances[msg.sender];
         require(contributionInWei > 0);
 
         vault.deductRefundableBalances(msg.sender, currentRefundableBalances[migrationCount][msg.sender]);
