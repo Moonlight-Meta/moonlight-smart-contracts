@@ -1,55 +1,53 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import "./ModifiedCrowdsale.sol";
-import "./interfaces/IVault.sol";
-import "./interfaces/IToken.sol";
-import "./interfaces/IMarketWrapper.sol";
+import "../abstracts/main/ACrowdsale.sol";
 
-contract MoonSale is ModifiedCrowdsale{
-    using SafeMath for uint256;
+contract MoonSale is ACrowdsale{
 
-    enum State{ Running, Purchased}
+    enum State{Running, Purchased}
     State private state;
 
-    uint256 public buyNowPriceInWei;
+    IVault public vault;
     uint256 public currentRefundableWei = 0;
 
     uint256 public migrationCount = 0;
     mapping(uint256 => mapping(address => uint256)) public currentRefundableBalances;
     mapping(address => uint256) public nonRefundableBalances;
     
-    NFTVault public vault;
-    //CREATE MARKETWRAPPER VARIABLE HERE
+    IMarketWrapper public marketWrapper;
+    uint256 public buyNowPriceInWei;
 
-    modifier onlyAfterPurchase {
-        require(getState() == State.Purchased);
-        _;
-    } 
+    modifier onlyAfterPurchase {require(state == State.Purchased); _;} 
 
     constructor(
         uint256 _rate,
         address _token,
-        address _vault,
-        address _wrapper,
         uint256 _openingTime,
-        uint256 _closingTime
-    ) ModifiedCrowdsale(_rate, _token, _openingTime, _closingTime){
-        // INSTANTIATE MARKETWRAPPER VARIABLE HERE
-        // INSERT MARKETWRAPPER SETTING BUY NOW PRICE
-        vault = MoonVault(_vault);
+        uint256 _closingTime,
+        address payable _vault,
+        address payable _marketWrapper
+    ) 
+    ACrowdsale(_rate, _token, _openingTime, _closingTime)
+    {
+        vault = IVault(_vault);
+        marketWrapper = IMarketWrapper(_marketWrapper);
+        buyNowPriceInWei = marketWrapper.getBuyNowPrice();
     }
 
     // -----------------------------------------
     // New Functions
     // -----------------------------------------
 
-    function migration(uint256 _newClosingTime) public onlyOwner{
-        // INSTANTIATE MARKETWRAPPER VARIABLE HERE
-        // INSERT MARKETWRAPPER SETTING BUY NOW PRICE
+    function migration(uint256 _newClosingTime, address _marketWrapper)
+    override external onlyRole(DEFAULT_ADMIN_ROLE) 
+    {
+        marketWrapper = IMarketWrapper(payable(_marketWrapper));
+        address payable vaultAddress = payable(address(vault));
 
-        //check security
-        payable(address(vault)).transfer(currentRefundableWei);
+        (bool success,) = vaultAddress.call{value:currentRefundableWei}("");
+
+        require(success, "Function failed.");
 
         currentRefundableWei = 0;
         migrationCount+=1;
@@ -58,7 +56,9 @@ contract MoonSale is ModifiedCrowdsale{
         _updatePurchasingState();
     }
 
-    function collectTokens() public onlyAfterPurchase{
+    function collectTokens() 
+    override external nonReentrant onlyAfterPurchase
+    {
         uint256 contributionInWei = currentRefundableBalances[migrationCount][msg.sender] + nonRefundableBalances[msg.sender];
         require(contributionInWei > 0);
 
@@ -69,7 +69,8 @@ contract MoonSale is ModifiedCrowdsale{
         _deliverTokens(msg.sender, _getTokenAmount(contributionInWei));
     }
 
-    function refund() public payable{
+    function refund()
+    override external payable nonReentrant{
         require(currentRefundableBalances[migrationCount][msg.sender] == 0);
 
         vault.refund(payable(msg.sender));
@@ -82,9 +83,9 @@ contract MoonSale is ModifiedCrowdsale{
     function _preValidatePurchase(address _beneficiary, uint256 _weiAmount) internal override{
         super._preValidatePurchase(_beneficiary, _weiAmount);
 
-        require(getState() == State.Running);
+        require(state == State.Running);
         require(_getTokenAmount(_weiAmount) >= 1);
-        require(address(this).balance + _weiAmount <= buyNowPriceInWei);
+        require(_getTokenAmount(address(this).balance + _weiAmount) <= _getTokenAmount(buyNowPriceInWei));
         
     }
 
@@ -96,12 +97,17 @@ contract MoonSale is ModifiedCrowdsale{
         }
         else
             nonRefundableBalances[_beneficiary] += _weiAmount;
-            
     }
 
     function _updatePurchasingState() internal override{
-        if(address(this).balance == buyNowPriceInWei){
-            //INSERT MARKETWRAPPER PURCHASING NFT
+        if(address(this).balance >= buyNowPriceInWei){
+
+            address payable marketWrapperAddress = payable(address(marketWrapper));
+            (bool success,) = marketWrapperAddress.call{value: address(this).balance}("");
+
+            require(success, "Purchase failed.");
+            
+            marketWrapper.buyNow();
             vault.close();
             state = State.Purchased;
         }

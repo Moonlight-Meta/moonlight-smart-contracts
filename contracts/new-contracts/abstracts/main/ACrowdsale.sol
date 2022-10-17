@@ -2,22 +2,23 @@
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "./interfaces/IToken.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract ModifiedCrowdsale is Ownable {
+import "../../interfaces/main/IToken.sol";
+import "../../interfaces/main/IVault.sol";
+import "../../interfaces/main/IMarketWrapper.sol";
+import "../../interfaces/main/ICrowdsale.sol";
+
+abstract contract ACrowdsale is ICrowdsale, AccessControl, ReentrancyGuard{
     using SafeMath for uint256;
 
-    // The token being sold
     IToken public token;
 
-    // How many token units a buyer gets per wei
     uint256 public rate;
 
-    // Opening time for crowdsale
     uint256 public openingTime;
 
-    // Closing time for crowdsale
     uint256 public closingTime;
 
     event TokenPurchase(
@@ -37,6 +38,7 @@ contract ModifiedCrowdsale is Ownable {
         require(_openingTime >= block.timestamp);
         require(_closingTime > _openingTime);
 
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         rate = _rate;
         token = IToken(_token);
         openingTime = _openingTime;
@@ -55,7 +57,14 @@ contract ModifiedCrowdsale is Ownable {
         buyTokens(msg.sender, true);
     }
 
-    function buyTokens(address _beneficiary, bool _refundable) payable public{
+    function grantOwnerRole (address to) 
+    external onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        _grantRole(DEFAULT_ADMIN_ROLE, to);
+    }
+
+    function buyTokens(address _beneficiary, bool _refundable)
+    payable public nonReentrant{
         uint256 weiAmount = msg.value;
         _preValidatePurchase(_beneficiary, weiAmount);
 
@@ -65,14 +74,16 @@ contract ModifiedCrowdsale is Ownable {
         emit TokenPurchase(_beneficiary, weiAmount, tokens);
 
         _updatePurchasingState();
+    }
 
-        _postValidatePurchase(_beneficiary, weiAmount);
+    function emergencyWithdrawal (address payable to) external payable onlyRole(DEFAULT_ADMIN_ROLE){
+        (bool success,) = to.call{value: address(this).balance}("");
+        require(success, "Ether transfer failed.");
     }
 
     // -----------------------------------------
     // Internal interface (extensible)
     // -----------------------------------------
-
 
     function _getTokenAmount(uint256 _weiAmount) view
         internal returns (uint256)
@@ -94,23 +105,23 @@ contract ModifiedCrowdsale is Ownable {
         require(_weiAmount != 0);
     }
 
+    function _processPurchase( address _beneficiary, uint256 _weiAmount, bool _refundable) 
+    virtual internal;
+
+    function _updatePurchasingState()
+    virtual internal;
     
+    // -----------------------------------------
+    // New Functions Needed
+    // -----------------------------------------
 
-    function _postValidatePurchase(address _beneficiary, uint256 _weiAmount) virtual
-        internal 
-    {
-        // optional override
-    }
+    function migration(uint256 _newClosingTime, address _marketWrapper) 
+    virtual external;
 
-    function _processPurchase( address _beneficiary, uint256 _weiAmount, bool _refundable) virtual
-        internal  {
-        // optional override
-    }
+    function collectTokens() 
+    virtual external;
 
-    function _updatePurchasingState() virtual
-        internal
-    {
-        // optional override
-    }
+    function refund()
+    virtual external payable;
 
 }
