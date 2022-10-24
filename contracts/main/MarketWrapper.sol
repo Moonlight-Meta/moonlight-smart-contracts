@@ -8,4 +8,14 @@ contract MarketWrapper is AMarketWrapper{
     constructor()
     AMarketWrapper(){}
 
+    function getBuyNowPrice()
+    override external returns (uint256){
+        return 56;
+    }
+
+    function buyNow()
+    override external payable returns (bool){
+        return true;
+    }
+
 }

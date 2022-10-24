@@ -32,14 +32,9 @@ abstract contract AMarketWrapper is IMarketWrapper, AccessControl{
     }
 
     function getBuyNowPrice()
-    external returns (uint256){
-        return 56;
-    }
-
-    function migration()
-    external{}
+    virtual external returns (uint256);
 
     function buyNow()
-    external payable onlyRole(DEFAULT_ADMIN_ROLE){}
+    virtual external payable returns (bool);
 
 }

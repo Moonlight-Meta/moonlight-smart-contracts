@@ -11,9 +11,7 @@ interface IMarketWrapper{
 
     function getBuyNowPrice() external returns (uint256);
 
-    function buyNow() external payable;
-
-    function migration() external;
+    function buyNow() external payable returns (bool);
 
     function emergencyWithdrawal(address payable to) external payable;
 
