@@ -401,377 +401,6 @@
         "IERC165"
       ]
     },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/abstracts/factories/ACrowdsaleFactory.sol": {
-      "lastModificationDate": 1665998953356,
-      "contentHash": "a18ff1887e6dc78f433ea0c5cbc99218",
-      "sourceName": "contracts/new-contracts/abstracts/factories/ACrowdsaleFactory.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/access/AccessControl.sol",
-        "@openzeppelin/contracts/utils/math/SafeMath.sol",
-        "../../interfaces/factories/ICrowdsaleFactory.sol",
-        "../../interfaces/factories/IMarketWrapperFactory.sol",
-        "../../interfaces/factories/ITokenFactory.sol",
-        "../../interfaces/factories/IVaultFactory.sol",
-        "../../interfaces/main/IToken.sol",
-        "../../interfaces/main/IVault.sol",
-        "../../interfaces/main/IMarketWrapper.sol",
-        "../../main/MoonSale.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "ACrowdsaleFactory"
-      ]
-    },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/interfaces/factories/ICrowdsaleFactory.sol": {
-      "lastModificationDate": 1665998945770,
-      "contentHash": "72273bb7170bb1a8415a3238bc858fc6",
-      "sourceName": "contracts/new-contracts/interfaces/factories/ICrowdsaleFactory.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "ICrowdsaleFactory"
-      ]
-    },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/interfaces/factories/IMarketWrapperFactory.sol": {
-      "lastModificationDate": 1665997421407,
-      "contentHash": "4e65620425c301a56d148e6e2314467f",
-      "sourceName": "contracts/new-contracts/interfaces/factories/IMarketWrapperFactory.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "IMarketWrapperFactory"
-      ]
-    },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/interfaces/factories/ITokenFactory.sol": {
-      "lastModificationDate": 1665994984007,
-      "contentHash": "6b9ba5339560af8c93dd1bb288180c7b",
-      "sourceName": "contracts/new-contracts/interfaces/factories/ITokenFactory.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "ITokenFactory"
-      ]
-    },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/interfaces/factories/IVaultFactory.sol": {
-      "lastModificationDate": 1665997609994,
-      "contentHash": "130ddc83be6773eabf882a60f8d00152",
-      "sourceName": "contracts/new-contracts/interfaces/factories/IVaultFactory.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "IVaultFactory"
-      ]
-    },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/interfaces/main/IToken.sol": {
-      "lastModificationDate": 1665986289569,
-      "contentHash": "ea8b3207645dd1958e4360766d3d712e",
-      "sourceName": "contracts/new-contracts/interfaces/main/IToken.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "IToken"
-      ]
-    },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/interfaces/main/IVault.sol": {
-      "lastModificationDate": 1665997537965,
-      "contentHash": "86e2db357ea0cb04faaf06146e82cf60",
-      "sourceName": "contracts/new-contracts/interfaces/main/IVault.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "IVault"
-      ]
-    },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/interfaces/main/IMarketWrapper.sol": {
-      "lastModificationDate": 1665997532043,
-      "contentHash": "035b00cf6453e5fb0ced4c682bf322fc",
-      "sourceName": "contracts/new-contracts/interfaces/main/IMarketWrapper.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "IMarketWrapper"
-      ]
-    },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/main/MoonSale.sol": {
-      "lastModificationDate": 1665997901775,
-      "contentHash": "939ffad6bba1ee8ee9ab5e33dd797e71",
-      "sourceName": "contracts/new-contracts/main/MoonSale.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../abstracts/main/ACrowdsale.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "MoonSale"
-      ]
-    },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/abstracts/main/ACrowdsale.sol": {
-      "lastModificationDate": 1665997875687,
-      "contentHash": "da93f8944292b0cbbcb1ecbdf5462c86",
-      "sourceName": "contracts/new-contracts/abstracts/main/ACrowdsale.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/utils/math/SafeMath.sol",
-        "@openzeppelin/contracts/access/AccessControl.sol",
-        "@openzeppelin/contracts/security/ReentrancyGuard.sol",
-        "../../interfaces/main/IToken.sol",
-        "../../interfaces/main/IVault.sol",
-        "../../interfaces/main/IMarketWrapper.sol",
-        "../../interfaces/main/ICrowdsale.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "ACrowdsale"
-      ]
-    },
     "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/node_modules/@openzeppelin/contracts/security/ReentrancyGuard.sol": {
       "lastModificationDate": 1662057814754,
       "contentHash": "92f9448b23a90ea3bb932ee55cc3ccce",
@@ -805,235 +434,6 @@
       ],
       "artifacts": [
         "ReentrancyGuard"
-      ]
-    },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/interfaces/main/ICrowdsale.sol": {
-      "lastModificationDate": 1665997522594,
-      "contentHash": "63cb79c94a749f2afdc8c93ce1ebfa24",
-      "sourceName": "contracts/new-contracts/interfaces/main/ICrowdsale.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "ICrowdsale"
-      ]
-    },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/MoonSaleFactory.sol": {
-      "lastModificationDate": 1665999412986,
-      "contentHash": "87544ce023662447c7dbfb02dd360c6c",
-      "sourceName": "contracts/new-contracts/MoonSaleFactory.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "./abstracts/factories/ACrowdsaleFactory.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "MoonTokenFactory"
-      ]
-    },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/abstracts/main/AMarketWrapper.sol": {
-      "lastModificationDate": 1665997613649,
-      "contentHash": "9ee497714a20077c321a12cc709a793f",
-      "sourceName": "contracts/new-contracts/abstracts/main/AMarketWrapper.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/access/AccessControl.sol",
-        "@openzeppelin/contracts/utils/math/SafeMath.sol",
-        "../../interfaces/main/IMarketWrapper.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "AMarketWrapper"
-      ]
-    },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/old-contracts/MoonlightFactory.sol": {
-      "lastModificationDate": 1664561642694,
-      "contentHash": "afaba77ce229fa90d9db8a1a5b763a5b",
-      "sourceName": "contracts/old-contracts/MoonlightFactory.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/utils/math/SafeMath.sol",
-        "@openzeppelin/contracts/access/Ownable.sol",
-        "./MoonlightNFT.sol",
-        "./MoonlightCrowdsale.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "MoonlightFactory"
-      ]
-    },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/old-contracts/MoonlightNFT.sol": {
-      "lastModificationDate": 1664561642716,
-      "contentHash": "89ab74ce06c3c2fb6f5089ba7e898f3f",
-      "sourceName": "contracts/old-contracts/MoonlightNFT.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "erc721psi/contracts/ERC721Psi.sol",
-        "@openzeppelin/contracts/access/AccessControl.sol",
-        "@openzeppelin/contracts/utils/math/SafeMath.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "MoonlightNFT"
-      ]
-    },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/old-contracts/MoonlightCrowdsale.sol": {
-      "lastModificationDate": 1664561642668,
-      "contentHash": "02647fe8852dc124c9558ee176dfccfe",
-      "sourceName": "contracts/old-contracts/MoonlightCrowdsale.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "./ModifiedCrowdsale.sol",
-        "./MarketWrapper.sol",
-        "./NFTVault.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "MoonlightCrowdsale"
       ]
     },
     "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/node_modules/erc721psi/contracts/ERC721Psi.sol": {
@@ -1370,10 +770,10 @@
         "BitScan"
       ]
     },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/old-contracts/ModifiedCrowdsale.sol": {
-      "lastModificationDate": 1664561642640,
-      "contentHash": "fb233ef14c769fb19e492fe24c2996f7",
-      "sourceName": "contracts/old-contracts/ModifiedCrowdsale.sol",
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/abstracts/factories/ACrowdsaleFactory.sol": {
+      "lastModificationDate": 1666478673699,
+      "contentHash": "a18ff1887e6dc78f433ea0c5cbc99218",
+      "sourceName": "contracts/abstracts/factories/ACrowdsaleFactory.sol",
       "solcConfig": {
         "version": "0.8.9",
         "settings": {
@@ -1398,21 +798,28 @@
         }
       },
       "imports": [
+        "@openzeppelin/contracts/access/AccessControl.sol",
         "@openzeppelin/contracts/utils/math/SafeMath.sol",
-        "@openzeppelin/contracts/access/Ownable.sol",
-        "./MoonlightNFT.sol"
+        "../../interfaces/factories/ICrowdsaleFactory.sol",
+        "../../interfaces/factories/IMarketWrapperFactory.sol",
+        "../../interfaces/factories/ITokenFactory.sol",
+        "../../interfaces/factories/IVaultFactory.sol",
+        "../../interfaces/main/IToken.sol",
+        "../../interfaces/main/IVault.sol",
+        "../../interfaces/main/IMarketWrapper.sol",
+        "../../main/MoonSale.sol"
       ],
       "versionPragmas": [
         "^0.8.9"
       ],
       "artifacts": [
-        "ModifiedCrowdsale"
+        "ACrowdsaleFactory"
       ]
     },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/old-contracts/MarketWrapper.sol": {
-      "lastModificationDate": 1664561642599,
-      "contentHash": "732817cb54dd688540812fb2bb9457c6",
-      "sourceName": "contracts/old-contracts/MarketWrapper.sol",
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/interfaces/factories/ICrowdsaleFactory.sol": {
+      "lastModificationDate": 1666478673700,
+      "contentHash": "72273bb7170bb1a8415a3238bc858fc6",
+      "sourceName": "contracts/interfaces/factories/ICrowdsaleFactory.sol",
       "solcConfig": {
         "version": "0.8.9",
         "settings": {
@@ -1440,12 +847,261 @@
       "versionPragmas": [
         "^0.8.9"
       ],
-      "artifacts": []
+      "artifacts": [
+        "ICrowdsaleFactory"
+      ]
     },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/old-contracts/NFTVault.sol": {
-      "lastModificationDate": 1664561642733,
-      "contentHash": "ad84320f6f92ab7c54b8eeee682dcb2b",
-      "sourceName": "contracts/old-contracts/NFTVault.sol",
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/interfaces/factories/IMarketWrapperFactory.sol": {
+      "lastModificationDate": 1666478673700,
+      "contentHash": "4e65620425c301a56d148e6e2314467f",
+      "sourceName": "contracts/interfaces/factories/IMarketWrapperFactory.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "IMarketWrapperFactory"
+      ]
+    },
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/interfaces/factories/ITokenFactory.sol": {
+      "lastModificationDate": 1666478673700,
+      "contentHash": "6b9ba5339560af8c93dd1bb288180c7b",
+      "sourceName": "contracts/interfaces/factories/ITokenFactory.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "ITokenFactory"
+      ]
+    },
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/interfaces/factories/IVaultFactory.sol": {
+      "lastModificationDate": 1666478673700,
+      "contentHash": "130ddc83be6773eabf882a60f8d00152",
+      "sourceName": "contracts/interfaces/factories/IVaultFactory.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "IVaultFactory"
+      ]
+    },
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/interfaces/main/IToken.sol": {
+      "lastModificationDate": 1666478673701,
+      "contentHash": "ea8b3207645dd1958e4360766d3d712e",
+      "sourceName": "contracts/interfaces/main/IToken.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "IToken"
+      ]
+    },
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/interfaces/main/IVault.sol": {
+      "lastModificationDate": 1666478673701,
+      "contentHash": "86e2db357ea0cb04faaf06146e82cf60",
+      "sourceName": "contracts/interfaces/main/IVault.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "IVault"
+      ]
+    },
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/interfaces/main/IMarketWrapper.sol": {
+      "lastModificationDate": 1666589647310,
+      "contentHash": "e1ad6695c7b77f786fd648f0746c5515",
+      "sourceName": "contracts/interfaces/main/IMarketWrapper.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "IMarketWrapper"
+      ]
+    },
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/main/MoonSale.sol": {
+      "lastModificationDate": 1666478673701,
+      "contentHash": "939ffad6bba1ee8ee9ab5e33dd797e71",
+      "sourceName": "contracts/main/MoonSale.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../abstracts/main/ACrowdsale.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "MoonSale"
+      ]
+    },
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/abstracts/main/ACrowdsale.sol": {
+      "lastModificationDate": 1666478673699,
+      "contentHash": "da93f8944292b0cbbcb1ecbdf5462c86",
+      "sourceName": "contracts/abstracts/main/ACrowdsale.sol",
       "solcConfig": {
         "version": "0.8.9",
         "settings": {
@@ -1471,19 +1127,135 @@
       },
       "imports": [
         "@openzeppelin/contracts/utils/math/SafeMath.sol",
-        "@openzeppelin/contracts/access/Ownable.sol"
+        "@openzeppelin/contracts/access/AccessControl.sol",
+        "@openzeppelin/contracts/security/ReentrancyGuard.sol",
+        "../../interfaces/main/IToken.sol",
+        "../../interfaces/main/IVault.sol",
+        "../../interfaces/main/IMarketWrapper.sol",
+        "../../interfaces/main/ICrowdsale.sol"
       ],
       "versionPragmas": [
         "^0.8.9"
       ],
       "artifacts": [
-        "NFTVault"
+        "ACrowdsale"
       ]
     },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/abstracts/main/AVault.sol": {
-      "lastModificationDate": 1665997557741,
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/interfaces/main/ICrowdsale.sol": {
+      "lastModificationDate": 1666478673700,
+      "contentHash": "63cb79c94a749f2afdc8c93ce1ebfa24",
+      "sourceName": "contracts/interfaces/main/ICrowdsale.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "ICrowdsale"
+      ]
+    },
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/MoonSaleFactory.sol": {
+      "lastModificationDate": 1666478673698,
+      "contentHash": "87544ce023662447c7dbfb02dd360c6c",
+      "sourceName": "contracts/MoonSaleFactory.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./abstracts/factories/ACrowdsaleFactory.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "MoonTokenFactory"
+      ]
+    },
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/abstracts/main/AMarketWrapper.sol": {
+      "lastModificationDate": 1666589657680,
+      "contentHash": "22909a37bb829bbc963afc6e1a6e26a5",
+      "sourceName": "contracts/abstracts/main/AMarketWrapper.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/access/AccessControl.sol",
+        "@openzeppelin/contracts/utils/math/SafeMath.sol",
+        "../../interfaces/main/IMarketWrapper.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "AMarketWrapper"
+      ]
+    },
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/abstracts/main/AVault.sol": {
+      "lastModificationDate": 1666478673700,
       "contentHash": "57d5d69f575c1a4674081e669fe5de00",
-      "sourceName": "contracts/new-contracts/abstracts/main/AVault.sol",
+      "sourceName": "contracts/abstracts/main/AVault.sol",
       "solcConfig": {
         "version": "0.8.9",
         "settings": {
@@ -1519,47 +1291,10 @@
         "AVault"
       ]
     },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/main/MoonVault.sol": {
-      "lastModificationDate": 1665997907691,
-      "contentHash": "bb824e41966963f5ea40289755c37799",
-      "sourceName": "contracts/new-contracts/main/MoonVault.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../abstracts/main/AVault.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "MoonVault"
-      ]
-    },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/abstracts/factories/AVaultFactory.sol": {
-      "lastModificationDate": 1665995231593,
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/abstracts/factories/AVaultFactory.sol": {
+      "lastModificationDate": 1666478673699,
       "contentHash": "dde0f0c6d8969e6e89e0378353a4c4c7",
-      "sourceName": "contracts/new-contracts/abstracts/factories/AVaultFactory.sol",
+      "sourceName": "contracts/abstracts/factories/AVaultFactory.sol",
       "solcConfig": {
         "version": "0.8.9",
         "settings": {
@@ -1596,10 +1331,47 @@
         "AVaultFactory"
       ]
     },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/MoonVaultFactory.sol": {
-      "lastModificationDate": 1665995552526,
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/main/MoonVault.sol": {
+      "lastModificationDate": 1666478673702,
+      "contentHash": "bb824e41966963f5ea40289755c37799",
+      "sourceName": "contracts/main/MoonVault.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../abstracts/main/AVault.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "MoonVault"
+      ]
+    },
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/MoonVaultFactory.sol": {
+      "lastModificationDate": 1666478673698,
       "contentHash": "b188b1b084ce86ea4079dba696ca93c8",
-      "sourceName": "contracts/new-contracts/MoonVaultFactory.sol",
+      "sourceName": "contracts/MoonVaultFactory.sol",
       "solcConfig": {
         "version": "0.8.9",
         "settings": {
@@ -1633,10 +1405,10 @@
         "MoonVaultFactory"
       ]
     },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/abstracts/main/AToken.sol": {
-      "lastModificationDate": 1665991236445,
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/abstracts/main/AToken.sol": {
+      "lastModificationDate": 1666478673700,
       "contentHash": "cbf2977d25ab4c91629bd1383545627a",
-      "sourceName": "contracts/new-contracts/abstracts/main/AToken.sol",
+      "sourceName": "contracts/abstracts/main/AToken.sol",
       "solcConfig": {
         "version": "0.8.9",
         "settings": {
@@ -1673,10 +1445,10 @@
         "AToken"
       ]
     },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/main/MoonToken.sol": {
-      "lastModificationDate": 1665997905613,
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/main/MoonToken.sol": {
+      "lastModificationDate": 1666478673701,
       "contentHash": "353a797d4cb8e4a26ab71af90c25905e",
-      "sourceName": "contracts/new-contracts/main/MoonToken.sol",
+      "sourceName": "contracts/main/MoonToken.sol",
       "solcConfig": {
         "version": "0.8.9",
         "settings": {
@@ -1710,10 +1482,10 @@
         "MoonToken"
       ]
     },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/abstracts/factories/ATokenFactory.sol": {
-      "lastModificationDate": 1665995236478,
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/abstracts/factories/ATokenFactory.sol": {
+      "lastModificationDate": 1666478673699,
       "contentHash": "7481b68608f57e2486807254f869e6cf",
-      "sourceName": "contracts/new-contracts/abstracts/factories/ATokenFactory.sol",
+      "sourceName": "contracts/abstracts/factories/ATokenFactory.sol",
       "solcConfig": {
         "version": "0.8.9",
         "settings": {
@@ -1750,10 +1522,10 @@
         "ATokenFactory"
       ]
     },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/MoonTokenFactory.sol": {
-      "lastModificationDate": 1665995559784,
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/MoonTokenFactory.sol": {
+      "lastModificationDate": 1666478673698,
       "contentHash": "6d7bd0b73a6c923d36c04555ba9fe55c",
-      "sourceName": "contracts/new-contracts/MoonTokenFactory.sol",
+      "sourceName": "contracts/MoonTokenFactory.sol",
       "solcConfig": {
         "version": "0.8.9",
         "settings": {
@@ -1787,10 +1559,10 @@
         "MoonTokenFactory"
       ]
     },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/abstracts/factories/AMarketWrapperFactory.sol": {
-      "lastModificationDate": 1665995238197,
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/abstracts/factories/AMarketWrapperFactory.sol": {
+      "lastModificationDate": 1666478673699,
       "contentHash": "74afa598f9838c2a6f3bdf49d39ab725",
-      "sourceName": "contracts/new-contracts/abstracts/factories/AMarketWrapperFactory.sol",
+      "sourceName": "contracts/abstracts/factories/AMarketWrapperFactory.sol",
       "solcConfig": {
         "version": "0.8.9",
         "settings": {
@@ -1827,10 +1599,10 @@
         "AMarketWrapperFactory"
       ]
     },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/main/MarketWrapper.sol": {
-      "lastModificationDate": 1665997904082,
-      "contentHash": "2cca3f375775cac569ed3c511efd88d5",
-      "sourceName": "contracts/new-contracts/main/MarketWrapper.sol",
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/main/MarketWrapper.sol": {
+      "lastModificationDate": 1666589676231,
+      "contentHash": "cf9c5cb9c046e920a17080315d0c09f6",
+      "sourceName": "contracts/main/MarketWrapper.sol",
       "solcConfig": {
         "version": "0.8.9",
         "settings": {
@@ -1864,10 +1636,10 @@
         "MarketWrapper"
       ]
     },
-    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/new-contracts/MarketWrapperFactory.sol": {
-      "lastModificationDate": 1665995550542,
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/MarketWrapperFactory.sol": {
+      "lastModificationDate": 1666478673698,
       "contentHash": "1d3c04969604b837203f70cf9bd6167f",
-      "sourceName": "contracts/new-contracts/MarketWrapperFactory.sol",
+      "sourceName": "contracts/MarketWrapperFactory.sol",
       "solcConfig": {
         "version": "0.8.9",
         "settings": {
@@ -1900,6 +1672,408 @@
       "artifacts": [
         "MoonTokenFactory"
       ]
+    },
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/Proxy.sol": {
+      "lastModificationDate": 1667170084241,
+      "contentHash": "885fa1e324d4f545402b98e0a69d9fe8",
+      "sourceName": "contracts/Proxy.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
+        "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol",
+        "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.4"
+      ],
+      "artifacts": [
+        "Proxy"
+      ]
+    },
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/node_modules/@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol": {
+      "lastModificationDate": 1662844781168,
+      "contentHash": "403ce8273abde646bff81558ddf512ad",
+      "sourceName": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../utils/ContextUpgradeable.sol",
+        "../proxy/utils/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "OwnableUpgradeable"
+      ]
+    },
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/node_modules/@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol": {
+      "lastModificationDate": 1662844781182,
+      "contentHash": "b98e2f3a856e6e7f2106fb919bacab9e",
+      "sourceName": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../utils/AddressUpgradeable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.2"
+      ],
+      "artifacts": [
+        "Initializable"
+      ]
+    },
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/node_modules/@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol": {
+      "lastModificationDate": 1662844781182,
+      "contentHash": "eb2268e7f08e65339fdf577dad98c925",
+      "sourceName": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../interfaces/draft-IERC1822Upgradeable.sol",
+        "../ERC1967/ERC1967UpgradeUpgradeable.sol",
+        "./Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "UUPSUpgradeable"
+      ]
+    },
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/node_modules/@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol": {
+      "lastModificationDate": 1662844781168,
+      "contentHash": "6200b84950eb05b4a92a39fd1d6e0f9b",
+      "sourceName": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../proxy/utils/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ContextUpgradeable"
+      ]
+    },
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/node_modules/@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol": {
+      "lastModificationDate": 1662844781168,
+      "contentHash": "d42e87f4fba2b03ab4d3c14cb53d0c51",
+      "sourceName": "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.1"
+      ],
+      "artifacts": [
+        "AddressUpgradeable"
+      ]
+    },
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/node_modules/@openzeppelin/contracts-upgradeable/interfaces/draft-IERC1822Upgradeable.sol": {
+      "lastModificationDate": 1662844781168,
+      "contentHash": "a6883cfd85607b16c121a02728369eb3",
+      "sourceName": "@openzeppelin/contracts-upgradeable/interfaces/draft-IERC1822Upgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC1822ProxiableUpgradeable"
+      ]
+    },
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/node_modules/@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol": {
+      "lastModificationDate": 1662844781182,
+      "contentHash": "d1ceeaa35b60471b1c6e50d29d70354a",
+      "sourceName": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../beacon/IBeaconUpgradeable.sol",
+        "../../interfaces/draft-IERC1822Upgradeable.sol",
+        "../../utils/AddressUpgradeable.sol",
+        "../../utils/StorageSlotUpgradeable.sol",
+        "../utils/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.2"
+      ],
+      "artifacts": [
+        "ERC1967UpgradeUpgradeable"
+      ]
+    },
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/node_modules/@openzeppelin/contracts-upgradeable/proxy/beacon/IBeaconUpgradeable.sol": {
+      "lastModificationDate": 1662844781182,
+      "contentHash": "21bffd733b4ca013e125a0ffe2e52254",
+      "sourceName": "@openzeppelin/contracts-upgradeable/proxy/beacon/IBeaconUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IBeaconUpgradeable"
+      ]
+    },
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/node_modules/@openzeppelin/contracts-upgradeable/utils/StorageSlotUpgradeable.sol": {
+      "lastModificationDate": 1662844781168,
+      "contentHash": "731fafe5fdaca6e0749253ab7ce7d3b9",
+      "sourceName": "@openzeppelin/contracts-upgradeable/utils/StorageSlotUpgradeable.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "StorageSlotUpgradeable"
+      ]
+    },
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/main/RealMarketWrapper.sol": {
+      "lastModificationDate": 1667170292886,
+      "contentHash": "b7be4c28328c95bc1d1e01d052c0263a",
+      "sourceName": "contracts/main/RealMarketWrapper.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [],
+      "artifacts": []
     }
   }
 }

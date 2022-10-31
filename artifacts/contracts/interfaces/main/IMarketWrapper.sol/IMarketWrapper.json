@@ -10,7 +10,13 @@
     {
       "inputs": [],
       "name": "buyNow",
-      "outputs": [],
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
       "stateMutability": "payable",
       "type": "function"
     },
@@ -49,13 +55,6 @@
         }
       ],
       "name": "grantOwnerRole",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "migration",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
