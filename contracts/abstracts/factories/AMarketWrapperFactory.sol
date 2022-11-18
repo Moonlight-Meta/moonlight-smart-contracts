@@ -23,11 +23,13 @@ abstract contract AMarketWrapperFactory is IMarketWrapperFactory, AccessControl{
         _grantRole(DEFAULT_ADMIN_ROLE, to);
     }
 
-    function newMarketWrapper ()
+    function newMarketWrapper (uint256 buyNowPrice)
     virtual external returns (address);
 
     function giveContractOwnership(address marketWrapper, address to) 
     virtual external;
+
+    function getLatestMarketWrapper() virtual external returns (address);
 
     
 }

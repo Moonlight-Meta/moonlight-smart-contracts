@@ -6,19 +6,23 @@ import "../abstracts/main/ACrowdsale.sol";
 contract MoonSale is ACrowdsale{
 
     enum State{Running, Purchased}
-    State private state;
+    State public state;
 
     IVault public vault;
     uint256 public currentRefundableWei = 0;
 
     uint256 public migrationCount = 0;
     mapping(uint256 => mapping(address => uint256)) public currentRefundableBalances;
+    
     mapping(address => uint256) public nonRefundableBalances;
     
     IMarketWrapper public marketWrapper;
     uint256 public buyNowPriceInWei;
+    uint256 public interest;
 
     modifier onlyAfterPurchase {require(state == State.Purchased); _;} 
+
+    modifier onlyBeforePurchase {require(state == State.Running); _;} 
 
     constructor(
         uint256 _rate,
@@ -33,6 +37,7 @@ contract MoonSale is ACrowdsale{
         vault = IVault(_vault);
         marketWrapper = IMarketWrapper(_marketWrapper);
         buyNowPriceInWei = marketWrapper.getBuyNowPrice();
+        interest = buyNowPriceInWei/20;
     }
 
     // -----------------------------------------
@@ -40,9 +45,13 @@ contract MoonSale is ACrowdsale{
     // -----------------------------------------
 
     function migration(uint256 _newClosingTime, address _marketWrapper)
-    override external onlyRole(DEFAULT_ADMIN_ROLE) 
+    override external onlyBeforePurchase onlyRole(DEFAULT_ADMIN_ROLE) 
     {
+        require(_newClosingTime > openingTime);
         marketWrapper = IMarketWrapper(payable(_marketWrapper));
+        buyNowPriceInWei = marketWrapper.getBuyNowPrice();
+        interest = uint256(buyNowPriceInWei)/20;
+
         address payable vaultAddress = payable(address(vault));
 
         (bool success,) = vaultAddress.call{value:currentRefundableWei}("");
@@ -54,6 +63,13 @@ contract MoonSale is ACrowdsale{
         openingTime = block.timestamp;
         closingTime = _newClosingTime;
         _updatePurchasingState();
+    }
+
+    function refund()
+    override external payable nonReentrant{
+        require(currentRefundableBalances[migrationCount][msg.sender] == 0);
+
+        vault.refund(payable(msg.sender));
     }
 
     function collectTokens() 
@@ -69,12 +85,14 @@ contract MoonSale is ACrowdsale{
         _deliverTokens(msg.sender, _getTokenAmount(contributionInWei));
     }
 
-    function refund()
-    override external payable nonReentrant{
-        require(currentRefundableBalances[migrationCount][msg.sender] == 0);
-
-        vault.refund(payable(msg.sender));
+    function collectInterest(address payable to) 
+    external onlyRole(DEFAULT_ADMIN_ROLE) nonReentrant onlyAfterPurchase
+    {
+        (bool success,) = to.call{value: address(this).balance}("");
+        require(success, "Ether transfer failed.");
     }
+
+
 
     // -----------------------------------------
     // Overriden Functions
@@ -85,7 +103,7 @@ contract MoonSale is ACrowdsale{
 
         require(state == State.Running);
         require(_getTokenAmount(_weiAmount) >= 1);
-        require(_getTokenAmount(address(this).balance + _weiAmount) <= _getTokenAmount(buyNowPriceInWei));
+        require(_getTokenAmount(address(this).balance) <= _getTokenAmount(buyNowPriceInWei+interest)+100 );
         
     }
 
@@ -100,17 +118,22 @@ contract MoonSale is ACrowdsale{
     }
 
     function _updatePurchasingState() internal override{
-        if(address(this).balance >= buyNowPriceInWei){
+        if(address(this).balance >= buyNowPriceInWei + interest){
 
             address payable marketWrapperAddress = payable(address(marketWrapper));
-            (bool success,) = marketWrapperAddress.call{value: address(this).balance}("");
+            (bool success,) = marketWrapperAddress.call{value: buyNowPriceInWei}("");
 
-            require(success, "Purchase failed.");
+            require(success, "Transfer failed.");
             
-            marketWrapper.buyNow();
+            (bool purchase) = marketWrapper.buyNow();
+
+            require(purchase, "Purchase  failed.");
+            
+            currentRefundableWei = 0;
             vault.close();
             state = State.Purchased;
         }
     }
+
 
 }

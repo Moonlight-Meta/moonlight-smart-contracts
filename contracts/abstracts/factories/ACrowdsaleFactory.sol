@@ -29,22 +29,26 @@ abstract contract ACrowdsaleFactory is ICrowdsaleFactory, AccessControl{
 
     function newMoonSale (
         uint256 _rate,
-        address _token,
         uint256 _openingTime,
         uint256 _closingTime,
         string memory _name, 
         string memory _symbol, 
-        uint256 _baseNftID
+        uint256 _baseNftID,
+        uint256 _buyNowPrice
     )
     virtual external returns (address);
 
     function migration(
         address moonSale, 
         uint256 _newClosingTime,
-        uint256 _baseNftID
+        uint256 _baseNftID,
+        uint256 _buyNowPrice
         ) virtual external;
 
     function emergencyWithdrawal(address sale, address payable to)
     virtual payable external;
+
+    function getLatestSale() virtual external returns (address);
+    
 
 }

@@ -28,5 +28,7 @@ abstract contract ATokenFactory is ITokenFactory, AccessControl{
 
     function giveContractOwnership(address token, address to) 
     virtual external;
+
+    function getLatestToken() virtual external returns (address);
     
 }

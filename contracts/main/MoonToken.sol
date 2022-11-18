@@ -13,10 +13,8 @@ contract MoonToken is AToken{
         baseNftID = _baseNftID;
     }
 
-    function mint(address to, uint256 quantity)
-    onlyRole(MINTER_ROLE) public override 
-    {
-        _safeMint(to, quantity);
+    function mint(address to, uint256 amount) public onlyRole(DEFAULT_ADMIN_ROLE) {
+        _mint(to, amount);
     }
 
     function migration(uint256 _baseNftID)

@@ -110,6 +110,19 @@
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "getLatestSale",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "inputs": [
         {
           "internalType": "bytes32",
@@ -199,6 +212,11 @@
           "internalType": "uint256",
           "name": "_baseNftID",
           "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_buyNowPrice",
+          "type": "uint256"
         }
       ],
       "name": "migration",
@@ -212,11 +230,6 @@
           "internalType": "uint256",
           "name": "_rate",
           "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_token",
-          "type": "address"
         },
         {
           "internalType": "uint256",
@@ -241,6 +254,11 @@
         {
           "internalType": "uint256",
           "name": "_baseNftID",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_buyNowPrice",
           "type": "uint256"
         }
       ],

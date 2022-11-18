@@ -7,8 +7,6 @@ interface IToken{
 
     function grantOwnerRole (address to) external;
 
-    function grantMinterRole(address to) external;
-
     function migration(uint256 newBaseNftId) external;
 
 }

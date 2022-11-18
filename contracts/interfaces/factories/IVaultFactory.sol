@@ -10,4 +10,5 @@ interface IVaultFactory{
 
     function newMoonVault() external returns (address);
 
+    function getLatestVault() external returns (address);
 }

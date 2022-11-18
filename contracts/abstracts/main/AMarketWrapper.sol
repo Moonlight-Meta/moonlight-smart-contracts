@@ -34,6 +34,8 @@ abstract contract AMarketWrapper is IMarketWrapper, AccessControl{
     function getBuyNowPrice()
     virtual external returns (uint256);
 
+    function setBuyNowPrice(uint256 price) virtual external;
+
     function buyNow()
     virtual external payable returns (bool);
 

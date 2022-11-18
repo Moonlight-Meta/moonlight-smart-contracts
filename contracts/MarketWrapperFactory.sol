@@ -5,19 +5,21 @@ pragma solidity ^0.8.9;
 import "./abstracts/factories/AMarketWrapperFactory.sol";
 
 
-abstract contract MoonTokenFactory is AMarketWrapperFactory{
+contract MarketWrapperFactory is AMarketWrapperFactory{
 
     address[] marketWrappers;
+    uint256 count = 0;
 
     constructor()
     AMarketWrapperFactory()
     {}
 
-    function newMarketWrapper ()
-    override external onlyRole(DEFAULT_ADMIN_ROLE) returns (address) 
+    function newMarketWrapper (uint256 _buyNowPrice) 
+    override external onlyRole(DEFAULT_ADMIN_ROLE)returns (address) 
     {
-        MarketWrapper newWrapper = new MarketWrapper();
+        MarketWrapper newWrapper = new MarketWrapper(_buyNowPrice);
         marketWrappers.push(address(newWrapper));
+        count+=1;
         return address(newWrapper);
     }
 
@@ -26,6 +28,10 @@ abstract contract MoonTokenFactory is AMarketWrapperFactory{
     {   
         MarketWrapper curMarketWrapper = MarketWrapper(payable(_marketWrapper));
         curMarketWrapper.grantOwnerRole(_to);
+    }
+
+    function getLatestMarketWrapper() view override external returns (address) {
+        return marketWrappers[count-1];
     }
 
 }

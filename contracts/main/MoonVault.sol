@@ -32,7 +32,10 @@ contract MoonVault is AVault{
     function deductRefundableBalances(address investor, uint256 weiAmount)
     onlyRole(DEFAULT_ADMIN_ROLE) override external
     {
-        refundableBalances[investor] -= weiAmount;
+        require(refundableBalances[investor] >= 0);
+        if(refundableBalances[investor] >= weiAmount){
+            refundableBalances[investor] -= weiAmount;
+        }
     }
 
     function refund(address payable investor)

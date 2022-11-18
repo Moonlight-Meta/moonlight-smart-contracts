@@ -23,10 +23,12 @@ abstract contract AVaultFactory is IVaultFactory, AccessControl{
         _grantRole(DEFAULT_ADMIN_ROLE, to);
     }
 
-    function newMoonVault ()
+    function newMoonVault()
     virtual external returns (address);
 
     function giveContractOwnership(address vault, address to) 
     virtual external;
+
+    function getLatestVault() virtual external returns (address);
 
 }

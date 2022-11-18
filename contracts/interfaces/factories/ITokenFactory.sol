@@ -10,4 +10,5 @@ interface ITokenFactory{
 
     function newMoonToken (string memory _name, string memory _symbol, uint256 _baseNftID) external returns (address);
 
+    function getLatestToken() external returns (address);
 }
