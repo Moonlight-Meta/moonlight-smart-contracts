@@ -8,7 +8,7 @@ interface ITokenFactory{
 
     function giveContractOwnership(address token, address to) external;
 
-    function newMoonToken (string memory _name, string memory _symbol, uint256 _baseNftID) external returns (address);
+    function newMoonToken (string memory _name, string memory _symbol, uint256 _baseNftID, string memory nftURI) external returns (address);
 
     function getLatestToken() external returns (address);
 }

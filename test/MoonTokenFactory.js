@@ -29,11 +29,11 @@ describe("MoonTokenFactory Testing", function () {
     it("Should allow us to add admins", async function () {
         const { moonTokenFactory, one} = await loadFixture(deployFactoryFixture)
 
-        await expect(moonTokenFactory.connect(one).newMoonToken("Token","TKN", "412")).to.be.reverted
+        await expect(moonTokenFactory.connect(one).newMoonToken("Token","TKN", "412", "")).to.be.reverted
 
         await moonTokenFactory.grantOwnerRole(one.address);
 
-        await expect(moonTokenFactory.connect(one).newMoonToken("Token","TKN", "412")).to.not.be.reverted
+        await expect(moonTokenFactory.connect(one).newMoonToken("Token","TKN", "412", "")).to.not.be.reverted
     });
 
     async function deployTokenFixture() {
@@ -41,7 +41,7 @@ describe("MoonTokenFactory Testing", function () {
 
         const Token = await ethers.getContractFactory("MoonToken");
 
-        await moonTokenFactory.newMoonToken("MoonToken", "MTKN", "12345")
+        await moonTokenFactory.newMoonToken("MoonToken", "MTKN", "12345", "")
 
         const address = moonTokenFactory.getLatestToken();
 
@@ -69,8 +69,8 @@ describe("MoonTokenFactory Testing", function () {
             
             await moonToken.mint(one.address, oneBalance)
             await moonToken.mint(two.address, twoBalance)
-            expect(await moonToken.balanceOf(one.address)).to.equal(oneBalance)
-            expect( await moonToken.balanceOf(two.address)).to.equal(twoBalance)
+            expect(await moonToken.balanceOf(one.address, "12345")).to.equal(oneBalance)
+            expect( await moonToken.balanceOf(two.address, "12345")).to.equal(twoBalance)
         
           })
         it("Should be able to send money", async function() {
@@ -83,10 +83,9 @@ describe("MoonTokenFactory Testing", function () {
         
             await moonToken.mint(one.address, oneBalance)
             await moonToken.mint(two.address, twoBalance)
-            
-            await moonToken.connect(one).transfer(two.address, transfer)
-            expect(await moonToken.balanceOf(two.address)).to.equal(twoBalance+transfer)
-            expect(await moonToken.balanceOf(one.address)).to.equal(oneBalance-transfer)
+            await moonToken.connect(one).safeTransferFrom(one.address, two.address, "12345", transfer, "0x00")
+            expect(await moonToken.balanceOf(two.address, "12345")).to.equal(twoBalance+transfer)
+            expect(await moonToken.balanceOf(one.address, "12345")).to.equal(oneBalance-transfer)
         
           })
         it("Should be able to let another user transfer on their behalf", async function() {
@@ -100,11 +99,11 @@ describe("MoonTokenFactory Testing", function () {
             await moonToken.mint(one.address, oneBalance)
             await moonToken.mint(two.address, twoBalance)
         
-            await moonToken.connect(one).approve(two.address, transfer)
+            await moonToken.connect(one).setApprovalForAll(two.address, true)
             
-            await moonToken.connect(two).transferFrom(one.address, two.address, transfer)
-            expect(await moonToken.balanceOf(two.address)).to.equal(twoBalance+transfer)
-            expect(await moonToken.balanceOf(one.address)).to.equal(oneBalance-transfer)
+            await moonToken.connect(two).safeTransferFrom(one.address, two.address, "12345", transfer, "0x00")
+            expect(await moonToken.balanceOf(two.address, "12345")).to.equal(twoBalance+transfer)
+            expect(await moonToken.balanceOf(one.address, "12345")).to.equal(oneBalance-transfer)
         
           })
     });

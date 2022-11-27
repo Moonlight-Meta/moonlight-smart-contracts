@@ -63,6 +63,11 @@
           "internalType": "uint256",
           "name": "_baseNftID",
           "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "nftURI",
+          "type": "string"
         }
       ],
       "name": "newMoonToken",

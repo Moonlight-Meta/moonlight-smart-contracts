@@ -193,8 +193,8 @@
       ]
     },
     "/Users/matthausman/moonlight-smart-contracts/contracts/interfaces/factories/ITokenFactory.sol": {
-      "lastModificationDate": 1669244236255,
-      "contentHash": "5ca78c5455f8c0accc783fdbdd91f1fb",
+      "lastModificationDate": 1669586067003,
+      "contentHash": "a03e601f6f9cae1297f697db20d53928",
       "sourceName": "contracts/interfaces/factories/ITokenFactory.sol",
       "solcConfig": {
         "version": "0.8.9",
@@ -695,8 +695,8 @@
       ]
     },
     "/Users/matthausman/moonlight-smart-contracts/contracts/MoonSaleFactory.sol": {
-      "lastModificationDate": 1669244236253,
-      "contentHash": "6c4420487a150ee13fa520b954a4832b",
+      "lastModificationDate": 1669586112931,
+      "contentHash": "e8cbc5eaa98f8cf87bb443dce4616277",
       "sourceName": "contracts/MoonSaleFactory.sol",
       "solcConfig": {
         "version": "0.8.9",
@@ -1110,8 +1110,8 @@
       ]
     },
     "/Users/matthausman/moonlight-smart-contracts/contracts/abstracts/factories/ATokenFactory.sol": {
-      "lastModificationDate": 1669244236254,
-      "contentHash": "84cdc42d1bf6bb28db5ed1e20208b223",
+      "lastModificationDate": 1669586044411,
+      "contentHash": "4a40ede3792e03ca189cefa0610e720d",
       "sourceName": "contracts/abstracts/factories/ATokenFactory.sol",
       "solcConfig": {
         "version": "0.8.9",
@@ -1150,8 +1150,8 @@
       ]
     },
     "/Users/matthausman/moonlight-smart-contracts/contracts/MoonTokenFactory.sol": {
-      "lastModificationDate": 1669585742046,
-      "contentHash": "a540cbb852a426d50d31870b44aa405f",
+      "lastModificationDate": 1669586096283,
+      "contentHash": "f33ada8e5c0dbc1396f919b584cb1d14",
       "sourceName": "contracts/MoonTokenFactory.sol",
       "solcConfig": {
         "version": "0.8.9",

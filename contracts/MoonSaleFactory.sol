@@ -37,7 +37,7 @@ contract MoonSaleFactory is ACrowdsaleFactory{
  
         address vaultAddress =  vaultFactory.newMoonVault();
         address marketWrapperAddress = marketWrapperFactory.newMarketWrapper(_buyNowPrice);
-        address tokenAddress =  tokenFactory.newMoonToken(_name, _symbol, _baseNftID);
+        address tokenAddress =  tokenFactory.newMoonToken(_name, _symbol, _baseNftID, "");
 
         vaultFactory.giveContractOwnership(vaultAddress, address(this));
         marketWrapperFactory.giveContractOwnership(marketWrapperAddress, address(this));

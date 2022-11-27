@@ -17,7 +17,7 @@ describe("MoonSale Testing", function  () {
         const marketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((500).toString(), "wei"));
         await marketWrapper.deployed();
 
-        const moonToken = await Token.deploy("MoonToken", "MTK", "12345");
+        const moonToken = await Token.deploy("MoonToken", "MTK", "12345", "");
         await moonToken.deployed();
 
         const Sale = await ethers.getContractFactory("MoonSale");
@@ -201,19 +201,19 @@ describe("MoonSale Testing", function  () {
 
         await moonSale.connect(one).collectTokens()
 
-        expect(await moonToken.balanceOf(one.address)).equals(300)
+        expect(await moonToken.balanceOf(one.address, "12345")).equals(300)
         expect(await moonSale.nonRefundableBalances(one.address)).equals(0)
         expect(await moonSale.currentRefundableBalances(0,one.address)).equals(0)     
         
         await moonSale.connect(two).collectTokens()
 
-        expect(await moonToken.balanceOf(two.address)).equals(200)
+        expect(await moonToken.balanceOf(two.address, "12345")).equals(200)
         expect(await moonSale.nonRefundableBalances(two.address)).equals(0)
         expect(await moonSale.currentRefundableBalances(0,two.address)).equals(0)       
 
         await moonSale.connect(three).collectTokens()
 
-        expect(await moonToken.balanceOf(three.address)).equals(25)
+        expect(await moonToken.balanceOf(three.address, "12345")).equals(25)
         expect(await moonSale.nonRefundableBalances(three.address)).equals(0)
         expect(await moonSale.currentRefundableBalances(0,three.address)).equals(0)       
 
@@ -600,7 +600,7 @@ describe("MoonSale Testing", function  () {
 
         expect(await moonSale.state()).to.equal(1)
         await expect(moonSale.connect(one).collectTokens()).to.not.be.reverted
-        expect(await moonToken.balanceOf(one.address)).to.equal(300)
+        expect(await moonToken.balanceOf(one.address, "12345")).to.equal(300)
         expect(await provider.getBalance(moonVault.address)).to.equal(100)
         await expect(moonSale.connect(one).refund()).to.not.be.reverted
         expect(await provider.getBalance(moonVault.address)).to.equal(0)
