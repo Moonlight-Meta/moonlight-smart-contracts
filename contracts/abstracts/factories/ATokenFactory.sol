@@ -23,7 +23,7 @@ abstract contract ATokenFactory is ITokenFactory, AccessControl{
         _grantRole(DEFAULT_ADMIN_ROLE, to);
     }
 
-    function newMoonToken (string memory _name, string memory _symbol, uint256 _baseNftID)
+    function newMoonToken (string memory _name, string memory _symbol, uint256 _baseNftID, string memory nftURI)
     virtual external returns (address);
 
     function giveContractOwnership(address token, address to) 
