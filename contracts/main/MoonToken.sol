@@ -2,29 +2,23 @@
 pragma solidity ^0.8.9;
 
 import "../abstracts/main/AToken.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract MoonToken is AToken{
-    using Counters for Counters.Counter;
-    Counters.Counter private _tokenIds;
     uint256 public baseNftID;
+    string nftName;
+    string nftSymbol;
 
-    constructor(string memory _name, string memory _symbol, uint256 _baseNftID)
-    AToken(_name, _symbol)
+    constructor(string memory _name, string memory _symbol, uint256 _baseNftID, string memory _tokenBaseURI)
+    AToken(_tokenBaseURI)
     {
+        nftName = _name;
+        nftSymbol = _symbol;
         baseNftID = _baseNftID;
     }
 
-    // string memory tokenURI
-    function mint(address to, uint256 amount) public onlyRole(DEFAULT_ADMIN_ROLE)returns (uint256[] memory) {
-        uint256[] memory result = new uint256[](uint(amount));
-        for (uint i = 0; uint256(i) < amount; i++) {
-            uint256 newItemId = baseNftID + _tokenIds.current();
-            _mint(to, newItemId);
-            // _setTokenURI(newItemId, tokenURI);
-            result[i] = newItemId;
-        }
-        return result;
+    function mint(address to, uint256 amount) public onlyRole(DEFAULT_ADMIN_ROLE)returns (uint256) {
+        _mint(to, baseNftID, amount, "");
+        return baseNftID;
     }
 
     function migration(uint256 _baseNftID)
