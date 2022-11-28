@@ -14,7 +14,7 @@ describe("MarketWrapperFactory Testing", function () {
 
         const [owner, one, two, three, four] = await ethers.getSigners();
 
-        return { marketWrapperFactory, owner, one, two }
+        return { marketWrapperFactory, owner, one, two, four }
 
     }
 
@@ -25,27 +25,28 @@ describe("MarketWrapperFactory Testing", function () {
 
     });
     it("Should allow us to add admins", async function () {
-        const { marketWrapperFactory, one} = await loadFixture(deployFactoryFixture)
+        const { marketWrapperFactory, one, four} = await loadFixture(deployFactoryFixture)
 
-        await expect(marketWrapperFactory.connect(one).newMarketWrapper(500)).to.be.reverted
+        await expect(marketWrapperFactory.connect(one).newMarketWrapper(500, four.address, "")).to.be.reverted
 
         await marketWrapperFactory.grantOwnerRole(one.address);
 
-        await expect(marketWrapperFactory.connect(one).newMarketWrapper(500)).to.not.be.reverted
+        await expect(marketWrapperFactory.connect(one).newMarketWrapper(500, four.address, "")).to.not.be.reverted
     });
 
     async function deployWrapperFixture() {
         const { marketWrapperFactory } = await loadFixture(deployFactoryFixture)
 
         const Wrapper = await ethers.getContractFactory("MarketWrapper");
+        const [owner, one, two, three, four] = await ethers.getSigners();
 
-        await marketWrapperFactory.newMarketWrapper(500)
+        await marketWrapperFactory.newMarketWrapper(500, four.address, "")
 
         const address = marketWrapperFactory.getLatestMarketWrapper();
 
         const marketWrapper = await Wrapper.attach(address)
 
-        const [owner, one, two, three, four] = await ethers.getSigners();
+
 
         await marketWrapperFactory.giveContractOwnership(address, owner.address)
 

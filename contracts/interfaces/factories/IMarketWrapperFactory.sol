@@ -8,7 +8,7 @@ interface IMarketWrapperFactory{
 
     function giveContractOwnership(address marketWrapper, address to) external;
 
-    function newMarketWrapper(uint256 buyNowPrice) external returns (address);
+    function newMarketWrapper(uint256 buyNowPrice, address marketPlace, string memory ethTransactionData) external returns (address);
 
     function getLatestMarketWrapper() external returns (address);
 

@@ -73,6 +73,32 @@
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "ethTransactionData",
+          "type": "string"
+        }
+      ],
+      "name": "setEthTransactionData",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "marketPlace",
+          "type": "address"
+        }
+      ],
+      "name": "setMarketPlace",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "stateMutability": "payable",
       "type": "receive"
     }

@@ -32,11 +32,13 @@ contract MoonSaleFactory is ACrowdsaleFactory{
         string memory _name, 
         string memory _symbol, 
         uint256 _baseNftID,
-        uint256 _buyNowPrice)
+        uint256 _buyNowPrice,
+        address _marketPlace,
+        string memory ethTransactionData)
     override external onlyRole(DEFAULT_ADMIN_ROLE) returns (address){
  
         address vaultAddress =  vaultFactory.newMoonVault();
-        address marketWrapperAddress = marketWrapperFactory.newMarketWrapper(_buyNowPrice);
+        address marketWrapperAddress = marketWrapperFactory.newMarketWrapper(_buyNowPrice, _marketPlace, ethTransactionData);
         address tokenAddress =  tokenFactory.newMoonToken(_name, _symbol, _baseNftID);
 
         vaultFactory.giveContractOwnership(vaultAddress, address(this));
@@ -80,13 +82,15 @@ contract MoonSaleFactory is ACrowdsaleFactory{
         address _sale, 
         uint256 _newClosingTime,
         uint256 _baseNftID,
-        uint256 _buyNowPrice) 
+        uint256 _buyNowPrice,
+        address _marketPlace,
+        string memory _ethTransactionData) 
     override external onlyRole(DEFAULT_ADMIN_ROLE) {
         
         IToken token = IToken(saleTokens[_sale]);
         token.migration(_baseNftID);
 
-        marketWrapperFactory.newMarketWrapper(_buyNowPrice);
+        marketWrapperFactory.newMarketWrapper(_buyNowPrice, _marketPlace, _ethTransactionData);
 
         address marketWrapperAddress = marketWrapperFactory.getLatestMarketWrapper();
         marketWrapperFactory.giveContractOwnership(marketWrapperAddress, address(this));

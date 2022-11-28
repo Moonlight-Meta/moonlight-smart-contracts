@@ -53,6 +53,16 @@
           "internalType": "uint256",
           "name": "buyNowPrice",
           "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "marketPlace",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "ethTransactionData",
+          "type": "string"
         }
       ],
       "name": "newMarketWrapper",

@@ -14,7 +14,9 @@ describe("MoonSale Testing", function  () {
         const moonVault = await Vault.deploy();
         await moonVault.deployed();
 
-        const marketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((500).toString(), "wei"));
+        const [owner, one, two, three, four] = await ethers.getSigners();
+
+        const marketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((500).toString(), "wei"), four.address, "");
         await marketWrapper.deployed();
 
         const moonToken = await Token.deploy("MoonToken", "MTK", "12345");
@@ -40,11 +42,9 @@ describe("MoonSale Testing", function  () {
 
         await moonSale.deployed();
 
-        moonVault.grantOwnerRole(moonSale.address)
-        marketWrapper.grantOwnerRole(moonSale.address)
-        moonToken.grantOwnerRole(moonSale.address)
-
-        const [owner, one, two, three, four] = await ethers.getSigners();
+        await moonVault.grantOwnerRole(moonSale.address)
+        await marketWrapper.grantOwnerRole(moonSale.address)
+        await moonToken.grantOwnerRole(moonSale.address)
 
         const provider = waffle.provider;
 
@@ -101,10 +101,11 @@ describe("MoonSale Testing", function  () {
 
     it ("Should automatically make the purchase when the buyNowPrice+interest is hit", async function () {
 
-        const {moonSale, marketWrapper, moonVault, provider, one, two, three} = await loadFixture(deployTokenFixture)
+        const {moonSale, marketWrapper, moonVault, provider, one, two, three, four} = await loadFixture(deployTokenFixture)
 
         const contractBalance = await provider.getBalance(moonSale.address);
-        
+        const previousMarketPlaceBalance = await provider.getBalance(four.address);
+
         await moonSale.connect(one).buyTokens(one.address, false, {
             value: ethers.utils.parseUnits((300).toString(), "wei")
         })
@@ -118,12 +119,12 @@ describe("MoonSale Testing", function  () {
         })
 
         const newContractBalance = await provider.getBalance(moonSale.address);
-        const marketWrapperBalance = await provider.getBalance(marketWrapper.address);
+        const marketPlaceBalance = await provider.getBalance(four.address);
 
         expect(newContractBalance).equals(await moonSale.interest())
         expect(await moonSale.state()).equals(1)
         expect(await moonSale.currentRefundableWei()).equals(0)
-        expect(marketWrapperBalance).equals(500)
+        expect(marketPlaceBalance).equals(previousMarketPlaceBalance.add(500))
         expect(await moonVault.state()).equals(1)
 
     });
@@ -261,9 +262,9 @@ describe("MoonSale Testing", function  () {
 
     it ("Should allow a migration to happen", async function () {
 
-        const {Wrapper, moonSale, moonVault, moonToken, provider, one, two, three} = await loadFixture(deployTokenFixture)
+        const {Wrapper, moonSale, moonVault, moonToken, provider, one, two, three, four} = await loadFixture(deployTokenFixture)
 
-        const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((299).toString(), "wei"));
+        const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((299).toString(), "wei"), four.address, "");
         await newMarketWrapper.deployed();
         newMarketWrapper.grantOwnerRole(moonSale.address)
 
@@ -289,14 +290,14 @@ describe("MoonSale Testing", function  () {
 
     it ("Should allow a migration to automatically purchase the NFT if funds are in order", async function () {
 
-        const {Wrapper, moonSale, moonToken, provider, one, two, three} = await loadFixture(deployTokenFixture)
+        const {Wrapper, moonSale, moonToken, provider, one, two, three, four} = await loadFixture(deployTokenFixture)
 
                  
         await moonSale.connect(one).buyTokens(one.address, false, {
             value: ethers.utils.parseUnits((300).toString(), "wei")
         })
 
-        const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((250).toString(), "wei"));
+        const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((250).toString(), "wei"), four.address, "");
         await newMarketWrapper.deployed();
         newMarketWrapper.grantOwnerRole(moonSale.address)
 
@@ -316,9 +317,9 @@ describe("MoonSale Testing", function  () {
 
     it ("Should allow refunds", async function () {
 
-        const {Wrapper, moonSale, moonToken, provider, one, two, three} = await loadFixture(deployTokenFixture)
+        const {Wrapper, moonSale, moonToken, provider, one, two, three,four} = await loadFixture(deployTokenFixture)
 
-        const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((300).toString(), "wei"));
+        const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((300).toString(), "wei"), four.address, "");
         await newMarketWrapper.deployed();
         newMarketWrapper.grantOwnerRole(moonSale.address)
 
@@ -363,9 +364,9 @@ describe("MoonSale Testing", function  () {
 
     it ("Should prevent non contributors from collecting refunds", async function () {
 
-        const {Wrapper, moonSale,  provider, one, two, three} = await loadFixture(deployTokenFixture)
+        const {Wrapper, moonSale,  provider, one, two, three, four} = await loadFixture(deployTokenFixture)
 
-        const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((300).toString(), "wei"));
+        const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((300).toString(), "wei"), four.address, "");
         await newMarketWrapper.deployed();
         newMarketWrapper.grantOwnerRole(moonSale.address)
 
@@ -389,9 +390,9 @@ describe("MoonSale Testing", function  () {
 
     it ("Should prevent non refundable contributors from collecting refunds", async function () {
 
-        const {Wrapper, moonSale,  provider, one, two, three} = await loadFixture(deployTokenFixture)
+        const {Wrapper, moonSale,  provider, one, two, three,four } = await loadFixture(deployTokenFixture)
 
-        const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((300).toString(), "wei"));
+        const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((300).toString(), "wei"), four.address, "");
         await newMarketWrapper.deployed();
         newMarketWrapper.grantOwnerRole(moonSale.address)
 
@@ -415,9 +416,9 @@ describe("MoonSale Testing", function  () {
 
     it ("Should prevent current refundable contributors from collecting refunds", async function () {
 
-        const {Wrapper, moonSale,  provider, one, two, three} = await loadFixture(deployTokenFixture)
+        const {Wrapper, moonSale,  provider, one, two, three,four} = await loadFixture(deployTokenFixture)
 
-        const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((300).toString(), "wei"));
+        const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((300).toString(), "wei"), four.address, "");
         await newMarketWrapper.deployed();
         newMarketWrapper.grantOwnerRole(moonSale.address)
 
@@ -465,9 +466,9 @@ describe("MoonSale Testing", function  () {
 
     it ("Allows refunds after a migration post purchase for refundable contributors", async function () {
 
-        const {Wrapper, moonSale, moonVault, moonToken, provider, one, two, three} = await loadFixture(deployTokenFixture)
+        const {Wrapper, moonSale, moonVault, moonToken, provider, one, two, three, four} = await loadFixture(deployTokenFixture)
 
-        const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((250).toString(), "wei"));
+        const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((250).toString(), "wei"), four.address, "");
         await newMarketWrapper.deployed();
         newMarketWrapper.grantOwnerRole(moonSale.address)
 
@@ -500,9 +501,9 @@ describe("MoonSale Testing", function  () {
 
     it ("Allows collecting tokens after a migration post purchase for non refundable contributors ", async function () {
 
-        const {Wrapper, moonSale, moonVault, moonToken, provider, one, two, three} = await loadFixture(deployTokenFixture)
+        const {Wrapper, moonSale, moonVault, moonToken, provider, one, two, three, four} = await loadFixture(deployTokenFixture)
 
-        const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((250).toString(), "wei"));
+        const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((250).toString(), "wei"), four.address, "");
         await newMarketWrapper.deployed();
         newMarketWrapper.grantOwnerRole(moonSale.address)
 
@@ -535,9 +536,9 @@ describe("MoonSale Testing", function  () {
 
     it ("Prevents collecting tokens after a migration post purchase for refundable contributors ", async function () {
 
-        const {Wrapper, moonSale, moonVault, moonToken, provider, one, two, three} = await loadFixture(deployTokenFixture)
+        const {Wrapper, moonSale, moonVault, moonToken, provider, one, two, three, four} = await loadFixture(deployTokenFixture)
 
-        const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((250).toString(), "wei"));
+        const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((250).toString(), "wei"), four.address, "");
         await newMarketWrapper.deployed();
         newMarketWrapper.grantOwnerRole(moonSale.address)
 
@@ -570,9 +571,9 @@ describe("MoonSale Testing", function  () {
 
     it ("Allows contributors to make both refundable and non refundable contributions", async function () {
 
-        const {Wrapper, moonSale, moonVault, moonToken, provider, one, two, three} = await loadFixture(deployTokenFixture)
+        const {Wrapper, moonSale, moonVault, moonToken, provider, one, two, three, four} = await loadFixture(deployTokenFixture)
 
-        const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((250).toString(), "wei"));
+        const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((250).toString(), "wei"), four.address, "");
         await newMarketWrapper.deployed();
         newMarketWrapper.grantOwnerRole(moonSale.address)
 

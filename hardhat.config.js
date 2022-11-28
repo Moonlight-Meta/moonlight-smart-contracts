@@ -7,7 +7,7 @@ module.exports = {
   solidity: "0.8.9",
   settings: { optimizer: { enabled: true, runs: 1 } },
   gasReporter: {
-    enabled: false,
+    enabled: true,
     currency: "USD",
     coinmarketcap: "9f94aa54-3628-4304-9848-2adff6b93704"
   }

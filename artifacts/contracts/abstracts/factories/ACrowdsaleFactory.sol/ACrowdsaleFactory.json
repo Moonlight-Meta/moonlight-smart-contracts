@@ -217,6 +217,16 @@
           "internalType": "uint256",
           "name": "_buyNowPrice",
           "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_marketPlace",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "ethTransactionData",
+          "type": "string"
         }
       ],
       "name": "migration",
@@ -260,6 +270,16 @@
           "internalType": "uint256",
           "name": "_buyNowPrice",
           "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_marketPlace",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "ethTransactionData",
+          "type": "string"
         }
       ],
       "name": "newMoonSale",

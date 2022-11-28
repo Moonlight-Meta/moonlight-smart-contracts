@@ -9,7 +9,7 @@ describe("MarketWrapper Testing", function () {
         const Wrapper = await ethers.getContractFactory("MarketWrapper");
         const [owner, one, two, three, four] = await ethers.getSigners();
 
-        const marketWrapper = await Wrapper.deploy(500);
+        const marketWrapper = await Wrapper.deploy(500, four.address, "");
 
         await marketWrapper.deployed();
 

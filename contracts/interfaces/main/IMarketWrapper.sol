@@ -13,6 +13,10 @@ interface IMarketWrapper{
 
     function setBuyNowPrice(uint256 price) external;
 
+    function setMarketPlace(address marketPlace) external;
+
+    function setEthTransactionData(string memory ethTransactionData) external;
+
     function buyNow() external payable returns (bool);
 
     function emergencyWithdrawal(address payable to) external payable;

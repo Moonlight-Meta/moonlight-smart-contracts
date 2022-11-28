@@ -13,14 +13,18 @@ interface ICrowdsaleFactory{
         string memory _name, 
         string memory _symbol, 
         uint256 _baseNftID,
-        uint256 _buyNowPrice
+        uint256 _buyNowPrice,
+        address _marketPlace,
+        string memory ethTransactionData
     ) external returns (address);
 
     function migration(
         address moonSale, 
         uint256 _newClosingTime,
         uint256 _baseNftI,
-        uint256 _buyNowPrice
+        uint256 _buyNowPrice,
+        address _marketPlace,
+        string memory ethTransactionData
         ) external;
 
     function emergencyWithdrawal(address sale, address payable to) payable external;
