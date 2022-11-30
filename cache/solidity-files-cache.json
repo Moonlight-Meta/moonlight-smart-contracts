@@ -771,8 +771,8 @@
       ]
     },
     "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/abstracts/factories/ACrowdsaleFactory.sol": {
-      "lastModificationDate": 1669673037973,
-      "contentHash": "c447ddd2effbfcba4eae7fc479034e01",
+      "lastModificationDate": 1669843183075,
+      "contentHash": "6a3672a879af1257fcc09d7d5cd2e6db",
       "sourceName": "contracts/abstracts/factories/ACrowdsaleFactory.sol",
       "solcConfig": {
         "version": "0.8.9",
@@ -817,8 +817,8 @@
       ]
     },
     "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/interfaces/factories/ICrowdsaleFactory.sol": {
-      "lastModificationDate": 1669673025947,
-      "contentHash": "01882eee535b166bf3bbde47e43830ad",
+      "lastModificationDate": 1669843115475,
+      "contentHash": "a36260016caa7facb7c216420739883a",
       "sourceName": "contracts/interfaces/factories/ICrowdsaleFactory.sol",
       "solcConfig": {
         "version": "0.8.9",
@@ -843,7 +843,9 @@
           }
         }
       },
-      "imports": [],
+      "imports": [
+        "../../ConsiderationStructs.sol"
+      ],
       "versionPragmas": [
         "^0.8.9"
       ],
@@ -852,8 +854,8 @@
       ]
     },
     "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/interfaces/factories/IMarketWrapperFactory.sol": {
-      "lastModificationDate": 1669672640883,
-      "contentHash": "803e7aca2ab81a7499115f775eb6a967",
+      "lastModificationDate": 1669842676848,
+      "contentHash": "1ceb8bda809282fb1b18f7e8697709c6",
       "sourceName": "contracts/interfaces/factories/IMarketWrapperFactory.sol",
       "solcConfig": {
         "version": "0.8.9",
@@ -878,7 +880,9 @@
           }
         }
       },
-      "imports": [],
+      "imports": [
+        "../../ConsiderationStructs.sol"
+      ],
       "versionPragmas": [
         "^0.8.9"
       ],
@@ -1027,8 +1031,8 @@
       ]
     },
     "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/interfaces/main/IMarketWrapper.sol": {
-      "lastModificationDate": 1669672483989,
-      "contentHash": "e52d31a23ae0321b2b1e777f277d1779",
+      "lastModificationDate": 1669842988113,
+      "contentHash": "5e2ebf53833ec6e575c37361c9ac6828",
       "sourceName": "contracts/interfaces/main/IMarketWrapper.sol",
       "solcConfig": {
         "version": "0.8.9",
@@ -1053,7 +1057,9 @@
           }
         }
       },
-      "imports": [],
+      "imports": [
+        "../../ConsiderationStructs.sol"
+      ],
       "versionPragmas": [
         "^0.8.9"
       ],
@@ -1142,8 +1148,8 @@
       ]
     },
     "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/interfaces/main/ICrowdsale.sol": {
-      "lastModificationDate": 1666478673700,
-      "contentHash": "63cb79c94a749f2afdc8c93ce1ebfa24",
+      "lastModificationDate": 1669842622330,
+      "contentHash": "74a8da3f36f1891f30aa66c9f78b0f6e",
       "sourceName": "contracts/interfaces/main/ICrowdsale.sol",
       "solcConfig": {
         "version": "0.8.9",
@@ -1168,7 +1174,9 @@
           }
         }
       },
-      "imports": [],
+      "imports": [
+        "../../ConsiderationStructs.sol"
+      ],
       "versionPragmas": [
         "^0.8.9"
       ],
@@ -1177,8 +1185,8 @@
       ]
     },
     "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/MoonSaleFactory.sol": {
-      "lastModificationDate": 1669673065640,
-      "contentHash": "2d661812508ac26602384a005b316b97",
+      "lastModificationDate": 1669843194733,
+      "contentHash": "008cbc9f424982e3e6fcff737bf7bda8",
       "sourceName": "contracts/MoonSaleFactory.sol",
       "solcConfig": {
         "version": "0.8.9",
@@ -1214,8 +1222,8 @@
       ]
     },
     "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/abstracts/main/AMarketWrapper.sol": {
-      "lastModificationDate": 1669672637377,
-      "contentHash": "590b54ecc831e5ebc96c52e28564f061",
+      "lastModificationDate": 1669842947662,
+      "contentHash": "eca28a8b8d322b61edfd9f3bc3357723",
       "sourceName": "contracts/abstracts/main/AMarketWrapper.sol",
       "solcConfig": {
         "version": "0.8.9",
@@ -1558,8 +1566,8 @@
       ]
     },
     "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/abstracts/factories/AMarketWrapperFactory.sol": {
-      "lastModificationDate": 1669672633857,
-      "contentHash": "59f3a87315e1bd4df6c940b11ea1b35c",
+      "lastModificationDate": 1669842820599,
+      "contentHash": "b8df26e9d83536c5db8c509f41190f23",
       "sourceName": "contracts/abstracts/factories/AMarketWrapperFactory.sol",
       "solcConfig": {
         "version": "0.8.9",
@@ -1598,8 +1606,8 @@
       ]
     },
     "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/main/MarketWrapper.sol": {
-      "lastModificationDate": 1669672652966,
-      "contentHash": "851ffe0d004649863264d171c62bf960",
+      "lastModificationDate": 1669843562346,
+      "contentHash": "bc6077f96c5f665448089f547ce55830",
       "sourceName": "contracts/main/MarketWrapper.sol",
       "solcConfig": {
         "version": "0.8.9",
@@ -1635,8 +1643,8 @@
       ]
     },
     "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/MarketWrapperFactory.sol": {
-      "lastModificationDate": 1669672808240,
-      "contentHash": "c069424c7b19c3d31b969b9cb25b0db5",
+      "lastModificationDate": 1669843026941,
+      "contentHash": "b182701a8d605f560c107d07565d2714",
       "sourceName": "contracts/MarketWrapperFactory.sol",
       "solcConfig": {
         "version": "0.8.9",
@@ -2002,6 +2010,39 @@
       "artifacts": [
         "StorageSlotUpgradeable"
       ]
+    },
+    "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/ConsiderationStructs.sol": {
+      "lastModificationDate": 1669843231047,
+      "contentHash": "749caab261dffbbd94974d824748c2e5",
+      "sourceName": "contracts/ConsiderationStructs.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": []
     }
   }
 }

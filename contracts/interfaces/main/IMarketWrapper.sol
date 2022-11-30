@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
+import {BasicOrderParameters} from "../../ConsiderationStructs.sol";
+
 interface IMarketWrapper{
 
     receive() external payable;
@@ -15,7 +17,7 @@ interface IMarketWrapper{
 
     function setMarketPlace(address marketPlace) external;
 
-    function setEthTransactionData(string memory ethTransactionData) external;
+    function setTransactionData(BasicOrderParameters memory transactionData) external;
 
     function buyNow() external payable returns (bool);
 

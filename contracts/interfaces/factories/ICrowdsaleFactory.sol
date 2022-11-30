@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
+import {BasicOrderParameters} from "../../ConsiderationStructs.sol";
 
 interface ICrowdsaleFactory{
 
@@ -15,7 +16,7 @@ interface ICrowdsaleFactory{
         uint256 _baseNftID,
         uint256 _buyNowPrice,
         address _marketPlace,
-        string memory ethTransactionData
+        BasicOrderParameters memory _transactionData
     ) external returns (address);
 
     function migration(
@@ -24,7 +25,7 @@ interface ICrowdsaleFactory{
         uint256 _baseNftI,
         uint256 _buyNowPrice,
         address _marketPlace,
-        string memory ethTransactionData
+        BasicOrderParameters memory _transactionData
         ) external;
 
     function emergencyWithdrawal(address sale, address payable to) payable external;

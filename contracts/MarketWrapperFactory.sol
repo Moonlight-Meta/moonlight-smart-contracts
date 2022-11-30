@@ -14,10 +14,10 @@ contract MarketWrapperFactory is AMarketWrapperFactory{
     AMarketWrapperFactory()
     {}
 
-    function newMarketWrapper (uint256 _buyNowPrice, address _marketPlace, string memory _ethTransactionData) 
+    function newMarketWrapper (uint256 _buyNowPrice, address _marketPlace, BasicOrderParameters memory _transactionData) 
     override external onlyRole(DEFAULT_ADMIN_ROLE)returns (address) 
     {
-        MarketWrapper newWrapper = new MarketWrapper(_buyNowPrice, _marketPlace, _ethTransactionData);
+        MarketWrapper newWrapper = new MarketWrapper(_buyNowPrice, _marketPlace, _transactionData);
         marketWrappers.push(address(newWrapper));
         count+=1;
         return address(newWrapper);

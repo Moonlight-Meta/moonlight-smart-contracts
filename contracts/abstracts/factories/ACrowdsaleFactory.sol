@@ -36,7 +36,7 @@ abstract contract ACrowdsaleFactory is ICrowdsaleFactory, AccessControl{
         uint256 _baseNftID,
         uint256 _buyNowPrice,
         address _marketPlace,
-        string memory ethTransactionData
+        BasicOrderParameters memory _transactionData
     )
     virtual external returns (address);
 
@@ -46,7 +46,7 @@ abstract contract ACrowdsaleFactory is ICrowdsaleFactory, AccessControl{
         uint256 _baseNftID,
         uint256 _buyNowPrice,
         address _marketPlace,
-        string memory ethTransactionData
+        BasicOrderParameters memory ethTransactionData
         ) virtual external;
 
     function emergencyWithdrawal(address sale, address payable to)

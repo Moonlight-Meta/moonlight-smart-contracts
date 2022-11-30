@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-
 import "./abstracts/factories/ACrowdsaleFactory.sol";
-
 
 contract MoonSaleFactory is ACrowdsaleFactory{
 
@@ -34,11 +32,11 @@ contract MoonSaleFactory is ACrowdsaleFactory{
         uint256 _baseNftID,
         uint256 _buyNowPrice,
         address _marketPlace,
-        string memory ethTransactionData)
+        BasicOrderParameters memory _transactionData)
     override external onlyRole(DEFAULT_ADMIN_ROLE) returns (address){
  
         address vaultAddress =  vaultFactory.newMoonVault();
-        address marketWrapperAddress = marketWrapperFactory.newMarketWrapper(_buyNowPrice, _marketPlace, ethTransactionData);
+        address marketWrapperAddress = marketWrapperFactory.newMarketWrapper(_buyNowPrice, _marketPlace, _transactionData);
         address tokenAddress =  tokenFactory.newMoonToken(_name, _symbol, _baseNftID);
 
         vaultFactory.giveContractOwnership(vaultAddress, address(this));
@@ -84,13 +82,13 @@ contract MoonSaleFactory is ACrowdsaleFactory{
         uint256 _baseNftID,
         uint256 _buyNowPrice,
         address _marketPlace,
-        string memory _ethTransactionData) 
+        BasicOrderParameters memory _transactionData) 
     override external onlyRole(DEFAULT_ADMIN_ROLE) {
         
         IToken token = IToken(saleTokens[_sale]);
         token.migration(_baseNftID);
 
-        marketWrapperFactory.newMarketWrapper(_buyNowPrice, _marketPlace, _ethTransactionData);
+        marketWrapperFactory.newMarketWrapper(_buyNowPrice, _marketPlace, _transactionData);
 
         address marketWrapperAddress = marketWrapperFactory.getLatestMarketWrapper();
         marketWrapperFactory.giveContractOwnership(marketWrapperAddress, address(this));

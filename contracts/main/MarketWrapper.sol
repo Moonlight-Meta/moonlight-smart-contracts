@@ -1,22 +1,21 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-
 import "../abstracts/main/AMarketWrapper.sol";
 
 contract MarketWrapper is AMarketWrapper{
     
     uint256 public buyNowPrice;
     address public marketPlace;
-    string public ethTransactionData;
+    bytes public transactionData;
 
     event Purchased(bool success);
 
-    constructor(uint256 _buyNowPrice, address _marketPlace, string memory _ethTransactionData)
+    constructor(uint256 _buyNowPrice, address _marketPlace, BasicOrderParameters memory _transactionData)
     AMarketWrapper(){
         buyNowPrice = _buyNowPrice;
         marketPlace = _marketPlace;
-        ethTransactionData = _ethTransactionData;
+        transactionData = abi.encodeWithSignature("fulfillBasicOrder(tuple)", _transactionData);
     }
     
     function getBuyNowPrice()
@@ -32,15 +31,15 @@ contract MarketWrapper is AMarketWrapper{
         marketPlace = _marketPlace;
     }
 
-    function setEthTransactionData(string memory _ethTransactionData) override onlyRole(DEFAULT_ADMIN_ROLE) external{
-        ethTransactionData = _ethTransactionData;
+    function setTransactionData(BasicOrderParameters memory _transactionData) override onlyRole(DEFAULT_ADMIN_ROLE) external{
+        transactionData = abi.encodeWithSignature("fulfillBasicOrder(tuple)", _transactionData);
     }
 
     function buyNow()
     override external payable onlyRole(DEFAULT_ADMIN_ROLE) returns (bool){
         require(address(this).balance == buyNowPrice);
 
-        (bool success,) = marketPlace.call{value: buyNowPrice}(abi.encode(ethTransactionData));
+        (bool success,) = marketPlace.call{value: buyNowPrice}(transactionData);
         require(success, "Purchase Failed");
 
         emit Purchased(true);
