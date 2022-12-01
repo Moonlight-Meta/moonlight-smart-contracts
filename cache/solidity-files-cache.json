@@ -1566,7 +1566,7 @@
       ]
     },
     "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/abstracts/factories/AMarketWrapperFactory.sol": {
-      "lastModificationDate": 1669842820599,
+      "lastModificationDate": 1669925418234,
       "contentHash": "b8df26e9d83536c5db8c509f41190f23",
       "sourceName": "contracts/abstracts/factories/AMarketWrapperFactory.sol",
       "solcConfig": {
@@ -1606,8 +1606,8 @@
       ]
     },
     "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/main/MarketWrapper.sol": {
-      "lastModificationDate": 1669843562346,
-      "contentHash": "bc6077f96c5f665448089f547ce55830",
+      "lastModificationDate": 1669929227379,
+      "contentHash": "addff1751d1ca391e435f7fbd18754e3",
       "sourceName": "contracts/main/MarketWrapper.sol",
       "solcConfig": {
         "version": "0.8.9",
@@ -1639,11 +1639,12 @@
         "^0.8.9"
       ],
       "artifacts": [
+        "ISeaport",
         "MarketWrapper"
       ]
     },
     "/Users/bharatkrishnan/Desktop/programming-work/swe/moonlight-smart-contracts/contracts/MarketWrapperFactory.sol": {
-      "lastModificationDate": 1669843026941,
+      "lastModificationDate": 1669925418234,
       "contentHash": "b182701a8d605f560c107d07565d2714",
       "sourceName": "contracts/MarketWrapperFactory.sol",
       "solcConfig": {

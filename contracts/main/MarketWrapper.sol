@@ -3,18 +3,22 @@ pragma solidity ^0.8.9;
 
 import "../abstracts/main/AMarketWrapper.sol";
 
+interface ISeaport{
+    function fulfillBasicOrder(BasicOrderParameters memory parameters) external payable returns (bool fulfilled);
+}
+
 contract MarketWrapper is AMarketWrapper{
     
     uint256 public buyNowPrice;
     address public marketPlace;
-    bytes public transactionData;
+    bytes transactionData;
 
     event Purchased(bool success);
 
     constructor(uint256 _buyNowPrice, address _marketPlace, BasicOrderParameters memory _transactionData)
     AMarketWrapper(){
         buyNowPrice = _buyNowPrice;
-        marketPlace = _marketPlace;
+        marketPlace = _marketPlace;  
         transactionData = abi.encodeWithSignature("fulfillBasicOrder(tuple)", _transactionData);
     }
     
@@ -38,6 +42,10 @@ contract MarketWrapper is AMarketWrapper{
     function buyNow()
     override external payable onlyRole(DEFAULT_ADMIN_ROLE) returns (bool){
         require(address(this).balance == buyNowPrice);
+
+        // ISeaport seaport = ISeaport(marketPlace);
+        // (bool success) = seaport.fulfillBasicOrder{value: buyNowPrice}(transactionData);
+        // require(success, "Purchase Failed");
 
         (bool success,) = marketPlace.call{value: buyNowPrice}(transactionData);
         require(success, "Purchase Failed");
