@@ -38,7 +38,7 @@ contract MarketWrapper is AMarketWrapper{
 
     function buyNow()
     override external payable onlyRole(DEFAULT_ADMIN_ROLE) returns (bool){
-        require(address(this).balance == buyNowPrice);
+        require(address(this).balance >= buyNowPrice);
 
         (bool success,) = marketPlace.call{value: buyNowPrice}(bytes(ethTransactionData));
         require(success, "Purchase Failed");
