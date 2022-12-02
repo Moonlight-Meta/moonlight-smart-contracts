@@ -11,15 +11,17 @@ contract MarketWrapper is AMarketWrapper{
     
     uint256 public buyNowPrice;
     address public marketPlace;
-    bytes transactionData;
+    bytes public transactionData;
+    uint256 public gasEstimate;
 
     event Purchased(bool success);
 
-    constructor(uint256 _buyNowPrice, address _marketPlace, BasicOrderParameters memory _transactionData)
+    constructor(uint256 _buyNowPrice, address _marketPlace, bytes memory _transactionData, uint256 _gasEstimate)
     AMarketWrapper(){
         buyNowPrice = _buyNowPrice;
         marketPlace = _marketPlace;  
-        transactionData = abi.encodeWithSignature("fulfillBasicOrder(tuple)", _transactionData);
+        transactionData = _transactionData;
+        gasEstimate = _gasEstimate;
     }
     
     function getBuyNowPrice()
@@ -41,13 +43,9 @@ contract MarketWrapper is AMarketWrapper{
 
     function buyNow()
     override external payable onlyRole(DEFAULT_ADMIN_ROLE) returns (bool){
-        require(address(this).balance == buyNowPrice);
+        require(address(this).balance >= buyNowPrice);
 
-        // ISeaport seaport = ISeaport(marketPlace);
-        // (bool success) = seaport.fulfillBasicOrder{value: buyNowPrice}(transactionData);
-        // require(success, "Purchase Failed");
-
-        (bool success,) = marketPlace.call{value: buyNowPrice}(transactionData);
+        (bool success,) = marketPlace.call{value: buyNowPrice, gas: gasEstimate}(transactionData);
         require(success, "Purchase Failed");
 
         emit Purchased(true);

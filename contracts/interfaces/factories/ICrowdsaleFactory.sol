@@ -16,7 +16,8 @@ interface ICrowdsaleFactory{
         uint256 _baseNftID,
         uint256 _buyNowPrice,
         address _marketPlace,
-        BasicOrderParameters memory _transactionData
+        bytes memory _transactionData,
+        uint256 gasEstimate
     ) external returns (address);
 
     function migration(
@@ -25,7 +26,8 @@ interface ICrowdsaleFactory{
         uint256 _baseNftI,
         uint256 _buyNowPrice,
         address _marketPlace,
-        BasicOrderParameters memory _transactionData
+        bytes memory _transactionData,
+        uint256 gasEstimate
         ) external;
 
     function emergencyWithdrawal(address sale, address payable to) payable external;

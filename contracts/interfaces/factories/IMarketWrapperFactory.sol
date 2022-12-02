@@ -9,7 +9,7 @@ interface IMarketWrapperFactory{
 
     function giveContractOwnership(address marketWrapper, address to) external;
 
-    function newMarketWrapper(uint256 buyNowPrice, address marketPlace, BasicOrderParameters memory transactionData) external returns (address);
+    function newMarketWrapper(uint256 buyNowPrice, address marketPlace, bytes memory transactionData, uint256 gasEstimate) external returns (address);
 
     function getLatestMarketWrapper() external returns (address);
 
