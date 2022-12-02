@@ -19,7 +19,7 @@ interface IMarketWrapper{
 
     function setTransactionData(BasicOrderParameters memory transactionData) external;
 
-    function buyNow() external payable returns (bool);
+    function buyNow() external returns (bool);
 
     function emergencyWithdrawal(address payable to) external payable;
 

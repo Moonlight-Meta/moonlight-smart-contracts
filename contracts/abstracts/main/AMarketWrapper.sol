@@ -41,6 +41,6 @@ abstract contract AMarketWrapper is IMarketWrapper, AccessControl{
     function setTransactionData(BasicOrderParameters memory transactionData) virtual external;
 
     function buyNow()
-    virtual external payable returns (bool);
+    virtual external returns (bool);
 
 }
