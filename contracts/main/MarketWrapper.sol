@@ -3,10 +3,6 @@ pragma solidity ^0.8.9;
 
 import "../abstracts/main/AMarketWrapper.sol";
 
-interface ISeaport{
-    function fulfillBasicOrder(BasicOrderParameters memory parameters) external payable returns (bool fulfilled);
-}
-
 contract MarketWrapper is AMarketWrapper{
     
     uint256 public buyNowPrice;

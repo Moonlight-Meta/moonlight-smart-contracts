@@ -22,7 +22,8 @@
     "hardhat": "^2.10.2",
     "hardhat-gas-reporter": "^1.0.9",
     "solidity-coverage": "^0.8.2",
-    "typechain": "^8.1.0"
+    "typechain": "^8.1.0",
+    "seaport": "git+https://github.com/ProjectOpenSea/seaport.git#76e508657888e3ec84039e1da269c822826991ef"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.3"
