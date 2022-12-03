@@ -41,11 +41,10 @@ contract MarketWrapper is AMarketWrapper{
     override external onlyRole(DEFAULT_ADMIN_ROLE) returns (bool){
         require(address(this).balance >= buyNowPrice);
 
-        (bool success,) = marketPlace.call{value: buyNowPrice, gas: gasEstimate}(transactionData);
+        (bool success,) = marketPlace.call{value: buyNowPrice}(transactionData);
         require(success, "Purchase Failed");
 
         emit Purchased(true);
         return true;
     }
-
 }
