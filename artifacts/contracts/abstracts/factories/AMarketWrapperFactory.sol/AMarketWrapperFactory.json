@@ -127,12 +127,12 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "marketWrapper",
+          "name": "_marketWrapper",
           "type": "address"
         },
         {
           "internalType": "address",
-          "name": "to",
+          "name": "_to",
           "type": "address"
         }
       ],
@@ -200,23 +200,23 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "buyNowPrice",
+          "name": "_buyNowPrice",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_gasEstimate",
           "type": "uint256"
         },
         {
           "internalType": "address",
-          "name": "marketPlace",
+          "name": "_marketPlace",
           "type": "address"
         },
         {
           "internalType": "bytes",
-          "name": "transactionData",
+          "name": "_transactionData",
           "type": "bytes"
-        },
-        {
-          "internalType": "uint256",
-          "name": "gasEstimate",
-          "type": "uint256"
         }
       ],
       "name": "newMarketWrapper",

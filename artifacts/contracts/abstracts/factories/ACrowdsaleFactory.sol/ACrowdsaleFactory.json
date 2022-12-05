@@ -95,12 +95,12 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "sale",
+          "name": "_sale",
           "type": "address"
         },
         {
           "internalType": "address payable",
-          "name": "to",
+          "name": "_to",
           "type": "address"
         }
       ],
@@ -200,7 +200,7 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "moonSale",
+          "name": "_sale",
           "type": "address"
         },
         {
@@ -210,12 +210,22 @@
         },
         {
           "internalType": "uint256",
-          "name": "_baseNftID",
+          "name": "_tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_fractionalUri",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_price",
           "type": "uint256"
         },
         {
           "internalType": "uint256",
-          "name": "_buyNowPrice",
+          "name": "_gasEstimate",
           "type": "uint256"
         },
         {
@@ -225,13 +235,8 @@
         },
         {
           "internalType": "bytes",
-          "name": "ethTransactionData",
+          "name": "_transactionData",
           "type": "bytes"
-        },
-        {
-          "internalType": "uint256",
-          "name": "gasEstimate",
-          "type": "uint256"
         }
       ],
       "name": "migration",
@@ -247,6 +252,11 @@
           "type": "uint256"
         },
         {
+          "internalType": "address",
+          "name": "_tokenAddress",
+          "type": "address"
+        },
+        {
           "internalType": "uint256",
           "name": "_openingTime",
           "type": "uint256"
@@ -257,23 +267,13 @@
           "type": "uint256"
         },
         {
-          "internalType": "string",
-          "name": "_name",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "_symbol",
-          "type": "string"
-        },
-        {
           "internalType": "uint256",
-          "name": "_baseNftID",
+          "name": "_buyNowPrice",
           "type": "uint256"
         },
         {
           "internalType": "uint256",
-          "name": "_buyNowPrice",
+          "name": "gasEstimate",
           "type": "uint256"
         },
         {
@@ -285,11 +285,6 @@
           "internalType": "bytes",
           "name": "_transactionData",
           "type": "bytes"
-        },
-        {
-          "internalType": "uint256",
-          "name": "gasEstimate",
-          "type": "uint256"
         }
       ],
       "name": "newMoonSale",

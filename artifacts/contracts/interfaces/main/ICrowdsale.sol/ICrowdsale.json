@@ -36,7 +36,7 @@
       "inputs": [
         {
           "internalType": "address payable",
-          "name": "to",
+          "name": "_to",
           "type": "address"
         }
       ],
@@ -49,7 +49,7 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "to",
+          "name": "_to",
           "type": "address"
         }
       ],
@@ -64,11 +64,6 @@
           "internalType": "uint256",
           "name": "_newClosingTime",
           "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_marketWrapper",
-          "type": "address"
         }
       ],
       "name": "migration",

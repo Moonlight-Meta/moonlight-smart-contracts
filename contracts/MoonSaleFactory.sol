@@ -1,141 +1,157 @@
-// // SPDX-License-Identifier: MIT
-// pragma solidity ^0.8.9;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.9;
 
-// import "./abstracts/factories/ACrowdsaleFactory.sol";
+import "./abstracts/factories/ACrowdsaleFactory.sol";
 
-// contract MoonSaleFactory is ACrowdsaleFactory{
+contract MoonSaleFactory is ACrowdsaleFactory {
+    address[] public moonSales;
+    uint256 public count = 0;
+    mapping(address => address) public saleTokens;
+    mapping(address => address) public saleVaults;
+    mapping(address => address) public saleMarketWrappers;
 
-//     address[] public moonSales;
-//     uint256 public count = 0;
-//     mapping(address => address) public saleTokens;
-//     mapping(address => address) public saleVaults;
-//     mapping(address => address) public saleMarketWrappers;
+    IMarketWrapperFactory marketWrapperFactory;
+    IVaultFactory vaultFactory;
 
-//     ITokenFactory tokenFactory;
-//     IMarketWrapperFactory marketWrapperFactory;
-//     IVaultFactory vaultFactory;
+    constructor(
+        address _marketWrapperFactory,
+        address _vaultFactory
+    ) ACrowdsaleFactory() {
+        marketWrapperFactory = IMarketWrapperFactory(_marketWrapperFactory);
+        vaultFactory = IVaultFactory(_vaultFactory);
+    }
 
-//     constructor(address _tokenFactory, address _marketWrapperFactory, address _vaultFactory)
-//     ACrowdsaleFactory()
-//     {
-//         tokenFactory = ITokenFactory(_tokenFactory);
-//         marketWrapperFactory = IMarketWrapperFactory(_marketWrapperFactory);
-//         vaultFactory = IVaultFactory(_vaultFactory);
-//     }
+    function newMoonSale(
+        uint256 _rate,
+        address _tokenAddress,
+        uint256 _openingTime,
+        uint256 _closingTime,
+        uint256 _buyNowPrice,
+        uint256 gasEstimate,
+        address _marketPlace,
+        bytes memory _transactionData
+    ) external override onlyRole(DEFAULT_ADMIN_ROLE) returns (address) {
+        address vaultAddress = vaultFactory.newMoonVault();
+        address marketWrapperAddress = marketWrapperFactory.newMarketWrapper(
+            _buyNowPrice,
+            gasEstimate,
+            _marketPlace,
+            _transactionData
+        );
 
-//     function newMoonSale(
-//         uint256 _rate,
-//         uint256 _openingTime,
-//         uint256 _closingTime,
-//         string memory _name, 
-//         string memory _symbol, 
-//         uint256 _baseNftID,
-//         uint256 _buyNowPrice,
-//         address _marketPlace,
-//         bytes memory _transactionData,
-//         uint256 gasEstimate
-//     )
-//     override external onlyRole(DEFAULT_ADMIN_ROLE) returns (address){
- 
-//         address vaultAddress =  vaultFactory.newMoonVault();
-//         address marketWrapperAddress = marketWrapperFactory.newMarketWrapper(_buyNowPrice, _marketPlace, _transactionData, gasEstimate);
-//         address tokenAddress =  tokenFactory.newMoonToken(_name, _symbol, _baseNftID);
+        vaultFactory.giveContractOwnership(vaultAddress, address(this));
+        marketWrapperFactory.giveContractOwnership(
+            marketWrapperAddress,
+            address(this)
+        );
 
-//         vaultFactory.giveContractOwnership(vaultAddress, address(this));
-//         marketWrapperFactory.giveContractOwnership(marketWrapperAddress, address(this));
-//         tokenFactory.giveContractOwnership(tokenAddress, address(this));
+        vaultFactory.giveContractOwnership(vaultAddress, msg.sender);
+        marketWrapperFactory.giveContractOwnership(
+            marketWrapperAddress,
+            msg.sender
+        );
 
-//         vaultFactory.giveContractOwnership(vaultAddress, msg.sender);
-//         marketWrapperFactory.giveContractOwnership(marketWrapperAddress, msg.sender);
-//         tokenFactory.giveContractOwnership(tokenAddress, msg.sender);
+        address saleAddress = _newMoonSale(
+            _rate,
+            _tokenAddress,
+            _openingTime,
+            _closingTime,
+            payable(vaultAddress),
+            payable(marketWrapperAddress)
+        );
 
-//         MoonSale moonSale = new MoonSale(
-//                                         _rate,
-//                                         tokenAddress,
-//                                         _openingTime,
-//                                         _closingTime, 
-//                                         payable(vaultAddress),
-//                                         payable(marketWrapperAddress));
+        vaultFactory.giveContractOwnership(vaultAddress, saleAddress);
+        marketWrapperFactory.giveContractOwnership(
+            marketWrapperAddress,
+            saleAddress
+        );
+        IToken token = IToken(_tokenAddress);
+        token.grantOwnerRole(saleAddress);
 
-//         address saleAddress = address(moonSale);
+        MoonSale moonSale = MoonSale(payable(saleAddress));
+        moonSale.grantOwnerRole(address(this));
+        moonSale.grantOwnerRole(msg.sender);
 
-//         vaultFactory.giveContractOwnership(vaultAddress, saleAddress);
-//         marketWrapperFactory.giveContractOwnership(marketWrapperAddress, saleAddress);
-//         tokenFactory.giveContractOwnership(tokenAddress, saleAddress);
+        moonSales.push(saleAddress);
+        count += 1;
 
-//         moonSale.grantOwnerRole(address(this));
-//         moonSale.grantOwnerRole(msg.sender);
+        saleTokens[saleAddress] = _tokenAddress;
+        saleVaults[saleAddress] = vaultAddress;
+        saleMarketWrappers[saleAddress] = marketWrapperAddress;
 
-//         moonSales.push(saleAddress);
-//         count +=1 ;
+        return saleAddress;
+    }
 
-//         saleTokens[saleAddress] = tokenAddress;
-//         saleVaults[saleAddress] = vaultAddress;
-//         saleMarketWrappers[saleAddress] = marketWrapperAddress;
+    function _newMoonSale(
+        uint256 _rate,
+        address _tokenAddress,
+        uint256 _openingTime,
+        uint256 _closingTime,
+        address payable _vault,
+        address payable _wrapper
+    ) internal returns (address) {
+        MoonSale moonSale = new MoonSale(
+            _rate,
+            _tokenAddress,
+            _openingTime,
+            _closingTime,
+            _vault,
+            _wrapper
+        );
 
-//         return saleAddress;
+        return address(moonSale);
+    }
 
-//     }
+    function migration(
+        address _sale,
+        uint256 _newClosingTime,
+        uint256 _tokenId,
+        string memory _fractionalUri,
+        uint256 _price,
+        uint256 _gasEstimate,
+        address _marketPlace,
+        bytes memory _transactionData
+    ) external override onlyRole(DEFAULT_ADMIN_ROLE) {
+        IToken token = IToken(saleTokens[_sale]);
+        token.migration(_tokenId, _fractionalUri);
 
+        IMarketWrapper wrapper = IMarketWrapper(
+            payable(saleMarketWrappers[_sale])
+        );
+        wrapper.migration(_price, _gasEstimate, _marketPlace, _transactionData);
 
-//     function migration(
-//         address _sale, 
-//         uint256 _newClosingTime,
-//         uint256 _baseNftID,
-//         uint256 _buyNowPrice,
-//         address _marketPlace,
-//         bytes memory _transactionData,
-//         uint256 gasEstimate
-//     ) 
-//     override external onlyRole(DEFAULT_ADMIN_ROLE) {
-        
-//         IToken token = IToken(saleTokens[_sale]);
-//         token.migration(_baseNftID);
+        MoonSale moonSale = MoonSale(payable(_sale));
+        moonSale.migration(_newClosingTime);
+    }
 
-//         marketWrapperFactory.newMarketWrapper(_buyNowPrice, _marketPlace, _transactionData, gasEstimate);
+    function emergencyWithdrawal(
+        address _sale,
+        address payable _to
+    ) external payable override onlyRole(DEFAULT_ADMIN_ROLE) {
+        IMarketWrapper wrapper = IMarketWrapper(
+            payable(saleMarketWrappers[_sale])
+        );
+        IVault vault = IVault(payable(saleVaults[_sale]));
+        ICrowdsale sale = ICrowdsale(payable(_sale));
 
-//         address marketWrapperAddress = marketWrapperFactory.getLatestMarketWrapper();
-//         marketWrapperFactory.giveContractOwnership(marketWrapperAddress, address(this));
-//         marketWrapperFactory.giveContractOwnership(marketWrapperAddress, msg.sender);
-//         marketWrapperFactory.giveContractOwnership(marketWrapperAddress, _sale);
+        wrapper.emergencyWithdrawal(_to);
+        vault.emergencyWithdrawal(_to);
+        sale.emergencyWithdrawal(_to);
+    }
 
-//         MoonSale moonSale = MoonSale(payable(_sale));
-//         moonSale.migration(_newClosingTime, marketWrapperAddress);
+    function changeMarketWrapperFactory(
+        address payable _newFactory
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        marketWrapperFactory = IMarketWrapperFactory(_newFactory);
+    }
 
-//         saleMarketWrappers[_sale] = marketWrapperAddress;
-//     }
+    function changeVaultFactory(
+        address payable _newFactory
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        vaultFactory = IVaultFactory(_newFactory);
+    }
 
-//     function emergencyWithdrawal(address _sale, address payable _to) 
-//     payable override external onlyRole(DEFAULT_ADMIN_ROLE){
-
-//         IMarketWrapper wrapper = IMarketWrapper(payable(saleMarketWrappers[_sale]));
-//         IVault vault = IVault(payable(saleVaults[_sale]));
-//         ICrowdsale sale = ICrowdsale(payable(_sale));
-
-//         wrapper.emergencyWithdrawal(_to);
-//         vault.emergencyWithdrawal(_to);
-//         sale.emergencyWithdrawal(_to);
-//     }
-
-//     function changeMarketWrapperFactory(address payable _newFactory) 
-//     external onlyRole(DEFAULT_ADMIN_ROLE){
-//         marketWrapperFactory = IMarketWrapperFactory(_newFactory);
-//     }
-
-//     function changeVaultFactory(address payable _newFactory) 
-//     external onlyRole(DEFAULT_ADMIN_ROLE){
-//         vaultFactory = IVaultFactory(_newFactory);
-        
-//     }
-
-//     function changeTokenFactory(address payable _newFactory) 
-//     external onlyRole(DEFAULT_ADMIN_ROLE){
-//         tokenFactory = ITokenFactory(_newFactory);
-//     }
-
-
-//     function getLatestSale() view override external returns (address){
-//         return moonSales[count-1];
-//     }
-
-// }
+    function getLatestSale() external view override returns (address) {
+        return moonSales[count - 1];
+    }
+}

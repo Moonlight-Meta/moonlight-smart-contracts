@@ -20,7 +20,7 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "vault",
+          "name": "_vault",
           "type": "address"
         },
         {
@@ -38,7 +38,7 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "to",
+          "name": "_to",
           "type": "address"
         }
       ],

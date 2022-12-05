@@ -3,12 +3,7 @@ pragma solidity ^0.8.9;
 
 import "../abstracts/main/AMarketWrapper.sol";
 
-interface ISeaport{
-    function fulfillBasicOrder(BasicOrderParameters memory parameters) external payable returns (bool fulfilled);
-}
-
-contract MarketWrapper is AMarketWrapper{
-    
+contract MarketWrapper is AMarketWrapper {
     uint256 public buyNowPrice;
     address public marketPlace;
     bytes public transactionData;
@@ -16,40 +11,68 @@ contract MarketWrapper is AMarketWrapper{
 
     event Purchased(bool success);
 
-    constructor(uint256 _buyNowPrice, address _marketPlace, bytes memory _transactionData, uint256 _gasEstimate)
-    AMarketWrapper(){
+    constructor(
+        uint256 _buyNowPrice,
+        uint256 _gasEstimate,
+        address _marketPlace,
+        bytes memory _transactionData
+    ) AMarketWrapper() {
         buyNowPrice = _buyNowPrice;
-        marketPlace = _marketPlace;  
+        marketPlace = _marketPlace;
         transactionData = _transactionData;
         gasEstimate = _gasEstimate;
     }
-    
-    function getBuyNowPrice()
-    view override external returns (uint256){
+
+    function getBuyNowPrice() external view override returns (uint256) {
         return buyNowPrice;
     }
 
-    function setBuyNowPrice(uint256 _price) override onlyRole(DEFAULT_ADMIN_ROLE) external{
+    function setBuyNowPrice(
+        uint256 _price
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
         buyNowPrice = _price;
     }
 
-    function setMarketPlace(address _marketPlace) override onlyRole(DEFAULT_ADMIN_ROLE) external{
-        marketPlace = _marketPlace;
+    function setGasEstimate(
+        uint256 _gasEstimate
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        gasEstimate = _gasEstimate;
     }
 
-    function setTransactionData(BasicOrderParameters memory _transactionData) override onlyRole(DEFAULT_ADMIN_ROLE) external{
-        transactionData = abi.encodeWithSignature("fulfillBasicOrder(tuple)", _transactionData);
+    function setTransactionData(
+        bytes memory _transactionData
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        transactionData = _transactionData;
+    }
+
+    function migration(
+        uint256 _price,
+        uint256 _gasEstimate,
+        address _marketPlace,
+        bytes memory _transactionData
+    ) external override onlyRole(DEFAULT_ADMIN_ROLE) {
+        buyNowPrice = _price;
+        marketPlace = _marketPlace;
+        transactionData = _transactionData;
+        gasEstimate = _gasEstimate;
     }
 
     function buyNow()
-    override external payable onlyRole(DEFAULT_ADMIN_ROLE) returns (bool){
+        external
+        payable
+        override
+        onlyRole(DEFAULT_ADMIN_ROLE)
+        returns (bool)
+    {
         require(address(this).balance >= buyNowPrice);
 
-        (bool success,) = marketPlace.call{value: buyNowPrice, gas: gasEstimate}(transactionData);
+        (bool success, ) = marketPlace.call{
+            value: buyNowPrice,
+            gas: gasEstimate
+        }(transactionData);
         require(success, "Purchase Failed");
 
         emit Purchased(true);
         return true;
     }
-
 }

@@ -1,26 +1,23 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import {BasicOrderParameters} from "../../ConsiderationStructs.sol";
-
-interface IMarketWrapper{
-
+interface IMarketWrapper {
     receive() external payable;
 
     fallback() external payable;
 
-    function grantOwnerRole (address to) external;
+    function grantOwnerRole(address _to) external;
 
     function getBuyNowPrice() external returns (uint256);
 
-    function setBuyNowPrice(uint256 price) external;
+    function emergencyWithdrawal(address payable _to) external payable;
 
-    function setMarketPlace(address marketPlace) external;
-
-    function setTransactionData(BasicOrderParameters memory transactionData) external;
+    function migration(
+        uint256 _price,
+        uint256 _gasEstimate,
+        address _marketPlace,
+        bytes memory _transactionData
+    ) external;
 
     function buyNow() external payable returns (bool);
-
-    function emergencyWithdrawal(address payable to) external payable;
-
 }

@@ -6,14 +6,19 @@ describe("MarketWrapper Testing", function () {
 
     async function deployWrapperFixture() {
 
-        const Wrapper = await ethers.getContractFactory("MarketWrapper");
         const [owner, one, two, three, four] = await ethers.getSigners();
+        
+        const Wrapper = await ethers.getContractFactory("MarketWrapper");
 
-        const marketWrapper = await Wrapper.deploy(500, four.address, "");
-
+        const _price = 500
+        const _marketPlace = four.address
+        const _transactiondata = "0x"
+        const _gasEstimate = 0
+        
+        const marketWrapper = await Wrapper.deploy(_price,_gasEstimate, _marketPlace, _transactiondata);
         await marketWrapper.deployed();
 
-        return { marketWrapper, owner, one, two, three, four }
+        return { marketWrapper, _price, _marketPlace, _transactiondata,_gasEstimate, owner, one, two, three, four }
 
     }
 
@@ -24,30 +29,92 @@ describe("MarketWrapper Testing", function () {
 
     })
 
+    it("Should prevent non admins from paying the contract", async function() {
+        const {marketWrapper, one} = await loadFixture(deployWrapperFixture)
+
+        await expect( one.sendTransaction({
+            to: marketWrapper.address,
+            value: "100"
+          })).to.be.reverted
+          
+    })
+
     it("Should return the buyNow Price of the marketWrapper MarketWrapper", async function () {
 
-        const { marketWrapper } = await loadFixture(deployWrapperFixture)
+        const { marketWrapper,_price } = await loadFixture(deployWrapperFixture)
         
-        expect(await marketWrapper.getBuyNowPrice()).to.equal(500)
+        expect(await marketWrapper.getBuyNowPrice()).to.equal(_price)
          
     })
 
-    it("Should change the buyNow Price of the marketWrapper", async function () {
+    it("Should allow changing the buyNow Price of the marketWrapper", async function () {
 
         const { marketWrapper } = await loadFixture(deployWrapperFixture)
         
-        await marketWrapper.setBuyNowPrice(300);
-        expect(await marketWrapper.getBuyNowPrice()).to.equal(300)
+        const _price = 300
+        await marketWrapper.setBuyNowPrice(_price);
+        expect(await marketWrapper.getBuyNowPrice()).to.equal(_price)
          
     })
 
-    it("Should prevent changing the buyNow Price of the marketWrapper if not the owner", async function () {
+    it("Should allow changing the transactionData of the marketWrapper", async function () {
+
+        const { marketWrapper, } = await loadFixture(deployWrapperFixture)
+        
+        const _transactionData = "0x0000000000000000000000000000000000000000000000000000000061626364"
+        await marketWrapper.setTransactionData(_transactionData);
+        expect(await marketWrapper.transactionData()).to.equal(_transactionData)
+         
+    })
+
+    it("Should allow changing the gasEstimate Price of the marketWrapper", async function () {
+
+        const { marketWrapper } = await loadFixture(deployWrapperFixture)
+        
+        const _gasEstimate = 20
+        await marketWrapper.setGasEstimate(_gasEstimate);
+        expect(await marketWrapper.gasEstimate()).to.equal(_gasEstimate)
+         
+    })
+
+    it("Should prevent non admin setter calls", async function () {
 
         const { marketWrapper, one } = await loadFixture(deployWrapperFixture)
         
         await expect(marketWrapper.connect(one).setBuyNowPrice(300)).to.be.reverted
          
     })
+
+    it("Should allow a migration", async function () {
+
+        const { marketWrapper, three} = await loadFixture(deployWrapperFixture)
+        
+        const _price = 300
+        const _marketPlace = three.address
+        const _transactionData = "0x0000000000000000000000000000000000000000000000000000000061626364"
+        const _gasEstimate = 20
+
+        await marketWrapper.migration(_price, _gasEstimate, _marketPlace, _transactionData )
+        
+        expect(await marketWrapper.buyNowPrice()).equals(_price)
+        expect(await marketWrapper.marketPlace()).equals(_marketPlace)
+        expect(await marketWrapper.transactionData()).equals(_transactionData)
+        expect(await marketWrapper.gasEstimate()).equals(_gasEstimate)
+         
+    })
+
+    it("Should prevent a non admin migration call", async function () {
+
+        const { marketWrapper, one, three} = await loadFixture(deployWrapperFixture)
+        
+        const _price = 300
+        const _marketPlace = three.address
+        const _transactionData = "0x0000000000000000000000000000000000000000000000000000000061626364"
+        const _gasEstimate = 20
+
+        await marketWrapper.migration(_price, _gasEstimate, _marketPlace, _transactionData )         
+    })
+
     it("Should allow setting admins", async function () {
 
         const { marketWrapper, one } = await loadFixture(deployWrapperFixture)
@@ -90,6 +157,7 @@ describe("MarketWrapper Testing", function () {
         await expect(marketWrapper.buyNow()).to.not.be.reverted
          
     })
+    
 
 
 

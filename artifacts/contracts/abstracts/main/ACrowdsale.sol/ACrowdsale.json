@@ -251,11 +251,6 @@
           "internalType": "uint256",
           "name": "_newClosingTime",
           "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_marketWrapper",
-          "type": "address"
         }
       ],
       "name": "migration",
