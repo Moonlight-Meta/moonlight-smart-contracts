@@ -6,28 +6,32 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 
 import "../../interfaces/main/IVault.sol";
 
-abstract contract AVault is IVault, AccessControl {
+abstract contract AVault is IVault, AccessControl{
     using SafeMath for uint256;
 
     event Closed();
     event Refunded(address indexed beneficiary, uint256 weiAmount);
 
-    constructor() {
+    constructor(){
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 
-    receive() external payable onlyRole(DEFAULT_ADMIN_ROLE) {}
+    receive() external payable onlyRole(DEFAULT_ADMIN_ROLE){}
 
-    fallback() external payable {}
+    fallback() external payable onlyRole(DEFAULT_ADMIN_ROLE){}
 
-    function grantOwnerRole(address to) public onlyRole(DEFAULT_ADMIN_ROLE) {
+    function grantOwnerRole (address to)
+    public onlyRole(DEFAULT_ADMIN_ROLE)
+    {
         _grantRole(DEFAULT_ADMIN_ROLE, to);
     }
 
-    function emergencyWithdrawal(
-        address payable to
-    ) external payable onlyRole(DEFAULT_ADMIN_ROLE) {
-        (bool success, ) = to.call{value: address(this).balance}("");
+    function emergencyWithdrawal (address payable to)
+    external payable onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        (bool success,) = to.call{value: address(this).balance}("");
         require(success, "Ether transfer failed.");
     }
+
+
 }

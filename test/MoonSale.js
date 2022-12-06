@@ -2,12 +2,13 @@ const { expect } = require("chai");
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 const { ethers, waffle } = require("hardhat");
 const { isCallTrace } = require("hardhat/internal/hardhat-network/stack-traces/message-trace");
+const { _toEscapedUtf8String } = require("ethers/lib/utils");
 
 describe("MoonSale Testing", function  () {
 
     async function deploySaleFixture() {
 
-        const [owner, one, two, three, four] = await ethers.getSigners();
+        const [owner, one, two, three, four, five] = await ethers.getSigners();
         
         const provider = waffle.provider;
 
@@ -25,7 +26,7 @@ describe("MoonSale Testing", function  () {
         
         const _price = ethers.utils.parseUnits("8.6919","ether")
         const _gasEstimate = 1000
-        const _marketPlace = four.address
+        const _marketPlace = "0x00000000006c3852cbEf3e08E8dF289169EdE581"
         const _transactionData = "0x"
         const marketWrapper = await Wrapper.deploy(
             _price,
@@ -86,7 +87,7 @@ describe("MoonSale Testing", function  () {
                 _gasEstimate,
                 _marketPlace,
                 _transactionData,
-            owner, one, two, three, four
+            owner, one, two, three, four, five
         }
 
     }
@@ -94,6 +95,7 @@ describe("MoonSale Testing", function  () {
     it ("Should deploy", async function () {
 
         const {moonSale, _price, _rate} = await loadFixture(deploySaleFixture)
+        
         expect(moonSale)
 
         const buyNowPrice = await moonSale.buyNowPriceInWei()
@@ -110,7 +112,7 @@ describe("MoonSale Testing", function  () {
 
     })
 
-    it ("Should prevent purchases of the incorrect number of decimal place", async function () {
+    it ("Should prevent contributions of the incorrect number of decimal place", async function () {
 
         const {moonSale, one} = await loadFixture(deploySaleFixture)
         
@@ -123,7 +125,20 @@ describe("MoonSale Testing", function  () {
 
     })
 
-    it ("Should allow you to make a non refundable purchase", async function () {
+    it ("Should prevent paying the contract directly from a non admin account", async function () {
+
+        const {moonSale, one} = await loadFixture(deploySaleFixture)
+        
+        const _deposit = ethers.utils.parseUnits(".51","ether")
+
+        await expect(one.sendTransaction({
+            to: moonSale.address,
+            value: _deposit
+        })).to.be.reverted
+        
+    })
+
+    it ("Should allow you to make a non refundable contributions", async function () {
 
         const {moonSale, provider, one} = await loadFixture(deploySaleFixture)
 
@@ -143,7 +158,7 @@ describe("MoonSale Testing", function  () {
         expect(newContractBalance).equals(originalContractBalance.add(_deposit))
     })
 
-    it ("Should allow you to make multiple non refundable purchases", async function () {
+    it ("Should allow you to make multiple non refundable contributions", async function () {
 
         const {moonSale, provider, one} = await loadFixture(deploySaleFixture)
 
@@ -169,7 +184,7 @@ describe("MoonSale Testing", function  () {
         expect(newContractBalance).equals(originalContractBalance.add(_depositOne).add(_depositTwo))
     })
 
-    it ("Should allow you to make a refundable purchase", async function () {
+    it ("Should allow you to make a refundable contribution", async function () {
 
         const {moonSale, provider, one} = await loadFixture(deploySaleFixture)
 
@@ -190,7 +205,7 @@ describe("MoonSale Testing", function  () {
 
     })
 
-    it ("Should allow you to make multiple refundable purchases", async function () {
+    it ("Should allow you to make multiple refundable contributions", async function () {
 
         const {moonSale, provider, one} = await loadFixture(deploySaleFixture)
 
@@ -217,7 +232,7 @@ describe("MoonSale Testing", function  () {
 
     })
 
-    it ("Should allow you to make multiple purchases of both types", async function () {
+    it ("Should allow you to make multiple contributions of both types", async function () {
 
         const {moonSale, provider, one} = await loadFixture(deploySaleFixture)
 
@@ -246,13 +261,85 @@ describe("MoonSale Testing", function  () {
 
     })
 
-    it ("Should automatically make the purchase when the buyNowPrice+interest is hit", async function () {
+    it ("Should prevent current refundable and non refundable contributors from collecting tokens before the crowdsale finishes", async function () {
 
-        const {moonSale, _price, moonVault, provider, one, two, three, four} = await loadFixture(deploySaleFixture)
+        const {moonSale, one, two} = await loadFixture(deploySaleFixture)
+        
+        await moonSale.connect(one).buyTokens(one.address, false, {
+            value: ethers.utils.parseUnits("4","ether")
+        })
 
-        const originalContractBalance = await provider.getBalance(moonSale.address);
-        const originalMarketPlaceBalance = await provider.getBalance(four.address);
+        await moonSale.connect(two).buyTokens(two.address, true, {
+            value: ethers.utils.parseUnits("4","ether")
+        })
 
+       await expect(moonSale.connect(one).collectTokens()).to.be.reverted    
+
+    });
+
+    it ("Should prevent current refundable and non refundable contributors from getting refunds before the crowdsale finishes", async function () {
+
+        const {moonSale, one, two} = await loadFixture(deploySaleFixture)
+        
+        await moonSale.connect(one).buyTokens(one.address, false, {
+            value: ethers.utils.parseUnits("4","ether")
+        })
+
+        await moonSale.connect(two).buyTokens(two.address, true, {
+            value: ethers.utils.parseUnits("4","ether")
+        })
+
+       await expect(moonSale.connect(one).refund()).to.be.reverted    
+       await expect(moonSale.connect(two).refund()).to.be.reverted 
+
+    });
+
+    it ("Should allow an admin to make an emergency withdrawal in the middle of a crowdsale", async function () {
+
+        const {moonSale, provider, one, two, five} = await loadFixture(deploySaleFixture)
+
+        await moonSale.connect(one).buyTokens(one.address, false, {
+            value: ethers.utils.parseUnits("4","ether")
+        })
+
+        await moonSale.connect(two).buyTokens(two.address, true, {
+            value: ethers.utils.parseUnits("4","ether")
+        })
+
+        const originalFiveBalance = await provider.getBalance(five.address);
+        const originalContractBalance = await provider.getBalance(moonSale.address)
+
+        await moonSale.emergencyWithdrawal(five.address)
+
+        const newContractBalance = await provider.getBalance(moonSale.address);
+        const newFiveBalance = await provider.getBalance(five.address);
+
+        expect(newContractBalance).to.equal(0)
+        expect(newFiveBalance).to.equal(originalFiveBalance.add(originalContractBalance))
+        
+    })
+
+    it ("Should prevent a non admin from making an emergency withdrawal in the middle of a crowdsale", async function () {
+
+        const {moonSale, one, two, five} = await loadFixture(deploySaleFixture)
+
+        await moonSale.connect(one).buyTokens(one.address, false, {
+            value: ethers.utils.parseUnits("4","ether")
+        })
+
+        await moonSale.connect(two).buyTokens(two.address, true, {
+            value: ethers.utils.parseUnits("4","ether")
+        })
+
+        await expect(moonSale.connect(five).emergencyWithdrawal(five.address)).to.be.reverted
+
+    })
+
+    it ("Should automatically make the NFT purchase when the goal is hit", async function () {
+
+        const {moonSale, _price, _marketPlace, moonVault, provider, one, two, three, four} = await loadFixture(deploySaleFixture)
+        
+        const originalMarketPlaceBalance = await provider.getBalance(_marketPlace);
 
         await moonSale.connect(one).buyTokens(one.address, false, {
             value: ethers.utils.parseUnits("4","ether")
@@ -267,7 +354,7 @@ describe("MoonSale Testing", function  () {
         })
 
         const newContractBalance = await provider.getBalance(moonSale.address);
-        const newMarketPlaceBalance = await provider.getBalance(four.address);
+        const newMarketPlaceBalance = await provider.getBalance(_marketPlace);
 
         expect(newContractBalance).to.be.at.least(await moonSale.interest())
         expect(await moonSale.state()).equals(1)
@@ -277,485 +364,580 @@ describe("MoonSale Testing", function  () {
         
     })
 
-    // it ("Should allow owners to collect the interest", async function () {
+    it ("Should prevent the NFT purchase when a person is overpaying the crowdsale", async function () {
 
-    //     const {moonSale, marketWrapper, moonVault, provider, one, two, three, four} = await loadFixture(deployTokenFixture)
+        const {moonSale, provider, one, two, three, four} = await loadFixture(deploySaleFixture)
 
-    //     await moonSale.connect(one).buyTokens(one.address, false, {
-    //         value: ethers.utils.parseUnits((300).toString(), "wei")
-    //     })
+        await moonSale.connect(one).buyTokens(one.address, false, {
+            value: ethers.utils.parseUnits("4","ether")
+        })
 
-    //     await moonSale.connect(two).buyTokens(two.address, false, {
-    //         value: ethers.utils.parseUnits((200).toString(), "wei")
-    //     })
+        await moonSale.connect(two).buyTokens(two.address, true, {
+            value: ethers.utils.parseUnits("4","ether")
+        })
 
-    //     await moonSale.connect(three).buyTokens(three.address, false, {
-    //         value: ethers.utils.parseUnits((25).toString(), "wei")
-    //     })
+        await expect(moonSale.connect(three).buyTokens(three.address, false, {
+            value: ethers.utils.parseUnits("1.14","ether")
+        })).to.be.reverted
+        
+    })
 
-    //     const contractBalance = await provider.getBalance(moonSale.address);
 
-    //     const interest =  await moonSale.interest()
-    //     expect(contractBalance).equals(interest)
+    async function deployPostPurchaseSaleFixture() {
+        const {
+            provider, 
+            moonSale, 
+                _rate, 
+                _opening_time,
+                _closing_time,
+            moonVault,
+            moonToken,
+                _collectionOwner,
+                _tokenId,
+            marketWrapper, 
+                _price,
+                _gasEstimate,
+                _marketPlace,
+                _transactionData,
+            owner, one, two, three, four, five
+        } = await loadFixture(deploySaleFixture)
 
-    //     const fourBalance = await provider.getBalance(four.address);
-    //     await moonSale.collectInterest(four.address)
-    //     const newFourBalance = await provider.getBalance(four.address);
+        const oneDeposit = ethers.utils.parseUnits("4","ether")
+        await moonSale.connect(one).buyTokens(one.address, true, {
+            value: oneDeposit
+        })
 
-    //     const newContractBalance = await provider.getBalance(moonSale.address);
+        const twoDeposit = ethers.utils.parseUnits("4","ether")
+        await moonSale.connect(two).buyTokens(two.address, false, {
+            value: twoDeposit
+        })
 
-    //     expect(newContractBalance).equals(0)
-    //     expect(fourBalance.add(interest)).equals(newFourBalance)
+        const threeDeposit = ethers.utils.parseUnits("1.13","ether")
+        await moonSale.connect(three).buyTokens(three.address, true, {
+            value: threeDeposit
+        })
 
-    // });
+        return {
+            provider, 
+            moonSale, 
+                _rate, 
+                _opening_time,
+                _closing_time,
+            moonVault,
+            moonToken,
+                _collectionOwner,
+                _tokenId,
+            marketWrapper, 
+                _price,
+                _gasEstimate,
+                _marketPlace,
+                _transactionData,
+            owner, one, two, three, four, five,
+            oneDeposit, twoDeposit, threeDeposit
+        }
 
-    // it ("Should prevent non owners from collecting interest or emergency refund", async function () {
+    }
 
-    //     const {moonSale, marketWrapper, moonVault, provider, one, two, three, four} = await loadFixture(deployTokenFixture)
+    it ("Should allow owners to collect the interest", async function () {
 
-    //     await moonSale.connect(one).buyTokens(one.address, false, {
-    //         value: ethers.utils.parseUnits((300).toString(), "wei")
-    //     })
+        const {moonSale, provider, five} = await loadFixture(deployPostPurchaseSaleFixture)
+        const interest =  await moonSale.interest()
 
-    //     await moonSale.connect(two).buyTokens(two.address, false, {
-    //         value: ethers.utils.parseUnits((200).toString(), "wei")
-    //     })
+        const originalContractBalance = await provider.getBalance(moonSale.address);
+        const originalFiveBalance = await provider.getBalance(five.address);
+        
+        await moonSale.collectInterest(five.address)
+        
+        const newFiveBalance = await provider.getBalance(five.address);
+        const newContractBalance = await provider.getBalance(moonSale.address);
 
-    //     await expect(moonSale.connect(two).collectInterest(two.address)).to.be.reverted
+        expect(originalContractBalance).to.be.at.least(interest)
+        expect(newContractBalance).equals(0)
+        expect(newFiveBalance).equals(originalFiveBalance.add(originalContractBalance))
 
-    //     await moonSale.connect(three).buyTokens(three.address, false, {
-    //         value: ethers.utils.parseUnits((25).toString(), "wei")
-    //     })
+    });
 
-    //     await expect(moonSale.connect(two).collectInterest(two.address)).to.be.reverted
+    it ("Should prevent non owners from collecting interest or emergency withdrawal", async function () {
 
-    // });
+        const {moonSale, five} = await loadFixture(deployPostPurchaseSaleFixture)
+
+        await expect(moonSale.connect(five).collectInterest(five.address)).to.be.reverted
+        await expect(moonSale.connect(five).emergencyWithdrawal(five.address)).to.be.reverted
+
+    });
     
     
-    // it ("Should allow users to collect tokens", async function () {
+    it ("Should allow users to collect tokens", async function () {
 
-    //     const {moonSale, moonToken, provider, one, two, three} = await loadFixture(deployTokenFixture)
+        const {moonSale, moonToken, one, oneDeposit, two, twoDeposit, three, threeDeposit, _rate,  _tokenId} = await loadFixture(deployPostPurchaseSaleFixture)
+        const migrationCount = moonSale.migrationCount() 
+
+        await moonSale.connect(one).collectTokens()
+
+        const oneTokens = oneDeposit.toBigInt() * BigInt(_rate) / BigInt(10**18)
+        expect(await moonToken.balanceOf(one.address, _tokenId)).equals(oneTokens)
+        expect(await moonSale.nonRefundableBalances(one.address)).equals(0)
+        expect(await moonSale.currentRefundableBalances(migrationCount, one.address)).equals(0)     
         
-    //     await moonSale.connect(one).buyTokens(one.address, false, {
-    //         value: ethers.utils.parseUnits((300).toString(), "wei")
-    //     })
+        await moonSale.connect(two).collectTokens()
 
-    //     await moonSale.connect(two).buyTokens(two.address, true, {
-    //         value: ethers.utils.parseUnits((200).toString(), "wei")
-    //     })
+        const twoTokens = twoDeposit.toBigInt() * BigInt(_rate) / BigInt(10**18)
+        expect(await moonToken.balanceOf(two.address, _tokenId)).equals(twoTokens)
+        expect(await moonSale.nonRefundableBalances(two.address)).equals(0)
+        expect(await moonSale.currentRefundableBalances(migrationCount, two.address)).equals(0)  
 
-    //     await moonSale.connect(three).buyTokens(three.address, false, {
-    //         value: ethers.utils.parseUnits((25).toString(), "wei")
-    //     })
+        await moonSale.connect(three).collectTokens()
 
-    //     await moonSale.connect(one).collectTokens()
+        const threeTokens = threeDeposit.toBigInt() * BigInt(_rate) / BigInt(10**18)
+        expect(await moonToken.balanceOf(three.address,_tokenId)).equals(threeTokens)
+        expect(await moonSale.nonRefundableBalances(three.address)).equals(0)
+        expect(await moonSale.currentRefundableBalances(migrationCount,three.address)).equals(0)       
 
-    //     expect(await moonToken.balanceOf(one.address)).equals(300)
-    //     expect(await moonSale.nonRefundableBalances(one.address)).equals(0)
-    //     expect(await moonSale.currentRefundableBalances(0,one.address)).equals(0)     
+    });
+
+    it ("Should prevent non contributors from collecting tokens", async function () {
+
+        const {moonSale, four} = await loadFixture(deployPostPurchaseSaleFixture)
+
+       await expect(moonSale.connect(four).collectTokens()).to.be.reverted    
+
+    });
+
+
+    it ("Should prevent refundable and non refundable contributors from collecting refunds after a successful crowdsale both before and after collecting tokens", async function () {
+
+        const {moonSale, one, two} = await loadFixture(deployPostPurchaseSaleFixture)
+
+        await expect(moonSale.connect(one).refund()).to.be.reverted    
+        await expect(moonSale.connect(two).refund()).to.be.reverted
         
-    //     await moonSale.connect(two).collectTokens()
+        await moonSale.connect(one).collectTokens()
+        await moonSale.connect(two).collectTokens()
 
-    //     expect(await moonToken.balanceOf(two.address)).equals(200)
-    //     expect(await moonSale.nonRefundableBalances(two.address)).equals(0)
-    //     expect(await moonSale.currentRefundableBalances(0,two.address)).equals(0)       
+        await expect(moonSale.connect(one).refund()).to.be.reverted    
+        await expect(moonSale.connect(two).refund()).to.be.reverted
 
-    //     await moonSale.connect(three).collectTokens()
+    });
 
-    //     expect(await moonToken.balanceOf(three.address)).equals(25)
-    //     expect(await moonSale.nonRefundableBalances(three.address)).equals(0)
-    //     expect(await moonSale.currentRefundableBalances(0,three.address)).equals(0)       
+    it ("Should prevent a migration after a successful crowdsale", async function () {
 
-    // });
+        const {moonSale, one, two, three, four, _rate} = await loadFixture(deployPostPurchaseSaleFixture)
 
-    // it ("Should prevent non contributors from collect tokens", async function () {
+        const blockNum = await ethers.provider.getBlockNumber();
+        const block = await ethers.provider.getBlock(blockNum);
+        const blockTimeStamp = block.timestamp;
+        const sevenDays =  7 * 24 * 60 * 60;
 
-    //     const {moonSale, provider, one, two, three, four} = await loadFixture(deployTokenFixture)
+        const _closingTime = blockTimeStamp +sevenDays
+        await expect(moonSale.migration(_closingTime)).to.be.reverted
 
-    //     const contractBalance = await provider.getBalance(moonSale.address);
+    });
+
+    it ("Should prevent a migration call from a non admin account", async function () {
+
+        const {moonSale, one, two, three, four, _rate} = await loadFixture(deploySaleFixture)
+
+        const blockNum = await ethers.provider.getBlockNumber();
+        const block = await ethers.provider.getBlock(blockNum);
+        const blockTimeStamp = block.timestamp;
+        const sevenDays =  7 * 24 * 60 * 60;
+
+        const _closingTime = blockTimeStamp +sevenDays
+        await expect(moonSale.connect(one).migration(_closingTime)).to.be.reverted
+
+    });
+
+    it ("Should allow a migration to happen", async function () {
+
+        const {moonSale, moonVault, moonToken, marketWrapper, provider, one, two, three, four, _rate} = await loadFixture(deploySaleFixture)
+
+        const blockNum = await ethers.provider.getBlockNumber();
+        const block = await ethers.provider.getBlock(blockNum);
+        const blockTimeStamp = block.timestamp;
+        const sevenDays =  7 * 24 * 60 * 60;
+
+        const oneDeposit = ethers.utils.parseUnits("4.12","ether")
+        await moonSale.connect(one).buyTokens(one.address, true, {
+            value: oneDeposit
+        })
+
+        const twoDeposit = ethers.utils.parseUnits("4.12","ether")
+        await moonSale.connect(two).buyTokens(two.address, false, {
+            value: twoDeposit
+        })
+
+        const _tokenId = 100
+        const _fractionalUri = ""
+        await moonToken.migration(_tokenId, _fractionalUri)
+
+        const _price = ethers.utils.parseUnits("9.199","ether")
+        const _gasEstimate = 0
+        const _marketPlace = "0x00000000006c3852cbEf3e08E8dF289169EdE581"
+        const _transactionData = "0x"
+        await marketWrapper.migration(
+            _price,
+            _gasEstimate,
+            _marketPlace,
+            _transactionData
+        )
+
+        const _closingTime = blockTimeStamp +sevenDays
+        await moonSale.migration(_closingTime)
+
+        const buyNowPrice = await moonSale.buyNowPriceInWei()
+        const interest = await moonSale.interest()
+        const goal = await moonSale.goal()
+        const migrationCount = await moonSale.migrationCount()
+        const minimumContribution = BigInt(10**18/_rate)
+        const sumedPrice = _price.toBigInt() + interest.toBigInt()
+        const ceiledPrice = (sumedPrice - sumedPrice % minimumContribution) + minimumContribution
+
+        expect(migrationCount).equals(1)
+        expect(await moonSale.currentRefundableWei()).equals(0)
+        expect(buyNowPrice).to.equal(_price)
+        expect(interest).to.equal(_price.div(20))
+        expect(goal).to.equal(ceiledPrice)
+        expect(await provider.getBalance(moonVault.address)).equals(oneDeposit)
+        expect(await moonSale.currentRefundableBalances(migrationCount, one.address)).to.equal(0)
+        expect(await moonSale.currentRefundableBalances(migrationCount, two.address)).to.equal(0)
+        expect(await moonSale.nonRefundableBalances(one.address) ).to.equal(0)
+        expect(await moonSale.nonRefundableBalances(two.address) ).to.equal(twoDeposit)
+    });
+
+    it ("Should allow a migration to automatically purchase the NFT if it has enough non refundable funds", async function () {
+
+        const {moonSale, moonVault, moonToken, marketWrapper, provider, one, two, three, four, _rate} = await loadFixture(deploySaleFixture)
+
+        const blockNum = await ethers.provider.getBlockNumber();
+        const block = await ethers.provider.getBlock(blockNum);
+        const blockTimeStamp = block.timestamp;
+        const sevenDays =  7 * 24 * 60 * 60;
+
+        const oneDeposit = ethers.utils.parseUnits("4.12","ether")
+        await moonSale.connect(one).buyTokens(one.address, true, {
+            value: oneDeposit
+        })
+
+        const twoDeposit = ethers.utils.parseUnits("4.33","ether")
+        await moonSale.connect(two).buyTokens(two.address, false, {
+            value: twoDeposit
+        })
+
+        const _tokenId = 100
+        const _fractionalUri = ""
+        await moonToken.migration(_tokenId, _fractionalUri)
+
+        const _price = ethers.utils.parseUnits("4.12","ether")
+        const _gasEstimate = 0
+        const _marketPlace = "0x00000000006c3852cbEf3e08E8dF289169EdE581"
+        const originalMarketPlaceBalance = await  provider.getBalance(_marketPlace)
+        const _transactionData = "0x"
+        await marketWrapper.migration(
+            _price,
+            _gasEstimate,
+            _marketPlace,
+            _transactionData
+        )
+
+        const _closingTime = blockTimeStamp +sevenDays
+        await moonSale.migration(_closingTime)
+
+        const newMarketPlaceBalance = await provider.getBalance(_marketPlace)
+        const buyNowPrice = await moonSale.buyNowPriceInWei()
+        const interest = await moonSale.interest()
+        const goal = await moonSale.goal()
+        const migrationCount = await moonSale.migrationCount()
+        const minimumContribution = BigInt(10**18/_rate)
+        const sumedPrice = _price.toBigInt() + interest.toBigInt()
+        const ceiledPrice = (sumedPrice - sumedPrice % minimumContribution) + minimumContribution
+
+        expect(migrationCount).equals(1)
+        expect(await moonSale.currentRefundableWei()).equals(0)
+        expect(buyNowPrice).to.equal(_price)
+        expect(interest).to.equal(_price.div(20))
+        expect(goal).to.equal(ceiledPrice)
+        expect(await newMarketPlaceBalance).equals(originalMarketPlaceBalance.add(_price))
+        expect(await moonSale.currentRefundableBalances(migrationCount, one.address)).to.equal(0)
+        expect(await moonSale.currentRefundableBalances(migrationCount, two.address)).to.equal(0)
+        expect(await moonSale.nonRefundableBalances(one.address)).to.equal(0)
+        expect(await moonSale.nonRefundableBalances(two.address) ).to.equal(twoDeposit)
         
-    //     await moonSale.connect(one).buyTokens(one.address, false, {
-    //         value: ethers.utils.parseUnits((300).toString(), "wei")
-    //     })
+        await moonSale.connect(two).collectTokens()
 
-    //     await moonSale.connect(two).buyTokens(two.address, true, {
-    //         value: ethers.utils.parseUnits((200).toString(), "wei")
-    //     })
+        expect(await moonSale.nonRefundableBalances(two.address) ).to.equal(0)
+        expect(await moonToken.balanceOf(two.address, _tokenId)).to.equal(433)
 
-    //     await moonSale.connect(three).buyTokens(three.address, false, {
-    //         value: ethers.utils.parseUnits((25).toString(), "wei")
-    //     })
+    });
 
-    //    await expect(moonSale.connect(four).collectTokens()).to.be.reverted    
-
-    // });
-
-    // it ("Should prevent contributors from collect tokens before the crowdsale finishes", async function () {
-
-    //     const {moonSale, provider, one, two, three, four} = await loadFixture(deployTokenFixture)
-
-    //     const contractBalance = await provider.getBalance(moonSale.address);
-        
-    //     await moonSale.connect(one).buyTokens(one.address, false, {
-    //         value: ethers.utils.parseUnits((300).toString(), "wei")
-    //     })
-
-    //     await moonSale.connect(two).buyTokens(two.address, true, {
-    //         value: ethers.utils.parseUnits((200).toString(), "wei")
-    //     })
-
-    //    await expect(moonSale.connect(one).collectTokens()).to.be.reverted    
-
-    // });
-
-    // it ("Should allow a migration to happen", async function () {
-
-    //     const {Wrapper, moonSale, moonVault, moonToken, provider, one, two, three, four} = await loadFixture(deployTokenFixture)
-
-    //     const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((299).toString(), "wei"), four.address, "");
-    //     await newMarketWrapper.deployed();
-    //     newMarketWrapper.grantOwnerRole(moonSale.address)
-
-    //     await moonSale.connect(one).buyTokens(one.address, true, {
-    //         value: ethers.utils.parseUnits((100).toString(), "wei")
-    //     })
-
-    //     const blockNum = await ethers.provider.getBlockNumber();
-    //     const block = await ethers.provider.getBlock(blockNum);
-    //     const blockTimeStamp = block.timestamp;
-    //     const sevenDays =  7 * 24 * 60 * 60;
-
-    //     const newClosingTime = blockTimeStamp +sevenDays
-
-    //     await moonSale.migration(newClosingTime,newMarketWrapper.address )
-
-    //     expect(await moonSale.migrationCount()).equals(1)
-    //     expect(await moonSale.currentRefundableWei()).equals(0)
-    //     expect(await moonSale.buyNowPriceInWei() ).equals(299)
-    //     expect(await moonSale.interest()).to.equal(Math.floor(299/20))
-    //     expect(await provider.getBalance(moonVault.address)).equals(100)
-    // });
-
-    // it ("Should allow a migration to automatically purchase the NFT if funds are in order", async function () {
-
-    //     const {Wrapper, moonSale, moonToken, provider, one, two, three, four} = await loadFixture(deployTokenFixture)
-
-                 
-    //     await moonSale.connect(one).buyTokens(one.address, false, {
-    //         value: ethers.utils.parseUnits((300).toString(), "wei")
-    //     })
-
-    //     const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((250).toString(), "wei"), four.address, "");
-    //     await newMarketWrapper.deployed();
-    //     newMarketWrapper.grantOwnerRole(moonSale.address)
-
-    //     const blockNum = await ethers.provider.getBlockNumber();
-    //     const block = await ethers.provider.getBlock(blockNum);
-    //     const blockTimeStamp = block.timestamp;
-    //     const sevenDays =  7 * 24 * 60 * 60;
-
-    //     const newClosingTime = blockTimeStamp +sevenDays
-
-    //     await moonSale.migration(newClosingTime,newMarketWrapper.address )
-
-    //     expect(await moonSale.migrationCount()).equals(1)
-    //     expect(await moonSale.state()).equals(1)
-
-    // });
-
-    // it ("Should allow refunds", async function () {
-
-    //     const {Wrapper, moonSale, moonToken, provider, one, two, three,four} = await loadFixture(deployTokenFixture)
-
-    //     const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((300).toString(), "wei"), four.address, "");
-    //     await newMarketWrapper.deployed();
-    //     newMarketWrapper.grantOwnerRole(moonSale.address)
-
-    //     const blockNum = await ethers.provider.getBlockNumber();
-    //     const block = await ethers.provider.getBlock(blockNum);
-    //     const blockTimeStamp = block.timestamp;
-    //     const sevenDays =  7 * 24 * 60 * 60;
-
-    //     const newClosingTime = blockTimeStamp +sevenDays
-
-        
-    //     await moonSale.connect(one).buyTokens(one.address, true, {
-    //         value: "100"
-    //     })
-
-    //     const oldContractBalance = await provider.getBalance(moonSale.address);
-      
-    //     let migrationCount = await moonSale.migrationCount()
-
-    //     expect(await moonSale.currentRefundableBalances(migrationCount, one.address)).equals(100)
-
-    //     await moonSale.migration(newClosingTime,newMarketWrapper.address )
-
-    //     migrationCount = await moonSale.migrationCount()
-
-    //     expect(await moonSale.currentRefundableBalances(migrationCount, one.address)).equals(0)
-
-    //     const oldOneBalance = await provider.getBalance(one.address);
-
-    //     await moonSale.connect(one).refund()
-
-    //     const newOneBalance = await provider.getBalance(one.address);
-
-    //     const newContractBalance = await provider.getBalance(moonSale.address);
-
-    //     expect(oldContractBalance.sub(100)).equals(newContractBalance)
-    //     expect(migrationCount).equals(1)
-    //     expect(await moonSale.buyNowPriceInWei()).equals(300)
-    //     expect(await moonSale.interest()).to.equal(Math.floor(300/20))
-
-    // });
-
-    // it ("Should prevent non contributors from collecting refunds", async function () {
-
-    //     const {Wrapper, moonSale,  provider, one, two, three, four} = await loadFixture(deployTokenFixture)
-
-    //     const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((300).toString(), "wei"), four.address, "");
-    //     await newMarketWrapper.deployed();
-    //     newMarketWrapper.grantOwnerRole(moonSale.address)
-
-    //     const blockNum = await ethers.provider.getBlockNumber();
-    //     const block = await ethers.provider.getBlock(blockNum);
-    //     const blockTimeStamp = block.timestamp;
-    //     const sevenDays =  7 * 24 * 60 * 60;
-
-    //     const newClosingTime = blockTimeStamp +sevenDays
-
-        
-    //     await moonSale.connect(one).buyTokens(one.address, true, {
-    //         value: "100"
-    //     })
-
-    //     await moonSale.migration(newClosingTime,newMarketWrapper.address )
-
-    //     await expect(moonSale.connect(two).refund()).to.be.reverted
-
-    // });
-
-    // it ("Should prevent non refundable contributors from collecting refunds", async function () {
-
-    //     const {Wrapper, moonSale,  provider, one, two, three,four } = await loadFixture(deployTokenFixture)
-
-    //     const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((300).toString(), "wei"), four.address, "");
-    //     await newMarketWrapper.deployed();
-    //     newMarketWrapper.grantOwnerRole(moonSale.address)
-
-    //     const blockNum = await ethers.provider.getBlockNumber();
-    //     const block = await ethers.provider.getBlock(blockNum);
-    //     const blockTimeStamp = block.timestamp;
-    //     const sevenDays =  7 * 24 * 60 * 60;
-
-    //     const newClosingTime = blockTimeStamp +sevenDays
+    async function deployPostMigrationSaleFixture() {
+        const {
+            provider, 
+            moonSale, 
+                _rate, 
+                _opening_time,
+            moonVault,
+            moonToken,
+                _collectionOwner,
+            marketWrapper, 
+                _marketPlace,
+                _transactionData,
+            owner, one, two, three, four, five
+        } = await loadFixture(deploySaleFixture)
 
         
-    //     await moonSale.connect(one).buyTokens(one.address, false, {
-    //         value: "100"
-    //     })
+        const blockNum = await ethers.provider.getBlockNumber();
+        const block = await ethers.provider.getBlock(blockNum);
+        const blockTimeStamp = block.timestamp;
+        const sevenDays =  7 * 24 * 60 * 60;
 
-    //     await moonSale.migration(newClosingTime,newMarketWrapper.address )
+        const oneDeposit = ethers.utils.parseUnits("4.5","ether")
+        await moonSale.connect(one).buyTokens(one.address, true, {
+            value: oneDeposit
+        })
 
-    //     await expect(moonSale.connect(one).refund()).to.be.reverted
+        const twoDeposit = ethers.utils.parseUnits("3.5","ether")
+        await moonSale.connect(two).buyTokens(two.address, false, {
+            value: twoDeposit
+        })
 
-    // });
+        const threeRefundableDeposit = ethers.utils.parseUnits(".5","ether")
+        await moonSale.connect(three).buyTokens(three.address, true, {
+            value: threeRefundableDeposit
+        })
 
-    // it ("Should prevent current refundable contributors from collecting refunds", async function () {
+        const threeNonRefundableDeposit = ethers.utils.parseUnits(".25","ether")
+        await moonSale.connect(three).buyTokens(three.address, false, {
+            value: threeNonRefundableDeposit
+        })
 
-    //     const {Wrapper, moonSale,  provider, one, two, three,four} = await loadFixture(deployTokenFixture)
+        const _tokenId = 100
+        const _fractionalUri = ""
+        await moonToken.migration(_tokenId, _fractionalUri)
 
-    //     const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((300).toString(), "wei"), four.address, "");
-    //     await newMarketWrapper.deployed();
-    //     newMarketWrapper.grantOwnerRole(moonSale.address)
+        const _price = ethers.utils.parseUnits("10","ether")
+        const _gasEstimate = 0
+        await marketWrapper.migration(
+            _price,
+            _gasEstimate,
+            _marketPlace,
+            _transactionData
+        )
 
-    //     const blockNum = await ethers.provider.getBlockNumber();
-    //     const block = await ethers.provider.getBlock(blockNum);
-    //     const blockTimeStamp = block.timestamp;
-    //     const sevenDays =  7 * 24 * 60 * 60;
-
-    //     const newClosingTime = blockTimeStamp +sevenDays
-
-    //     await moonSale.connect(one).buyTokens(one.address, true, {
-    //         value: "100"
-    //     })
-
-    //     // await moonSale.migration(newClosingTime,newMarketWrapper.address )
-
-    //     await expect(moonSale.connect(one).refund()).to.be.reverted
-
-    // });
-
-    // it ("Should prevent contributors from getting refunds after collecting tokens", async function () {
-
-    //     const {moonSale, moonToken, provider, one, two, three} = await loadFixture(deployTokenFixture)
+        const _closing_time = blockTimeStamp +sevenDays
+        await moonSale.migration(_closing_time)
         
-    //     await moonSale.connect(one).buyTokens(one.address, false, {
-    //         value: ethers.utils.parseUnits((300).toString(), "wei")
-    //     })
+        const migrationCount = await moonSale.migrationCount()
 
-    //     await moonSale.connect(two).buyTokens(two.address, true, {
-    //         value: ethers.utils.parseUnits((200).toString(), "wei")
-    //     })
+        return {
+            provider, 
+            moonSale, 
+                _rate, 
+                _opening_time,
+                _closing_time,
+            moonVault,
+            moonToken,
+                _collectionOwner,
+                _tokenId,
+            marketWrapper, 
+                _price,
+                _gasEstimate,
+                _marketPlace,
+                _transactionData,
+            owner, one, two, three, four, five,
+            oneDeposit, twoDeposit, threeRefundableDeposit, threeNonRefundableDeposit,
+            migrationCount
+        }
+    }
 
-    //     await moonSale.connect(three).buyTokens(three.address, false, {
-    //         value: ethers.utils.parseUnits((25).toString(), "wei")
-    //     })
+    it ("Should allow a person to be refunded after a migration", async function () {
+        const {moonSale, migrationCount, moonVault, provider, one,  oneDeposit, three, threeNonRefundableDeposit, threeRefundableDeposit} = await loadFixture(deployPostMigrationSaleFixture)
 
-    //     await moonSale.connect(one).collectTokens()
+        const originalVaultBalance = await provider.getBalance(moonVault.address)
+        const originalOneBalance = await provider.getBalance(one.address)
+
+        await moonSale.connect(one).refund()
         
-    //     await moonSale.connect(two).collectTokens()
+        let newVaultBalance = await provider.getBalance(moonVault.address)
+        const newOneBalance = await provider.getBalance(one.address)
 
-    //     await expect( moonSale.connect(one).refund()).to.be.reverted
-    //     await expect( moonSale.connect(two).refund()).to.be.reverted
+        expect(newOneBalance).to.be.above(originalOneBalance)
+        expect(newVaultBalance).to.equal(originalVaultBalance.sub(oneDeposit))
+        expect(await moonSale.currentRefundableBalances(migrationCount, one.address)).to.equal(0)
 
-    // });
+        const originalThreeBalance = await provider.getBalance(three.address)
 
-    // it ("Allows refunds after a migration post purchase for refundable contributors", async function () {
+        await moonSale.connect(three).refund()
+        
+        newVaultBalance = await provider.getBalance(moonVault.address)
+        const newThreeBalance = await provider.getBalance(three.address)
 
-    //     const {Wrapper, moonSale, moonVault, moonToken, provider, one, two, three, four} = await loadFixture(deployTokenFixture)
+        expect(newThreeBalance).to.be.above(originalThreeBalance)
+        expect(newVaultBalance).to.equal(originalVaultBalance.sub(oneDeposit).sub(threeRefundableDeposit))
+        expect(await moonSale.currentRefundableBalances(migrationCount, three.address)).to.equal(0)
+        expect(await moonSale.nonRefundableBalances(three.address)).to.equal(threeNonRefundableDeposit)
 
-    //     const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((250).toString(), "wei"), four.address, "");
-    //     await newMarketWrapper.deployed();
-    //     newMarketWrapper.grantOwnerRole(moonSale.address)
+    })  
+   
+    it ("Should prevent non contributors, and non refundable contributors from collecting refunds", async function () {
 
-    //     const blockNum = await ethers.provider.getBlockNumber();
-    //     const block = await ethers.provider.getBlock(blockNum);
-    //     const blockTimeStamp = block.timestamp;
-    //     const sevenDays =  7 * 24 * 60 * 60;
+        const {moonSale, two, four} = await loadFixture(deployPostMigrationSaleFixture)
 
-    //     const newClosingTime = blockTimeStamp +sevenDays
+        await expect( moonSale.connect(two).refund()).to.be.reverted
+        await expect( moonSale.connect(four).refund()).to.be.reverted
 
-    //     await moonSale.connect(one).buyTokens(one.address, true, {
-    //         value: "100"
-    //     })
+    });
 
-    //     await moonSale.connect(two).buyTokens(two.address, false, {
-    //         value: "300"
-    //     })
-      
-    //     let migrationCount = await moonSale.migrationCount()
+    it ("Should prevent current refundable contributors from collecting refunds", async function () {
 
-    //     expect(await moonSale.state()).to.equal(0)
-    //     await moonSale.migration(newClosingTime,newMarketWrapper.address )
+        const {moonSale, one} = await loadFixture(deployPostMigrationSaleFixture)
 
-    //     migrationCount = await moonSale.migrationCount()
+        const currentOneDeposit = ethers.utils.parseUnits(".5","ether")
+        await moonSale.connect(one).buyTokens(one.address, true, {
+            value: currentOneDeposit
+        })
 
-    //     expect(await moonSale.state()).to.equal(1)
-    //     await expect(moonSale.connect(one).refund()).to.not.be.reverted
+        await expect(moonSale.connect(one).refund()).to.be.reverted
 
-    // });
+    });
 
-    // it ("Allows collecting tokens after a migration post purchase for non refundable contributors ", async function () {
+    it ("Should allow a crowdsale to make an NFT purchase post migration", async function () {
 
-    //     const {Wrapper, moonSale, moonVault, moonToken, provider, one, two, three, four} = await loadFixture(deployTokenFixture)
+        const {provider, _price, moonSale, moonVault, _marketPlace, one} = await loadFixture(deployPostMigrationSaleFixture)
 
-    //     const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((250).toString(), "wei"), four.address, "");
-    //     await newMarketWrapper.deployed();
-    //     newMarketWrapper.grantOwnerRole(moonSale.address)
+        const originalMarketPlaceBalance = await provider.getBalance(_marketPlace);
 
-    //     const blockNum = await ethers.provider.getBlockNumber();
-    //     const block = await ethers.provider.getBlock(blockNum);
-    //     const blockTimeStamp = block.timestamp;
-    //     const sevenDays =  7 * 24 * 60 * 60;
+        const currentOneDeposit = ethers.utils.parseUnits("6.75","ether")
+        await moonSale.connect(one).buyTokens(one.address, true, {
+            value: currentOneDeposit
+        })
 
-    //     const newClosingTime = blockTimeStamp +sevenDays
+        const newMarketPlaceBalance = await provider.getBalance(_marketPlace);
+        const newContractBalance = await provider.getBalance(one.address);
 
-    //     await moonSale.connect(one).buyTokens(one.address, true, {
-    //         value: "100"
-    //     })
+        expect(newContractBalance).to.be.at.least(await moonSale.interest())
+        expect(await moonSale.state()).equals(1)
+        expect(await moonVault.state()).equals(1)
+        expect(await moonSale.currentRefundableWei()).equals(0)
+        expect(newMarketPlaceBalance).equals(originalMarketPlaceBalance.add(_price))
 
-    //     await moonSale.connect(two).buyTokens(two.address, false, {
-    //         value: "300"
-    //     })
-      
-    //     let migrationCount = await moonSale.migrationCount()
+    });
 
-    //     expect(await moonSale.state()).to.equal(0)
-    //     await moonSale.migration(newClosingTime,newMarketWrapper.address )
+    it ("Should allow a non refundable contributor w/ no current refundable contributions to collect refunds from past crowdsales", async function () {
 
-    //     migrationCount = await moonSale.migrationCount()
+        const {provider, _price, moonSale, moonVault, _marketPlace, one, oneDeposit, three, threeRefundableDeposit} = await loadFixture(deployPostMigrationSaleFixture)
 
-    //     expect(await moonSale.state()).to.equal(1)
-    //     await expect(moonSale.connect(two).collectTokens()).to.not.be.reverted
+        const currentOneDeposit = ethers.utils.parseUnits("6.75","ether")
+        await moonSale.connect(one).buyTokens(one.address, false, {
+            value: currentOneDeposit
+        })
 
-    // });
+        const originalVaultBalance = await provider.getBalance(moonVault.address)
+        const originalOneBalance = await provider.getBalance(one.address)
+        const originalThreeBalance = await provider.getBalance(three.address)
 
-    // it ("Prevents collecting tokens after a migration post purchase for refundable contributors ", async function () {
+        await moonSale.connect(one).refund()
+        await moonSale.connect(three).refund()
 
-    //     const {Wrapper, moonSale, moonVault, moonToken, provider, one, two, three, four} = await loadFixture(deployTokenFixture)
+        const newVaultBalance = await provider.getBalance(moonVault.address)
+        const newOneBalance = await provider.getBalance(one.address)
+        const newThreeBalance = await provider.getBalance(three.address)
 
-    //     const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((250).toString(), "wei"), four.address, "");
-    //     await newMarketWrapper.deployed();
-    //     newMarketWrapper.grantOwnerRole(moonSale.address)
+        expect(newOneBalance).to.be.above(originalOneBalance)
+        expect(newThreeBalance).to.be.above(originalThreeBalance)
+        expect(newVaultBalance).to.equal(originalVaultBalance.sub(oneDeposit).sub(threeRefundableDeposit))
 
-    //     const blockNum = await ethers.provider.getBlockNumber();
-    //     const block = await ethers.provider.getBlock(blockNum);
-    //     const blockTimeStamp = block.timestamp;
-    //     const sevenDays =  7 * 24 * 60 * 60;
+        await expect(moonSale.connect(one).collectTokens()).to.not.be.reverted
+        await expect(moonSale.connect(three).collectTokens()).to.not.be.reverted
 
-    //     const newClosingTime = blockTimeStamp +sevenDays
+    });
 
-    //     await moonSale.connect(one).buyTokens(one.address, true, {
-    //         value: "100"
-    //     })
+    it ("Should allow a non refundable contributor w/ no current refundable contributions to collect tokens", async function () {
 
-    //     await moonSale.connect(two).buyTokens(two.address, false, {
-    //         value: "300"
-    //     })
-      
-    //     let migrationCount = await moonSale.migrationCount()
+        const { _rate, _tokenId, moonSale, moonToken, _marketPlace, one, two, twoDeposit, three, threeNonRefundableDeposit} = await loadFixture(deployPostMigrationSaleFixture)
 
-    //     expect(await moonSale.state()).to.equal(0)
-    //     await moonSale.migration(newClosingTime,newMarketWrapper.address )
+        const currentTwoDeposit = ethers.utils.parseUnits("6.75","ether")
+        await moonSale.connect(two).buyTokens(two.address, false, {
+            value: currentTwoDeposit
+        })
 
-    //     migrationCount = await moonSale.migrationCount()
+        await moonSale.connect(two).collectTokens()
+        await moonSale.connect(three).collectTokens()
 
-    //     expect(await moonSale.state()).to.equal(1)
-    //     await expect(moonSale.connect(one).collectTokens()).to.be.reverted
+        const twoTokenBalance = (twoDeposit.toBigInt() + currentTwoDeposit.toBigInt())* BigInt(_rate) / BigInt(10**18)
+        const threeTokenBalance = threeNonRefundableDeposit.toBigInt() * BigInt(_rate) / BigInt(10**18)
 
-    // });
+        expect(await moonToken.balanceOf(two.address, _tokenId)).to.equal(twoTokenBalance)
+        expect(await moonToken.balanceOf(three.address, _tokenId)).to.equal(threeTokenBalance)
 
-    // it ("Allows contributors to make both refundable and non refundable contributions", async function () {
+        await expect(moonSale.connect(one).refund()).to.not.be.reverted
+        await expect(moonSale.connect(three).refund()).to.not.be.reverted
 
-    //     const {Wrapper, moonSale, moonVault, moonToken, provider, one, two, three, four} = await loadFixture(deployTokenFixture)
+    });
 
-    //     const newMarketWrapper = await Wrapper.deploy(ethers.utils.parseUnits((250).toString(), "wei"), four.address, "");
-    //     await newMarketWrapper.deployed();
-    //     newMarketWrapper.grantOwnerRole(moonSale.address)
+    it ("Should prevent a previous refundable contributor from collecting after purchase post migration", async function () {
 
-    //     const blockNum = await ethers.provider.getBlockNumber();
-    //     const block = await ethers.provider.getBlock(blockNum);
-    //     const blockTimeStamp = block.timestamp;
-    //     const sevenDays =  7 * 24 * 60 * 60;
+        const { _rate, _tokenId, moonSale, moonToken, _marketPlace, one, two, twoDeposit, three, threeNonRefundableDeposit} = await loadFixture(deployPostMigrationSaleFixture)
 
-    //     const newClosingTime = blockTimeStamp +sevenDays
+        const currentTwoDeposit = ethers.utils.parseUnits("6.75","ether")
+        await moonSale.connect(two).buyTokens(two.address, false, {
+            value: currentTwoDeposit
+        })
 
-    //     await moonSale.connect(one).buyTokens(one.address, true, {
-    //         value: "100"
-    //     })
+        await expect(moonSale.connect(one).collectTokens()).to.be.reverted
 
-    //     await moonSale.connect(one).buyTokens(one.address, false, {
-    //         value: "300"
-    //     })
-      
-    //     let migrationCount = await moonSale.migrationCount()
+    });
 
-    //     expect(await moonSale.state()).to.equal(0)
-    //     await moonSale.migration(newClosingTime,newMarketWrapper.address )
+    it ("Should prevent a current refundable contributor from collecting refunds from past crowdsales before collecting their tokens yet", async function () {
 
-    //     migrationCount = await moonSale.migrationCount()
+        const {provider, _price, moonSale, moonVault, _marketPlace, one} = await loadFixture(deployPostMigrationSaleFixture)
 
-    //     expect(await moonSale.state()).to.equal(1)
-    //     await expect(moonSale.connect(one).collectTokens()).to.not.be.reverted
-    //     expect(await moonToken.balanceOf(one.address)).to.equal(300)
-    //     expect(await provider.getBalance(moonVault.address)).to.equal(100)
-    //     await expect(moonSale.connect(one).refund()).to.not.be.reverted
-    //     expect(await provider.getBalance(moonVault.address)).to.equal(0)
+        const currentOneDeposit = ethers.utils.parseUnits("6.75","ether")
+        await moonSale.connect(one).buyTokens(one.address, true, {
+            value: currentOneDeposit
+        })
 
-    // });
+        await expect(moonSale.connect(one).refund()).to.be.reverted
 
+    });
 
+    it ("Should allow a current refundable contributor to collect refunds from past crowdsales after collecting their tokens (also ensure that tokens are proportional to only current contributions)", async function () {
+
+        const {provider, _price, _rate, moonSale, moonToken, _tokenId, moonVault, _marketPlace, one, three, oneDeposit, threeRefundableDeposit, threeNonRefundableDeposit} = await loadFixture(deployPostMigrationSaleFixture)
+
+        const currentOneDeposit = ethers.utils.parseUnits("6","ether")
+        await moonSale.connect(one).buyTokens(one.address, true, {
+            value: currentOneDeposit
+        })
+
+        const currentThreeDeposit = ethers.utils.parseUnits(".75","ether")
+        await moonSale.connect(three).buyTokens(three.address, true, {
+            value: currentThreeDeposit
+        })
+
+        oneTokens = currentOneDeposit.toBigInt() * BigInt(_rate) / BigInt(10**18)
+        threeTokens = (currentThreeDeposit.toBigInt() + threeNonRefundableDeposit.toBigInt()) * BigInt(_rate)/ BigInt(10**18)
+
+        await moonSale.connect(one).collectTokens()
+        await moonSale.connect(three).collectTokens()
+
+        expect(await moonToken.balanceOf(one.address, _tokenId)).to.equal(oneTokens)
+        expect(await moonToken.balanceOf(three.address, _tokenId)).to.equal(threeTokens)
+
+        const originalVaultBalance = await provider.getBalance(moonVault.address)
+        const originalOneBalance = await provider.getBalance(one.address)
+        const originalThreeBalance = await provider.getBalance(three.address)
+
+        await moonSale.connect(one).refund()
+        await moonSale.connect(three).refund()
+
+        const newVaultBalance = await provider.getBalance(moonVault.address)
+        const newOneBalance = await provider.getBalance(one.address)
+        const newThreeBalance = await provider.getBalance(three.address)
+
+        expect(newOneBalance).to.be.above(originalOneBalance)
+        expect(newThreeBalance).to.be.above(originalThreeBalance)
+        expect(newVaultBalance).to.equal(originalVaultBalance.sub(threeRefundableDeposit).sub(oneDeposit))
+
+    });
 
 });

@@ -31,15 +31,17 @@ describe("MoonVault Testing", function  () {
 
     expect(moonVault);
 
-  });
-  it("Should prevent non admins from paying the function", async function() {
+  })
+
+  it("Should prevent non admins from paying the contract", async function() {
     const {moonVault, one} = await loadFixture(deployVaultFixture)
 
     await expect( one.sendTransaction({
         to: moonVault.address,
         value: "100"
       })).to.be.reverted
-})
+  })
+
   it("Should update refundable balances", async function () {
 
     const {moonVault, one} = await loadFixture(deployVaultFixture)
@@ -50,7 +52,8 @@ describe("MoonVault Testing", function  () {
     const balance = await moonVault.refundableBalances(one.address)
 
     expect(balance).equals(_weiAmount)
-  });
+  })
+
   it("Should deduct refundable balances", async function () {
 
     const {moonVault, one} = await loadFixture(deployVaultFixture)
@@ -65,7 +68,8 @@ describe("MoonVault Testing", function  () {
 
     expect(balance).equals(_deposit-_tokenCollectionDeduction)
 
-  });
+  })
+
   it("Should refund balances", async function () {
 
     const {provider, moonVault, one} = await loadFixture(deployVaultFixture)
@@ -85,7 +89,8 @@ describe("MoonVault Testing", function  () {
      expect(contractBalance).equals(newContractBalance.add(_deposit))
      expect(signerBalance).equals(newSignerBalance.sub(_deposit))
 
-  });
+  })
+
   it("Should close and prevent other calls", async function () {
 
     const {moonVault, one} = await loadFixture(deployVaultFixture)
@@ -94,7 +99,8 @@ describe("MoonVault Testing", function  () {
 
     await expect(moonVault.updateRefundableBalances(one.address, 50)).to.be.reverted
     await expect(moonVault.refund(one.address)).to.be.reverted
-  });
+  })
+
   it("Should prevent non owner calls", async function () {
 
     const {moonVault, one} = await loadFixture(deployVaultFixture)
@@ -102,7 +108,8 @@ describe("MoonVault Testing", function  () {
     await expect(moonVault.connect(one).updateRefundableBalances(one.address, 50)).to.be.reverted
     await expect(moonVault.connect(one).deductRefundableBalances(one.address, 25)).to.be.reverted
     await expect(moonVault.connect(one).refund(one.address)).to.be.reverted
-  });
+  })
+
   it("Should allow MoonVault to add an admin", async function () {
 
     const {moonVault, owner, one} = await loadFixture(deployVaultFixture)
@@ -112,7 +119,8 @@ describe("MoonVault Testing", function  () {
     await expect(moonVault.connect(one).updateRefundableBalances(one.address, 50)).to.not.be.reverted
     await expect(moonVault.connect(one).deductRefundableBalances(one.address, 25)).to.not.be.reverted
     await expect(moonVault.connect(one).refund(one.address)).to.not.be.reverted
-  });
+  })
+
   it("Should allow an emergency withdrawal", async function () {
 
     const {provider, moonVault, one} = await loadFixture(deployVaultFixture)
@@ -127,8 +135,7 @@ describe("MoonVault Testing", function  () {
     
     expect(newContractBalance).to.equal(0);
     expect(newOwnerBalance).to.equal(ownerBalance.add(contractBalance))
-
-  });
+  })
 
 
 

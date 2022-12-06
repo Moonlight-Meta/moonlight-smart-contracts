@@ -45,13 +45,9 @@ abstract contract ACrowdsale is ICrowdsale, AccessControl, ReentrancyGuard {
         closingTime = _closingTime;
     }
 
-    receive() external payable {
-        buyTokens(msg.sender, true);
-    }
+    receive() external payable onlyRole(DEFAULT_ADMIN_ROLE) {}
 
-    fallback() external payable {
-        buyTokens(msg.sender, true);
-    }
+    fallback() external payable onlyRole(DEFAULT_ADMIN_ROLE) {}
 
     function grantOwnerRole(address to) external onlyRole(DEFAULT_ADMIN_ROLE) {
         _grantRole(DEFAULT_ADMIN_ROLE, to);
@@ -95,7 +91,7 @@ abstract contract ACrowdsale is ICrowdsale, AccessControl, ReentrancyGuard {
         address _beneficiary,
         uint256 _tokenAmount
     ) internal {
-        token.mint(_beneficiary, _tokenAmount/((10**18)/rate));
+        token.mint(_beneficiary, _tokenAmount/(10**18) );
     }
 
     function _preValidatePurchase(

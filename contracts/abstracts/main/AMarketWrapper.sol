@@ -15,7 +15,7 @@ abstract contract AMarketWrapper is IMarketWrapper, AccessControl {
 
     receive() external payable onlyRole(DEFAULT_ADMIN_ROLE) {}
 
-    fallback() external payable {}
+    fallback() external payable onlyRole(DEFAULT_ADMIN_ROLE){}
 
     function grantOwnerRole(address to) external onlyRole(DEFAULT_ADMIN_ROLE) {
         _grantRole(DEFAULT_ADMIN_ROLE, to);
