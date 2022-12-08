@@ -14,7 +14,6 @@ interface IMarketWrapper {
 
     function migration(
         uint256 _price,
-        uint256 _gasEstimate,
         address _marketPlace,
         bytes memory _transactionData
     ) external;

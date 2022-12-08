@@ -11,13 +11,11 @@ contract MarketWrapperFactory is AMarketWrapperFactory {
 
     function newMarketWrapper(
         uint256 _buyNowPrice,
-        uint256 _gasEstimate,
         address _marketPlace,
         bytes memory _transactionData
     ) external override onlyRole(DEFAULT_ADMIN_ROLE) returns (address) {
         MarketWrapper newWrapper = new MarketWrapper(
             _buyNowPrice,
-            _gasEstimate,
             _marketPlace,
             _transactionData
         );

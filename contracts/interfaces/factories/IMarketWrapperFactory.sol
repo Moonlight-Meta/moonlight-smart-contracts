@@ -11,7 +11,6 @@ interface IMarketWrapperFactory {
 
     function newMarketWrapper(
         uint256 _buyNowPrice,
-        uint256 _gasEstimate,
         address _marketPlace,
         bytes memory _transactionData
     ) external returns (address);

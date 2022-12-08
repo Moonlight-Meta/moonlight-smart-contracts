@@ -75,11 +75,6 @@
           "type": "uint256"
         },
         {
-          "internalType": "uint256",
-          "name": "_gasEstimate",
-          "type": "uint256"
-        },
-        {
           "internalType": "address",
           "name": "_marketPlace",
           "type": "address"
@@ -120,11 +115,6 @@
         {
           "internalType": "uint256",
           "name": "_buyNowPrice",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "gasEstimate",
           "type": "uint256"
         },
         {

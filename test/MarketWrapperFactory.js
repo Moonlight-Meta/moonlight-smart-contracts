@@ -26,26 +26,24 @@ describe("MarketWrapperFactory Testing", function () {
         const { marketWrapperFactory, owner, one, four} = await loadFixture(deployFactoryFixture)
 
         const _price = 500
-        const _gasEstimate = 0
         const _marketPlace = four.address
         const _transactionData = "0x"
         
-        await expect(marketWrapperFactory.connect(one).newMarketWrapper(_price,_gasEstimate, _marketPlace, _transactionData )).to.be.reverted
+        await expect(marketWrapperFactory.connect(one).newMarketWrapper(_price, _marketPlace, _transactionData )).to.be.reverted
 
         await marketWrapperFactory.grantOwnerRole(one.address);
 
-        await expect(marketWrapperFactory.connect(one).newMarketWrapper(_price, _gasEstimate, _marketPlace, _transactionData)).to.not.be.reverted
+        await expect(marketWrapperFactory.connect(one).newMarketWrapper(_price, _marketPlace, _transactionData)).to.not.be.reverted
     })
 
     async function deployWrapperFixture() {
         const { marketWrapperFactory, owner, one, two, three, four } = await loadFixture(deployFactoryFixture)
 
         const _price = 500
-        const _gasEstimate = 0
         const _marketPlace = four.address
         const _transactionData = "0x"
         
-        await marketWrapperFactory.newMarketWrapper(_price, _gasEstimate, _marketPlace, _transactionData)
+        await marketWrapperFactory.newMarketWrapper(_price, _marketPlace, _transactionData)
         const address = marketWrapperFactory.getLatestMarketWrapper();
 
         const Wrapper = await ethers.getContractFactory("MarketWrapper");
@@ -53,7 +51,7 @@ describe("MarketWrapperFactory Testing", function () {
 
         await marketWrapperFactory.giveContractOwnership(address, owner.address)
 
-        return { marketWrapper, _price, _gasEstimate, _marketPlace, _transactionData, owner, one, two, three, four }
+        return { marketWrapper, _price,  _marketPlace, _transactionData, owner, one, two, three, four }
     }
 
     describe("MarketWrapper Testing", function () {
@@ -103,15 +101,6 @@ describe("MarketWrapperFactory Testing", function () {
              
         })
     
-        it("Should allow changing the gasEstimate Price of the marketWrapper", async function () {
-    
-            const { marketWrapper } = await loadFixture(deployWrapperFixture)
-            
-            const _gasEstimate = 20
-            await marketWrapper.setGasEstimate(_gasEstimate);
-            expect(await marketWrapper.gasEstimate()).to.equal(_gasEstimate)
-             
-        })
     
         it("Should prevent non admin setter calls", async function () {
     
@@ -128,14 +117,12 @@ describe("MarketWrapperFactory Testing", function () {
             const _price = 300
             const _marketPlace = three.address
             const _transactionData = "0x0000000000000000000000000000000000000000000000000000000061626364"
-            const _gasEstimate = 20
     
-            await marketWrapper.migration(_price, _gasEstimate, _marketPlace, _transactionData )
+            await marketWrapper.migration(_price, _marketPlace, _transactionData )
             
             expect(await marketWrapper.buyNowPrice()).equals(_price)
             expect(await marketWrapper.marketPlace()).equals(_marketPlace)
             expect(await marketWrapper.transactionData()).equals(_transactionData)
-            expect(await marketWrapper.gasEstimate()).equals(_gasEstimate)
              
         })
     
@@ -146,9 +133,8 @@ describe("MarketWrapperFactory Testing", function () {
             const _price = 300
             const _marketPlace = three.address
             const _transactionData = "0x0000000000000000000000000000000000000000000000000000000061626364"
-            const _gasEstimate = 20
     
-            await marketWrapper.migration(_price, _gasEstimate, _marketPlace, _transactionData )         
+            await marketWrapper.migration(_price, _marketPlace, _transactionData )         
         })
     
         it("Should allow setting admins", async function () {

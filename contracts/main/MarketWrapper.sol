@@ -7,20 +7,17 @@ contract MarketWrapper is AMarketWrapper {
     uint256 public buyNowPrice;
     address public marketPlace;
     bytes public transactionData;
-    uint256 public gasEstimate;
 
     event Purchased(bool success);
 
     constructor(
         uint256 _buyNowPrice,
-        uint256 _gasEstimate,
         address _marketPlace,
         bytes memory _transactionData
     ) AMarketWrapper() {
         buyNowPrice = _buyNowPrice;
         marketPlace = _marketPlace;
         transactionData = _transactionData;
-        gasEstimate = _gasEstimate;
     }
 
     function getBuyNowPrice() external view override returns (uint256) {
@@ -33,12 +30,6 @@ contract MarketWrapper is AMarketWrapper {
         buyNowPrice = _price;
     }
 
-    function setGasEstimate(
-        uint256 _gasEstimate
-    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        gasEstimate = _gasEstimate;
-    }
-
     function setTransactionData(
         bytes memory _transactionData
     ) external onlyRole(DEFAULT_ADMIN_ROLE) {
@@ -47,14 +38,12 @@ contract MarketWrapper is AMarketWrapper {
 
     function migration(
         uint256 _price,
-        uint256 _gasEstimate,
         address _marketPlace,
         bytes memory _transactionData
     ) external override onlyRole(DEFAULT_ADMIN_ROLE) {
         buyNowPrice = _price;
         marketPlace = _marketPlace;
         transactionData = _transactionData;
-        gasEstimate = _gasEstimate;
     }
 
     function buyNow()
@@ -67,8 +56,7 @@ contract MarketWrapper is AMarketWrapper {
         require(address(this).balance >= buyNowPrice);
 
         (bool success, ) = marketPlace.call{
-            value: buyNowPrice,
-            gas: gasEstimate
+            value: buyNowPrice
         }(transactionData);
         require(success, "Purchase Failed");
 

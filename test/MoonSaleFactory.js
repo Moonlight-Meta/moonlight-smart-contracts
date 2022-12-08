@@ -63,7 +63,6 @@ describe("MoonSaleFactory Testing", function () {
         const _opening_time = blockTimeStamp + 5;
         const _closing_time = blockTimeStamp + sevenDays;
         const _price = ethers.utils.parseUnits("8.6919","ether")
-        const _gasEstimate = 1000
         const _marketPlace = "0x00000000006c3852cbEf3e08E8dF289169EdE581"
         const _transactionData = "0x"
 
@@ -73,7 +72,6 @@ describe("MoonSaleFactory Testing", function () {
             _opening_time,
             _closing_time,
             _price,
-            _gasEstimate,
             _marketPlace,
             _transactionData
         )).to.be.reverted
@@ -107,7 +105,6 @@ describe("MoonSaleFactory Testing", function () {
         const _opening_time = blockTimeStamp + 5;
         const _closing_time = blockTimeStamp + sevenDays;
         const _price = ethers.utils.parseUnits("8.6919","ether")
-        const _gasEstimate = 1000
         const _marketPlace = "0x00000000006c3852cbEf3e08E8dF289169EdE581"
         const _transactionData = "0x"
 
@@ -117,7 +114,6 @@ describe("MoonSaleFactory Testing", function () {
             _opening_time,
             _closing_time,
             _price,
-            _gasEstimate,
             _marketPlace,
             _transactionData
         )
@@ -146,7 +142,6 @@ describe("MoonSaleFactory Testing", function () {
                 _tokenId,
             marketWrapper,
                 _price,
-                _gasEstimate,
                 _marketPlace,
                 _transactionData,
             owner, one, two, three, four, five }
@@ -238,7 +233,6 @@ describe("MoonSaleFactory Testing", function () {
         const _tokenId = 100
         const _fractionalUri = ""
         const _price = ethers.utils.parseUnits("9.199","ether")
-        const _gasEstimate = 0
         const _marketPlace = "0x00000000006c3852cbEf3e08E8dF289169EdE581"
         const _transactionData = "0x"
 
@@ -248,7 +242,6 @@ describe("MoonSaleFactory Testing", function () {
             _tokenId,
             _fractionalUri,
             _price,
-            _gasEstimate,
             _marketPlace,
             _transactionData
         )
@@ -297,7 +290,6 @@ describe("MoonSaleFactory Testing", function () {
         const _tokenId = 100
         const _fractionalUri = ""
         const _price = ethers.utils.parseUnits("4.12","ether")
-        const _gasEstimate = 0
         const _marketPlace = "0x00000000006c3852cbEf3e08E8dF289169EdE581"
         const _transactionData = "0x"
 
@@ -307,7 +299,6 @@ describe("MoonSaleFactory Testing", function () {
             _tokenId,
             _fractionalUri,
             _price,
-            _gasEstimate,
             _marketPlace,
             _transactionData
         )
@@ -346,7 +337,6 @@ describe("MoonSaleFactory Testing", function () {
         const _tokenId = 100
         const _fractionalUri = ""
         const _price = ethers.utils.parseUnits("4.12","ether")
-        const _gasEstimate = 0
         const _marketPlace = "0x00000000006c3852cbEf3e08E8dF289169EdE581"
         const _transactionData = "0x"
 
@@ -357,7 +347,6 @@ describe("MoonSaleFactory Testing", function () {
             _tokenId,
             _fractionalUri,
             _price,
-            _gasEstimate,
             _marketPlace,
             _transactionData
         )
@@ -411,7 +400,6 @@ describe("MoonSaleFactory Testing", function () {
         const _tokenId = 100
         const _fractionalUri = ""
         const _price = ethers.utils.parseUnits("10","ether")
-        const _gasEstimate = 0
 
         await moonSaleFactory.migration(
             _saleAddress,
@@ -419,7 +407,6 @@ describe("MoonSaleFactory Testing", function () {
             _tokenId,
             _fractionalUri,
             _price,
-            _gasEstimate,
             _marketPlace,
             _transactionData
         )
@@ -439,7 +426,6 @@ describe("MoonSaleFactory Testing", function () {
                 _tokenId,
             marketWrapper, 
                 _price,
-                _gasEstimate,
                 _marketPlace,
                 _transactionData,
             owner, one, two, three, four, five,
@@ -755,7 +741,6 @@ describe("MoonSaleFactory Testing", function () {
                     _tokenId,
                 marketWrapper, 
                     _price,
-                    _gasEstimate,
                     _marketPlace,
                     _transactionData,
                 owner, one, two, three, four, five
@@ -788,7 +773,6 @@ describe("MoonSaleFactory Testing", function () {
                     _tokenId,
                 marketWrapper, 
                     _price,
-                    _gasEstimate,
                     _marketPlace,
                     _transactionData,
                 owner, one, two, three, four, five,

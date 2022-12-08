@@ -25,12 +25,10 @@ describe("MoonSale Testing", function  () {
         const Wrapper = await ethers.getContractFactory("MarketWrapper");
         
         const _price = ethers.utils.parseUnits("8.6919","ether")
-        const _gasEstimate = 1000
         const _marketPlace = "0x00000000006c3852cbEf3e08E8dF289169EdE581"
         const _transactionData = "0x"
         const marketWrapper = await Wrapper.deploy(
             _price,
-            _gasEstimate,
             _marketPlace,
             _transactionData
         )
@@ -84,7 +82,6 @@ describe("MoonSale Testing", function  () {
                 _tokenId,
             marketWrapper, 
                 _price,
-                _gasEstimate,
                 _marketPlace,
                 _transactionData,
             owner, one, two, three, four, five
@@ -396,7 +393,6 @@ describe("MoonSale Testing", function  () {
                 _tokenId,
             marketWrapper, 
                 _price,
-                _gasEstimate,
                 _marketPlace,
                 _transactionData,
             owner, one, two, three, four, five
@@ -429,7 +425,6 @@ describe("MoonSale Testing", function  () {
                 _tokenId,
             marketWrapper, 
                 _price,
-                _gasEstimate,
                 _marketPlace,
                 _transactionData,
             owner, one, two, three, four, five,
@@ -571,12 +566,10 @@ describe("MoonSale Testing", function  () {
         await moonToken.migration(_tokenId, _fractionalUri)
 
         const _price = ethers.utils.parseUnits("9.199","ether")
-        const _gasEstimate = 0
         const _marketPlace = "0x00000000006c3852cbEf3e08E8dF289169EdE581"
         const _transactionData = "0x"
         await marketWrapper.migration(
             _price,
-            _gasEstimate,
             _marketPlace,
             _transactionData
         )
@@ -628,13 +621,11 @@ describe("MoonSale Testing", function  () {
         await moonToken.migration(_tokenId, _fractionalUri)
 
         const _price = ethers.utils.parseUnits("4.12","ether")
-        const _gasEstimate = 0
         const _marketPlace = "0x00000000006c3852cbEf3e08E8dF289169EdE581"
         const originalMarketPlaceBalance = await  provider.getBalance(_marketPlace)
         const _transactionData = "0x"
         await marketWrapper.migration(
             _price,
-            _gasEstimate,
             _marketPlace,
             _transactionData
         )
@@ -715,10 +706,8 @@ describe("MoonSale Testing", function  () {
         await moonToken.migration(_tokenId, _fractionalUri)
 
         const _price = ethers.utils.parseUnits("10","ether")
-        const _gasEstimate = 0
         await marketWrapper.migration(
             _price,
-            _gasEstimate,
             _marketPlace,
             _transactionData
         )
@@ -740,7 +729,6 @@ describe("MoonSale Testing", function  () {
                 _tokenId,
             marketWrapper, 
                 _price,
-                _gasEstimate,
                 _marketPlace,
                 _transactionData,
             owner, one, two, three, four, five,

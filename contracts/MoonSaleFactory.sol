@@ -27,14 +27,12 @@ contract MoonSaleFactory is ACrowdsaleFactory {
         uint256 _openingTime,
         uint256 _closingTime,
         uint256 _buyNowPrice,
-        uint256 gasEstimate,
         address _marketPlace,
         bytes memory _transactionData
     ) external override onlyRole(DEFAULT_ADMIN_ROLE) returns (address) {
         address vaultAddress = vaultFactory.newMoonVault();
         address marketWrapperAddress = marketWrapperFactory.newMarketWrapper(
             _buyNowPrice,
-            gasEstimate,
             _marketPlace,
             _transactionData
         );
@@ -108,7 +106,6 @@ contract MoonSaleFactory is ACrowdsaleFactory {
         uint256 _tokenId,
         string memory _fractionalUri,
         uint256 _price,
-        uint256 _gasEstimate,
         address _marketPlace,
         bytes memory _transactionData
     ) external override onlyRole(DEFAULT_ADMIN_ROLE) {
@@ -118,7 +115,7 @@ contract MoonSaleFactory is ACrowdsaleFactory {
         IMarketWrapper wrapper = IMarketWrapper(
             payable(saleMarketWrappers[_sale])
         );
-        wrapper.migration(_price, _gasEstimate, _marketPlace, _transactionData);
+        wrapper.migration(_price,_marketPlace, _transactionData);
 
         MoonSale moonSale = MoonSale(payable(_sale));
         moonSale.migration(_newClosingTime);

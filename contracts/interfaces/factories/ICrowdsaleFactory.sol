@@ -10,7 +10,6 @@ interface ICrowdsaleFactory {
         uint256 _openingTime,
         uint256 _closingTime,
         uint256 _buyNowPrice,
-        uint256 gasEstimate,
         address _marketPlace,
         bytes memory _transactionData
     ) external returns (address);
@@ -21,7 +20,6 @@ interface ICrowdsaleFactory {
         uint256 _tokenId,
         string memory _fractionalUri,
         uint256 _price,
-        uint256 _gasEstimate,
         address _marketPlace,
         bytes memory _transactionData
     ) external;
