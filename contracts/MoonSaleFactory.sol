@@ -4,8 +4,9 @@ pragma solidity ^0.8.9;
 import "./abstracts/factories/ACrowdsaleFactory.sol";
 
 contract MoonSaleFactory is ACrowdsaleFactory {
-    address[] public moonSales;
-    uint256 public count = 0;
+
+
+    mapping(address => mapping(uint256 => address)) public moonSales;
     mapping(address => address) public saleTokens;
     mapping(address => address) public saleVaults;
     mapping(address => address) public saleMarketWrappers;
@@ -22,6 +23,7 @@ contract MoonSaleFactory is ACrowdsaleFactory {
     }
 
     function newMoonSale(
+        SaleIndex memory _saleIndex,
         uint256 _rate,
         address _tokenAddress,
         uint256 _openingTime,
@@ -37,13 +39,19 @@ contract MoonSaleFactory is ACrowdsaleFactory {
             _transactionData
         );
 
-        vaultFactory.giveContractOwnership(vaultAddress, address(this));
+        vaultFactory.giveContractOwnership(
+            vaultAddress, 
+            address(this)
+        );
         marketWrapperFactory.giveContractOwnership(
             marketWrapperAddress,
             address(this)
         );
 
-        vaultFactory.giveContractOwnership(vaultAddress, msg.sender);
+        vaultFactory.giveContractOwnership(
+            vaultAddress,
+            msg.sender
+            );
         marketWrapperFactory.giveContractOwnership(
             marketWrapperAddress,
             msg.sender
@@ -58,7 +66,10 @@ contract MoonSaleFactory is ACrowdsaleFactory {
             payable(marketWrapperAddress)
         );
 
-        vaultFactory.giveContractOwnership(vaultAddress, saleAddress);
+        vaultFactory.giveContractOwnership(
+            vaultAddress, 
+            saleAddress
+        );
         marketWrapperFactory.giveContractOwnership(
             marketWrapperAddress,
             saleAddress
@@ -70,14 +81,20 @@ contract MoonSaleFactory is ACrowdsaleFactory {
         moonSale.grantOwnerRole(address(this));
         moonSale.grantOwnerRole(msg.sender);
 
-        moonSales.push(saleAddress);
-        count += 1;
+        _setMoonSale(_saleIndex, saleAddress);
 
         saleTokens[saleAddress] = _tokenAddress;
         saleVaults[saleAddress] = vaultAddress;
         saleMarketWrappers[saleAddress] = marketWrapperAddress;
 
         return saleAddress;
+    }
+
+    function _setMoonSale(
+        SaleIndex memory _saleIndex,
+        address _sale
+    ) internal{
+        moonSales[_saleIndex.nftContractAddress][_saleIndex.tokenId] = _sale;
     }
 
     function _newMoonSale(
@@ -148,7 +165,4 @@ contract MoonSaleFactory is ACrowdsaleFactory {
         vaultFactory = IVaultFactory(_newFactory);
     }
 
-    function getLatestSale() external view override returns (address) {
-        return moonSales[count - 1];
-    }
 }

@@ -2,9 +2,16 @@
 pragma solidity ^0.8.9;
 
 interface ICrowdsaleFactory {
+    
+    struct SaleIndex {
+        address nftContractAddress;
+        uint256 tokenId;
+    }
+
     function grantOwnerRole(address to) external;
 
     function newMoonSale(
+        SaleIndex memory _saleIndex,
         uint256 _rate,
         address _tokenAddress,
         uint256 _openingTime,
@@ -29,5 +36,4 @@ interface ICrowdsaleFactory {
         address payable _to
     ) external payable;
 
-    function getLatestSale() external returns (address);
 }

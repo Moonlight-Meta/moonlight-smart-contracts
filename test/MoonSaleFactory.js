@@ -58,6 +58,9 @@ describe("MoonSaleFactory Testing", function () {
         await moonToken.deployed();
         await moonToken.grantOwnerRole(moonSaleFactory.address)
 
+        const nftContractAddress = "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D"
+        
+        const _saleIndex = [nftContractAddress, _tokenId]
         const _rate = 100
         const _tokenAddress = moonToken.address
         const _opening_time = blockTimeStamp + 5;
@@ -67,6 +70,7 @@ describe("MoonSaleFactory Testing", function () {
         const _transactionData = "0x"
 
         await expect(moonSaleFactory.connect(one).newMoonSale(
+            _saleIndex,
             _rate,
             _tokenAddress,
             _opening_time,
@@ -100,6 +104,10 @@ describe("MoonSaleFactory Testing", function () {
         await moonToken.deployed();
         await moonToken.grantOwnerRole(moonSaleFactory.address)
 
+
+        const nftContractAddress = "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D"
+        
+        const _saleIndex = [nftContractAddress, _tokenId]
         const _rate = 100
         const _tokenAddress = moonToken.address
         const _opening_time = blockTimeStamp + 5;
@@ -109,6 +117,7 @@ describe("MoonSaleFactory Testing", function () {
         const _transactionData = "0x"
 
         await moonSaleFactory.connect(owner).newMoonSale(
+            _saleIndex,
             _rate,
             _tokenAddress,
             _opening_time,
@@ -118,7 +127,7 @@ describe("MoonSaleFactory Testing", function () {
             _transactionData
         )
 
-        const saleAddress = await moonSaleFactory.getLatestSale();
+        const saleAddress = await moonSaleFactory.moonSales(nftContractAddress, _tokenId)
         const Sale = await ethers.getContractFactory("MoonSale");
         const moonSale = await Sale.attach(saleAddress)
         
