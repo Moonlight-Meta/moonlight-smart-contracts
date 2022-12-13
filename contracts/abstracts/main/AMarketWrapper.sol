@@ -3,7 +3,7 @@ pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "../../interfaces/main/IMarketWrapper.sol";
 
 abstract contract AMarketWrapper is IMarketWrapper, AccessControl {

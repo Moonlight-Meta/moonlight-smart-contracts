@@ -63,4 +63,14 @@ contract MarketWrapper is AMarketWrapper {
         emit Purchased(true);
         return true;
     }
+
+    function withdrawNft(
+        address _nftContractAddress,
+        uint256 _tokenId,
+        address _to
+    ) public onlyRole(DEFAULT_ADMIN_ROLE){
+        require(ERC721(address(_nftContractAddress)).ownerOf(_tokenId) == address(this), "Contract does not own the NFT");
+        
+        ERC721(address(_nftContractAddress)).transferFrom(address(this), _to, _tokenId);
+    }
 }
