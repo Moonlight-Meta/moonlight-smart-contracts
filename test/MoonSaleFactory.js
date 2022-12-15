@@ -141,7 +141,8 @@ describe("MoonSaleFactory Testing", function () {
 
         return { provider,
             moonSaleFactory,
-            moonSale, 
+            moonSale,
+                _saleIndex,
                 _rate,
                 _opening_time,
                 _closing_time,
@@ -220,7 +221,7 @@ describe("MoonSaleFactory Testing", function () {
 
 
     it("Should be able to perform a migration", async function () {
-        const {moonSaleFactory, moonSale, moonVault, provider, one, two, three, four, _rate} = await loadFixture(deploySaleFixture)
+        const {moonSaleFactory, moonSale, moonVault,_saleIndex,  provider, one, two, three, four, _rate} = await loadFixture(deploySaleFixture)
 
         const blockNum = await ethers.provider.getBlockNumber();
         const block = await ethers.provider.getBlock(blockNum);
@@ -237,7 +238,6 @@ describe("MoonSaleFactory Testing", function () {
             value: twoDeposit
         })
 
-        const _saleAddress = moonSale.address
         const _closingTime = blockTimeStamp +sevenDays
         const _tokenId = 100
         const _fractionalUri = ""
@@ -246,7 +246,7 @@ describe("MoonSaleFactory Testing", function () {
         const _transactionData = "0x"
 
         await moonSaleFactory.migration(
-            _saleAddress,
+            _saleIndex,
             _closingTime,
             _tokenId,
             _fractionalUri,
@@ -277,7 +277,7 @@ describe("MoonSaleFactory Testing", function () {
     })
 
     it("Should allow a migration to automatically purchase the NFT if it has enough non refundable funds", async function () {
-        const {moonSaleFactory, moonSale, moonVault, provider, one, two, three, four, _rate} = await loadFixture(deploySaleFixture)
+        const {moonSaleFactory, _saleIndex, moonSale, moonVault, provider, one, two, three, four, _rate} = await loadFixture(deploySaleFixture)
 
         const blockNum = await ethers.provider.getBlockNumber();
         const block = await ethers.provider.getBlock(blockNum);
@@ -294,7 +294,6 @@ describe("MoonSaleFactory Testing", function () {
             value: twoDeposit
         })
 
-        const _saleAddress = moonSale.address
         const _closingTime = blockTimeStamp +sevenDays
         const _tokenId = 100
         const _fractionalUri = ""
@@ -303,7 +302,7 @@ describe("MoonSaleFactory Testing", function () {
         const _transactionData = "0x"
 
         await moonSaleFactory.migration(
-            _saleAddress,
+            _saleIndex,
             _closingTime,
             _tokenId,
             _fractionalUri,
@@ -366,7 +365,8 @@ describe("MoonSaleFactory Testing", function () {
         const {
             moonSaleFactory,
             provider, 
-            moonSale, 
+            moonSale,
+                _saleIndex,
                 _rate, 
                 _opening_time,
             moonVault,
@@ -404,14 +404,13 @@ describe("MoonSaleFactory Testing", function () {
             value: threeNonRefundableDeposit
         })
 
-        const _saleAddress = moonSale.address
         const _closing_time = blockTimeStamp +sevenDays
         const _tokenId = 100
         const _fractionalUri = ""
         const _price = ethers.utils.parseUnits("10","ether")
 
         await moonSaleFactory.migration(
-            _saleAddress,
+            _saleIndex,
             _closing_time,
             _tokenId,
             _fractionalUri,
@@ -426,6 +425,7 @@ describe("MoonSaleFactory Testing", function () {
             moonSaleFactory,
             provider, 
             moonSale, 
+                _saleIndex,
                 _rate, 
                 _opening_time,
                 _closing_time,

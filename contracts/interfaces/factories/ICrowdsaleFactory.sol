@@ -22,7 +22,7 @@ interface ICrowdsaleFactory {
     ) external returns (address);
 
     function migration(
-        address _sale,
+        SaleIndex memory _saleIndex,
         uint256 _newClosingTime,
         uint256 _tokenId,
         string memory _fractionalUri,

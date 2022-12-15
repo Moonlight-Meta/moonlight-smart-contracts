@@ -118,7 +118,7 @@ contract MoonSaleFactory is ACrowdsaleFactory {
     }
 
     function migration(
-        address _sale,
+        SaleIndex memory _saleIndex,
         uint256 _newClosingTime,
         uint256 _tokenId,
         string memory _fractionalUri,
@@ -126,16 +126,22 @@ contract MoonSaleFactory is ACrowdsaleFactory {
         address _marketPlace,
         bytes memory _transactionData
     ) external override onlyRole(DEFAULT_ADMIN_ROLE) {
-        IToken token = IToken(saleTokens[_sale]);
+
+        address sale = moonSales[_saleIndex.nftContractAddress][_saleIndex.tokenId];
+        moonSales[_saleIndex.nftContractAddress][_saleIndex.tokenId] == address(0);
+
+        IToken token = IToken(saleTokens[sale]);
         token.migration(_tokenId, _fractionalUri);
 
         IMarketWrapper wrapper = IMarketWrapper(
-            payable(saleMarketWrappers[_sale])
+            payable(saleMarketWrappers[sale])
         );
         wrapper.migration(_price,_marketPlace, _transactionData);
 
-        MoonSale moonSale = MoonSale(payable(_sale));
+        MoonSale moonSale = MoonSale(payable(sale));
         moonSale.migration(_newClosingTime);
+
+        moonSales[_saleIndex.nftContractAddress][_tokenId]  = sale;
     }
 
     function emergencyWithdrawal(
