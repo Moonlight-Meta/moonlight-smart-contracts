@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
+import "../../main/OrderStructs.sol";
+
 interface ICrowdsaleFactory {
     
     struct SaleIndex {
@@ -18,7 +20,7 @@ interface ICrowdsaleFactory {
         uint256 _closingTime,
         uint256 _buyNowPrice,
         address _marketPlace,
-        bytes memory _transactionData
+        BasicOrderParameters calldata orderParams_
     ) external returns (address);
 
     function migration(
@@ -28,7 +30,7 @@ interface ICrowdsaleFactory {
         string memory _fractionalUri,
         uint256 _price,
         address _marketPlace,
-        bytes memory _transactionData
+        BasicOrderParameters calldata orderParams_
     ) external;
 
     function emergencyWithdrawal(

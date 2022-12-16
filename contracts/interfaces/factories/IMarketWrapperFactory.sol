@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
+import "../../main/OrderStructs.sol";
 
 interface IMarketWrapperFactory {
     function grantOwnerRole(address _to) external;
@@ -12,7 +13,7 @@ interface IMarketWrapperFactory {
     function newMarketWrapper(
         uint256 _buyNowPrice,
         address _marketPlace,
-        bytes memory _transactionData
+        BasicOrderParameters calldata orderParams_
     ) external returns (address);
 
     function getLatestMarketWrapper() external returns (address);

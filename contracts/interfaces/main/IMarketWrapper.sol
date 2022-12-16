@@ -1,7 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
+import "../../main/OrderStructs.sol";
+
 interface IMarketWrapper {
+
+    struct MarketWrapperConstructorParameters {
+        BasicOrderParameters orderParams;
+        uint256 buyNowPrice;
+        address marketPlace;
+    }
+
     receive() external payable;
 
     fallback() external payable;
@@ -13,9 +22,7 @@ interface IMarketWrapper {
     function emergencyWithdrawal(address payable _to) external payable;
 
     function migration(
-        uint256 _price,
-        address _marketPlace,
-        bytes memory _transactionData
+        MarketWrapperConstructorParameters calldata params_
     ) external;
 
     function buyNow() external payable returns (bool);

@@ -4,46 +4,75 @@ pragma solidity ^0.8.9;
 import "../abstracts/main/AMarketWrapper.sol";
 
 contract MarketWrapper is AMarketWrapper {
-    uint256 public buyNowPrice;
-    address public marketPlace;
-    bytes public transactionData;
-
+    MarketWrapperConstructorParameters public params;
     event Purchased(bool success);
 
     constructor(
-        uint256 _buyNowPrice,
-        address _marketPlace,
-        bytes memory _transactionData
+        MarketWrapperConstructorParameters memory _params
     ) AMarketWrapper() {
-        buyNowPrice = _buyNowPrice;
-        marketPlace = _marketPlace;
-        transactionData = _transactionData;
+        params.buyNowPrice = _params.buyNowPrice;
+        params.marketPlace = _params.marketPlace;
+        params.orderParams.considerationToken = _params.orderParams.considerationToken;
+        params.orderParams.considerationIdentifier = _params.orderParams.considerationIdentifier;
+        params.orderParams.considerationAmount = _params.orderParams.considerationAmount;
+        params.orderParams.offerer = _params.orderParams.offerer;
+        params.orderParams.zone = _params.orderParams.zone;
+        params.orderParams.offerToken = _params.orderParams.offerToken; 
+        params.orderParams.offerIdentifier = _params.orderParams.offerIdentifier;
+        params.orderParams.offerAmount = _params.orderParams.offerAmount;
+        params.orderParams.basicOrderType = _params.orderParams.basicOrderType;
+        params.orderParams.startTime = _params.orderParams.startTime;
+        params.orderParams.endTime = _params.orderParams.endTime;
+        params.orderParams.zoneHash = _params.orderParams.zoneHash;
+        params.orderParams.salt = _params.orderParams.salt;
+        params.orderParams.offererConduitKey = _params.orderParams.offererConduitKey;
+        params.orderParams.fulfillerConduitKey = _params.orderParams.fulfillerConduitKey;
+        params.orderParams.totalOriginalAdditionalRecipients = _params.orderParams.totalOriginalAdditionalRecipients;
+        for (uint i = 0; i < _params.orderParams.additionalRecipients.length; i++) {
+            uint256 curAmt = _params.orderParams.additionalRecipients[i].amount;
+            address payable curRecipient = _params.orderParams.additionalRecipients[i].recipient;
+            params.orderParams.additionalRecipients.push(AdditionalRecipient(curAmt, curRecipient));
+        }
+        params.orderParams.signature = _params.orderParams.signature;
     }
 
     function getBuyNowPrice() external view override returns (uint256) {
-        return buyNowPrice;
+        return params.buyNowPrice;
     }
 
-    function setBuyNowPrice(
-        uint256 _price
-    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        buyNowPrice = _price;
-    }
-
-    function setTransactionData(
-        bytes memory _transactionData
-    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        transactionData = _transactionData;
-    }
+    // function setBuyNowPrice(
+    //     uint256 _price
+    // ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+    //     buyNowPrice = _price;
+    // }
 
     function migration(
-        uint256 _price,
-        address _marketPlace,
-        bytes memory _transactionData
+        MarketWrapperConstructorParameters calldata _params
     ) external override onlyRole(DEFAULT_ADMIN_ROLE) {
-        buyNowPrice = _price;
-        marketPlace = _marketPlace;
-        transactionData = _transactionData;
+        params.buyNowPrice = _params.buyNowPrice;
+        params.marketPlace = _params.marketPlace;
+        params.orderParams.considerationToken = _params.orderParams.considerationToken;
+        params.orderParams.considerationIdentifier = _params.orderParams.considerationIdentifier;
+        params.orderParams.considerationAmount = _params.orderParams.considerationAmount;
+        params.orderParams.offerer = _params.orderParams.offerer;
+        params.orderParams.zone = _params.orderParams.zone;
+        params.orderParams.offerToken = _params.orderParams.offerToken; 
+        params.orderParams.offerIdentifier = _params.orderParams.offerIdentifier;
+        params.orderParams.offerAmount = _params.orderParams.offerAmount;
+        params.orderParams.basicOrderType = _params.orderParams.basicOrderType;
+        params.orderParams.startTime = _params.orderParams.startTime;
+        params.orderParams.endTime = _params.orderParams.endTime;
+        params.orderParams.zoneHash = _params.orderParams.zoneHash;
+        params.orderParams.salt = _params.orderParams.salt;
+        params.orderParams.offererConduitKey = _params.orderParams.offererConduitKey;
+        params.orderParams.fulfillerConduitKey = _params.orderParams.fulfillerConduitKey;
+        params.orderParams.totalOriginalAdditionalRecipients = _params.orderParams.totalOriginalAdditionalRecipients;
+        for (uint i = 0; i < _params.orderParams.additionalRecipients.length; i++) {
+            uint256 curAmt = _params.orderParams.additionalRecipients[i].amount;
+            address payable curRecipient = _params.orderParams.additionalRecipients[i].recipient;
+            params.orderParams.additionalRecipients.push(AdditionalRecipient(curAmt, curRecipient));
+        }
+        params.orderParams.signature = _params.orderParams.signature;
     }
 
     function buyNow()
@@ -53,11 +82,16 @@ contract MarketWrapper is AMarketWrapper {
         onlyRole(DEFAULT_ADMIN_ROLE)
         returns (bool)
     {
-        require(address(this).balance >= buyNowPrice);
+        require(address(this).balance >= params.buyNowPrice);
 
-        (bool success, ) = marketPlace.call{
-            value: buyNowPrice
-        }(transactionData);
+        // (bool success, ) = marketPlace.call{
+        //     value: buyNowPrice
+        // }(transactionData);
+        (bool success, ) = params.marketPlace.call{
+            value: params.buyNowPrice
+        }(abi.encodeWithSignature(
+            "fulfillBasicOrder((address,uint256,uint256,address,address,address,uint256,uint256,uint8,uint256,uint256,bytes32,uint256,bytes32,bytes32,uint256,(uint256,address)[],bytes))", params.orderParams)
+        );
         require(success, "Purchase Failed");
 
         emit Purchased(true);
