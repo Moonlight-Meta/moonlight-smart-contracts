@@ -64,6 +64,11 @@
           "internalType": "uint256",
           "name": "_newClosingTime",
           "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "buyNowPrice",
+          "type": "uint256"
         }
       ],
       "name": "migration",

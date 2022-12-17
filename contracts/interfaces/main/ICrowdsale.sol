@@ -12,7 +12,7 @@ interface ICrowdsale {
 
     function buyTokens(address _beneficiary, bool _refundable) external payable;
 
-    function migration(uint256 _newClosingTime) external;
+    function migration(uint256 _newClosingTime, uint256 buyNowPrice) external;
 
     function collectTokens() external;
 

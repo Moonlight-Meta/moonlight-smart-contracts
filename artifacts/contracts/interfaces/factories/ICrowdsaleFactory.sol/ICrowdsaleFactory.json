@@ -7,24 +7,6 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "_sale",
-          "type": "address"
-        },
-        {
-          "internalType": "address payable",
-          "name": "_to",
-          "type": "address"
-        }
-      ],
-      "name": "emergencyWithdrawal",
-      "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
           "name": "to",
           "type": "address"
         }
@@ -37,30 +19,8 @@
     {
       "inputs": [
         {
-          "components": [
-            {
-              "internalType": "address",
-              "name": "nftContractAddress",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "tokenId",
-              "type": "uint256"
-            }
-          ],
-          "internalType": "struct ICrowdsaleFactory.SaleIndex",
-          "name": "_saleIndex",
-          "type": "tuple"
-        },
-        {
           "internalType": "uint256",
           "name": "_newClosingTime",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_tokenId",
           "type": "uint256"
         },
         {
@@ -69,122 +29,134 @@
           "type": "string"
         },
         {
-          "internalType": "uint256",
-          "name": "_price",
-          "type": "uint256"
-        },
-        {
           "internalType": "address",
-          "name": "_marketPlace",
+          "name": "sale",
           "type": "address"
         },
         {
           "components": [
             {
-              "internalType": "address",
-              "name": "considerationToken",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "considerationIdentifier",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "considerationAmount",
-              "type": "uint256"
-            },
-            {
-              "internalType": "address payable",
-              "name": "offerer",
-              "type": "address"
-            },
-            {
-              "internalType": "address",
-              "name": "zone",
-              "type": "address"
-            },
-            {
-              "internalType": "address",
-              "name": "offerToken",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "offerIdentifier",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "offerAmount",
-              "type": "uint256"
-            },
-            {
-              "internalType": "enum BasicOrderType",
-              "name": "basicOrderType",
-              "type": "uint8"
-            },
-            {
-              "internalType": "uint256",
-              "name": "startTime",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "endTime",
-              "type": "uint256"
-            },
-            {
-              "internalType": "bytes32",
-              "name": "zoneHash",
-              "type": "bytes32"
-            },
-            {
-              "internalType": "uint256",
-              "name": "salt",
-              "type": "uint256"
-            },
-            {
-              "internalType": "bytes32",
-              "name": "offererConduitKey",
-              "type": "bytes32"
-            },
-            {
-              "internalType": "bytes32",
-              "name": "fulfillerConduitKey",
-              "type": "bytes32"
-            },
-            {
-              "internalType": "uint256",
-              "name": "totalOriginalAdditionalRecipients",
-              "type": "uint256"
-            },
-            {
               "components": [
                 {
+                  "internalType": "address",
+                  "name": "considerationToken",
+                  "type": "address"
+                },
+                {
                   "internalType": "uint256",
-                  "name": "amount",
+                  "name": "considerationIdentifier",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "considerationAmount",
                   "type": "uint256"
                 },
                 {
                   "internalType": "address payable",
-                  "name": "recipient",
+                  "name": "offerer",
                   "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "zone",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "offerToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "offerIdentifier",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "offerAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "enum BasicOrderType",
+                  "name": "basicOrderType",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "startTime",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "endTime",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "zoneHash",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "salt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "offererConduitKey",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "fulfillerConduitKey",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "totalOriginalAdditionalRecipients",
+                  "type": "uint256"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "amount",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address payable",
+                      "name": "recipient",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct AdditionalRecipient[]",
+                  "name": "additionalRecipients",
+                  "type": "tuple[]"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "signature",
+                  "type": "bytes"
                 }
               ],
-              "internalType": "struct AdditionalRecipient[]",
-              "name": "additionalRecipients",
-              "type": "tuple[]"
+              "internalType": "struct BasicOrderParameters",
+              "name": "orderParams",
+              "type": "tuple"
             },
             {
-              "internalType": "bytes",
-              "name": "signature",
-              "type": "bytes"
+              "internalType": "uint256",
+              "name": "buyNowPrice",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "marketPlace",
+              "type": "address"
             }
           ],
-          "internalType": "struct BasicOrderParameters",
-          "name": "orderParams_",
+          "internalType": "struct MarketWrapperConstructorParameters",
+          "name": "_params",
           "type": "tuple"
         }
       ],
@@ -196,35 +168,8 @@
     {
       "inputs": [
         {
-          "components": [
-            {
-              "internalType": "address",
-              "name": "nftContractAddress",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "tokenId",
-              "type": "uint256"
-            }
-          ],
-          "internalType": "struct ICrowdsaleFactory.SaleIndex",
-          "name": "_saleIndex",
-          "type": "tuple"
-        },
-        {
           "internalType": "uint256",
           "name": "_rate",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_tokenAddress",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_openingTime",
           "type": "uint256"
         },
         {
@@ -233,122 +178,129 @@
           "type": "uint256"
         },
         {
-          "internalType": "uint256",
-          "name": "_buyNowPrice",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_marketPlace",
-          "type": "address"
-        },
-        {
           "components": [
-            {
-              "internalType": "address",
-              "name": "considerationToken",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "considerationIdentifier",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "considerationAmount",
-              "type": "uint256"
-            },
-            {
-              "internalType": "address payable",
-              "name": "offerer",
-              "type": "address"
-            },
-            {
-              "internalType": "address",
-              "name": "zone",
-              "type": "address"
-            },
-            {
-              "internalType": "address",
-              "name": "offerToken",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "offerIdentifier",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "offerAmount",
-              "type": "uint256"
-            },
-            {
-              "internalType": "enum BasicOrderType",
-              "name": "basicOrderType",
-              "type": "uint8"
-            },
-            {
-              "internalType": "uint256",
-              "name": "startTime",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "endTime",
-              "type": "uint256"
-            },
-            {
-              "internalType": "bytes32",
-              "name": "zoneHash",
-              "type": "bytes32"
-            },
-            {
-              "internalType": "uint256",
-              "name": "salt",
-              "type": "uint256"
-            },
-            {
-              "internalType": "bytes32",
-              "name": "offererConduitKey",
-              "type": "bytes32"
-            },
-            {
-              "internalType": "bytes32",
-              "name": "fulfillerConduitKey",
-              "type": "bytes32"
-            },
-            {
-              "internalType": "uint256",
-              "name": "totalOriginalAdditionalRecipients",
-              "type": "uint256"
-            },
             {
               "components": [
                 {
+                  "internalType": "address",
+                  "name": "considerationToken",
+                  "type": "address"
+                },
+                {
                   "internalType": "uint256",
-                  "name": "amount",
+                  "name": "considerationIdentifier",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "considerationAmount",
                   "type": "uint256"
                 },
                 {
                   "internalType": "address payable",
-                  "name": "recipient",
+                  "name": "offerer",
                   "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "zone",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "offerToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "offerIdentifier",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "offerAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "enum BasicOrderType",
+                  "name": "basicOrderType",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "startTime",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "endTime",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "zoneHash",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "salt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "offererConduitKey",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "fulfillerConduitKey",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "totalOriginalAdditionalRecipients",
+                  "type": "uint256"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "amount",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address payable",
+                      "name": "recipient",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct AdditionalRecipient[]",
+                  "name": "additionalRecipients",
+                  "type": "tuple[]"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "signature",
+                  "type": "bytes"
                 }
               ],
-              "internalType": "struct AdditionalRecipient[]",
-              "name": "additionalRecipients",
-              "type": "tuple[]"
+              "internalType": "struct BasicOrderParameters",
+              "name": "orderParams",
+              "type": "tuple"
             },
             {
-              "internalType": "bytes",
-              "name": "signature",
-              "type": "bytes"
+              "internalType": "uint256",
+              "name": "buyNowPrice",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "marketPlace",
+              "type": "address"
             }
           ],
-          "internalType": "struct BasicOrderParameters",
-          "name": "orderParams_",
+          "internalType": "struct MarketWrapperConstructorParameters",
+          "name": "_params",
           "type": "tuple"
         }
       ],

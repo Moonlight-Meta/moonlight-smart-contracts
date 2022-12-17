@@ -34,19 +34,6 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "getBuyNowPrice",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
       "inputs": [
         {
           "internalType": "address",
@@ -183,7 +170,7 @@
               "type": "address"
             }
           ],
-          "internalType": "struct IMarketWrapper.MarketWrapperConstructorParameters",
+          "internalType": "struct MarketWrapperConstructorParameters",
           "name": "params_",
           "type": "tuple"
         }

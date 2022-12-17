@@ -35,7 +35,6 @@ abstract contract ACrowdsale is ICrowdsale, AccessControl, ReentrancyGuard {
     ) {
         require(_rate >= 1);
         require(address(_token) != address(0));
-        require(_openingTime >= block.timestamp);
         require(_closingTime > _openingTime);
 
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);

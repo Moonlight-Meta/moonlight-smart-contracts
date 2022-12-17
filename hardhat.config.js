@@ -1,5 +1,6 @@
 require("@nomicfoundation/hardhat-toolbox");
-require("@nomiclabs/hardhat-waffle");
+require("@nomicfoundation/hardhat-chai-matchers");
+require("@nomiclabs/hardhat-ethers");
 require("hardhat-gas-reporter");
 
 /** @type import('hardhat/config').HardhatUserConfig */

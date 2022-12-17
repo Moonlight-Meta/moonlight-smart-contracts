@@ -36,15 +36,11 @@ contract MarketWrapper is AMarketWrapper {
         params.orderParams.signature = _params.orderParams.signature;
     }
 
-    function getBuyNowPrice() external view override returns (uint256) {
-        return params.buyNowPrice;
+    function setBuyNowPrice(
+        uint256 _price
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        params.buyNowPrice = _price;
     }
-
-    // function setBuyNowPrice(
-    //     uint256 _price
-    // ) external onlyRole(DEFAULT_ADMIN_ROLE) {
-    //     buyNowPrice = _price;
-    // }
 
     function migration(
         MarketWrapperConstructorParameters calldata _params
@@ -84,9 +80,6 @@ contract MarketWrapper is AMarketWrapper {
     {
         require(address(this).balance >= params.buyNowPrice);
 
-        // (bool success, ) = marketPlace.call{
-        //     value: buyNowPrice
-        // }(transactionData);
         (bool success, ) = params.marketPlace.call{
             value: params.buyNowPrice
         }(abi.encodeWithSignature(

@@ -1,10 +1,47 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/Users/matthausman/moonlight-smart-contracts/contracts/abstracts/factories/ACrowdsaleFactory.sol": {
-      "lastModificationDate": 1670810635083,
-      "contentHash": "18f441ef654898dc0096b16dcbfeac46",
-      "sourceName": "contracts/abstracts/factories/ACrowdsaleFactory.sol",
+    "/Users/matthausman/moonlight-smart-contracts/contracts/MarketWrapperFactory.sol": {
+      "lastModificationDate": 1671234818377,
+      "contentHash": "c087e1a76c5085027e3fbd1aa1c451a3",
+      "sourceName": "contracts/MarketWrapperFactory.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./abstracts/factories/AMarketWrapperFactory.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "MarketWrapperFactory"
+      ]
+    },
+    "/Users/matthausman/moonlight-smart-contracts/contracts/abstracts/factories/AMarketWrapperFactory.sol": {
+      "lastModificationDate": 1670440804856,
+      "contentHash": "fe406e227bd8f111f6a915d1e12aa4a1",
+      "sourceName": "contracts/abstracts/factories/AMarketWrapperFactory.sol",
       "solcConfig": {
         "version": "0.8.13",
         "settings": {
@@ -31,19 +68,88 @@
       "imports": [
         "@openzeppelin/contracts/access/AccessControl.sol",
         "@openzeppelin/contracts/utils/math/SafeMath.sol",
-        "../../interfaces/factories/ICrowdsaleFactory.sol",
         "../../interfaces/factories/IMarketWrapperFactory.sol",
-        "../../interfaces/factories/IVaultFactory.sol",
-        "../../interfaces/main/IToken.sol",
-        "../../interfaces/main/IVault.sol",
-        "../../interfaces/main/IMarketWrapper.sol",
-        "../../main/MoonSale.sol"
+        "../../main/MarketWrapper.sol"
       ],
       "versionPragmas": [
         "^0.8.9"
       ],
       "artifacts": [
-        "ACrowdsaleFactory"
+        "AMarketWrapperFactory"
+      ]
+    },
+    "/Users/matthausman/moonlight-smart-contracts/contracts/interfaces/factories/IMarketWrapperFactory.sol": {
+      "lastModificationDate": 1671234831763,
+      "contentHash": "b322f9b10df34d2fd347814221b8694f",
+      "sourceName": "contracts/interfaces/factories/IMarketWrapperFactory.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../main/OrderStructs.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "IMarketWrapperFactory"
+      ]
+    },
+    "/Users/matthausman/moonlight-smart-contracts/contracts/main/MarketWrapper.sol": {
+      "lastModificationDate": 1671237785940,
+      "contentHash": "269c304afd5f38c821f55c62fa439957",
+      "sourceName": "contracts/main/MarketWrapper.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../abstracts/main/AMarketWrapper.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "MarketWrapper"
       ]
     },
     "/Users/matthausman/moonlight-smart-contracts/node_modules/@openzeppelin/contracts/access/AccessControl.sol": {
@@ -121,10 +227,43 @@
         "SafeMath"
       ]
     },
-    "/Users/matthausman/moonlight-smart-contracts/contracts/interfaces/factories/ICrowdsaleFactory.sol": {
-      "lastModificationDate": 1671227839347,
-      "contentHash": "82da187f7c87cc2f95b7a45ec95cfdb9",
-      "sourceName": "contracts/interfaces/factories/ICrowdsaleFactory.sol",
+    "/Users/matthausman/moonlight-smart-contracts/contracts/main/OrderStructs.sol": {
+      "lastModificationDate": 1671234657346,
+      "contentHash": "ccf6f2cd02023b0e1760707a47a79619",
+      "sourceName": "contracts/main/OrderStructs.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": []
+    },
+    "/Users/matthausman/moonlight-smart-contracts/contracts/abstracts/main/AMarketWrapper.sol": {
+      "lastModificationDate": 1670978601235,
+      "contentHash": "dec2e740fd2f75e68f5505a9d30bc9a9",
+      "sourceName": "contracts/abstracts/main/AMarketWrapper.sol",
       "solcConfig": {
         "version": "0.8.13",
         "settings": {
@@ -149,160 +288,21 @@
         }
       },
       "imports": [
-        "../../main/OrderStructs.sol"
+        "@openzeppelin/contracts/access/AccessControl.sol",
+        "@openzeppelin/contracts/utils/math/SafeMath.sol",
+        "@openzeppelin/contracts/token/ERC721/ERC721.sol",
+        "../../interfaces/main/IMarketWrapper.sol"
       ],
       "versionPragmas": [
         "^0.8.9"
       ],
       "artifacts": [
-        "ICrowdsaleFactory"
-      ]
-    },
-    "/Users/matthausman/moonlight-smart-contracts/contracts/interfaces/factories/IMarketWrapperFactory.sol": {
-      "lastModificationDate": 1671227788479,
-      "contentHash": "1ca8e134dad80124d27d534ea2fa76d2",
-      "sourceName": "contracts/interfaces/factories/IMarketWrapperFactory.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../../main/OrderStructs.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "IMarketWrapperFactory"
-      ]
-    },
-    "/Users/matthausman/moonlight-smart-contracts/contracts/interfaces/factories/IVaultFactory.sol": {
-      "lastModificationDate": 1670440804859,
-      "contentHash": "4a6365570de252c692a60b8aefdc9dad",
-      "sourceName": "contracts/interfaces/factories/IVaultFactory.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "IVaultFactory"
-      ]
-    },
-    "/Users/matthausman/moonlight-smart-contracts/contracts/interfaces/main/IToken.sol": {
-      "lastModificationDate": 1670440804860,
-      "contentHash": "9e1853abf07ad86a95582ba93b5e73d7",
-      "sourceName": "contracts/interfaces/main/IToken.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "IToken"
-      ]
-    },
-    "/Users/matthausman/moonlight-smart-contracts/contracts/interfaces/main/IVault.sol": {
-      "lastModificationDate": 1670440804860,
-      "contentHash": "18fa5e1fd0cd32c7df5db69a18b2dd09",
-      "sourceName": "contracts/interfaces/main/IVault.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "IVault"
+        "AMarketWrapper"
       ]
     },
     "/Users/matthausman/moonlight-smart-contracts/contracts/interfaces/main/IMarketWrapper.sol": {
-      "lastModificationDate": 1671228802223,
-      "contentHash": "cee5aaeb6af05cc6f828127b0f5e24bf",
+      "lastModificationDate": 1671237779836,
+      "contentHash": "452463d225ea884acfa2f38c5b0abae6",
       "sourceName": "contracts/interfaces/main/IMarketWrapper.sol",
       "solcConfig": {
         "version": "0.8.13",
@@ -337,10 +337,10 @@
         "IMarketWrapper"
       ]
     },
-    "/Users/matthausman/moonlight-smart-contracts/contracts/main/MoonSale.sol": {
-      "lastModificationDate": 1670440804860,
-      "contentHash": "2877b4fe7b786c7ef1c8515433c74b3f",
-      "sourceName": "contracts/main/MoonSale.sol",
+    "/Users/matthausman/moonlight-smart-contracts/node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol": {
+      "lastModificationDate": 1670863697597,
+      "contentHash": "79ff1a7eb801a525aa315fb7a679eede",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/ERC721.sol",
       "solcConfig": {
         "version": "0.8.13",
         "settings": {
@@ -365,48 +365,19 @@
         }
       },
       "imports": [
-        "../abstracts/main/ACrowdsale.sol"
+        "./IERC721.sol",
+        "./IERC721Receiver.sol",
+        "./extensions/IERC721Metadata.sol",
+        "../../utils/Address.sol",
+        "../../utils/Context.sol",
+        "../../utils/Strings.sol",
+        "../../utils/introspection/ERC165.sol"
       ],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "MoonSale"
-      ]
-    },
-    "/Users/matthausman/moonlight-smart-contracts/node_modules/@openzeppelin/contracts/access/IAccessControl.sol": {
-      "lastModificationDate": 1670863697717,
-      "contentHash": "57c84298234411cea19c7c284d86be8b",
-      "sourceName": "@openzeppelin/contracts/access/IAccessControl.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
       "versionPragmas": [
         "^0.8.0"
       ],
       "artifacts": [
-        "IAccessControl"
+        "ERC721"
       ]
     },
     "/Users/matthausman/moonlight-smart-contracts/node_modules/@openzeppelin/contracts/utils/Context.sol": {
@@ -516,6 +487,41 @@
         "ERC165"
       ]
     },
+    "/Users/matthausman/moonlight-smart-contracts/node_modules/@openzeppelin/contracts/access/IAccessControl.sol": {
+      "lastModificationDate": 1670863697717,
+      "contentHash": "57c84298234411cea19c7c284d86be8b",
+      "sourceName": "@openzeppelin/contracts/access/IAccessControl.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IAccessControl"
+      ]
+    },
     "/Users/matthausman/moonlight-smart-contracts/node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
       "lastModificationDate": 1670863697782,
       "contentHash": "03e6768535ac4da0e9756f1d8a4a018a",
@@ -551,10 +557,10 @@
         "IERC165"
       ]
     },
-    "/Users/matthausman/moonlight-smart-contracts/contracts/main/OrderStructs.sol": {
-      "lastModificationDate": 1671227690212,
-      "contentHash": "cc726075635c133047d9a5343b69f999",
-      "sourceName": "contracts/main/OrderStructs.sol",
+    "/Users/matthausman/moonlight-smart-contracts/node_modules/@openzeppelin/contracts/utils/Address.sol": {
+      "lastModificationDate": 1670863697272,
+      "contentHash": "c476b3895a94798b88a4bb97399e6dfe",
+      "sourceName": "@openzeppelin/contracts/utils/Address.sol",
       "solcConfig": {
         "version": "0.8.13",
         "settings": {
@@ -580,204 +586,10 @@
       },
       "imports": [],
       "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": []
-    },
-    "/Users/matthausman/moonlight-smart-contracts/contracts/abstracts/main/ACrowdsale.sol": {
-      "lastModificationDate": 1670440804858,
-      "contentHash": "e9527d42755b1d1d04272ca2249db166",
-      "sourceName": "contracts/abstracts/main/ACrowdsale.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/utils/math/SafeMath.sol",
-        "@openzeppelin/contracts/access/AccessControl.sol",
-        "@openzeppelin/contracts/security/ReentrancyGuard.sol",
-        "../../interfaces/main/IToken.sol",
-        "../../interfaces/main/IVault.sol",
-        "../../interfaces/main/IMarketWrapper.sol",
-        "../../interfaces/main/ICrowdsale.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.9"
+        "^0.8.1"
       ],
       "artifacts": [
-        "ACrowdsale"
-      ]
-    },
-    "/Users/matthausman/moonlight-smart-contracts/node_modules/@openzeppelin/contracts/security/ReentrancyGuard.sol": {
-      "lastModificationDate": 1670863697961,
-      "contentHash": "92f9448b23a90ea3bb932ee55cc3ccce",
-      "sourceName": "@openzeppelin/contracts/security/ReentrancyGuard.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "ReentrancyGuard"
-      ]
-    },
-    "/Users/matthausman/moonlight-smart-contracts/contracts/interfaces/main/ICrowdsale.sol": {
-      "lastModificationDate": 1670440804859,
-      "contentHash": "1b41517c0a088cc8818a2f0b3fed4e15",
-      "sourceName": "contracts/interfaces/main/ICrowdsale.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "ICrowdsale"
-      ]
-    },
-    "/Users/matthausman/moonlight-smart-contracts/contracts/abstracts/main/AMarketWrapper.sol": {
-      "lastModificationDate": 1670978601235,
-      "contentHash": "dec2e740fd2f75e68f5505a9d30bc9a9",
-      "sourceName": "contracts/abstracts/main/AMarketWrapper.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/access/AccessControl.sol",
-        "@openzeppelin/contracts/utils/math/SafeMath.sol",
-        "@openzeppelin/contracts/token/ERC721/ERC721.sol",
-        "../../interfaces/main/IMarketWrapper.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "AMarketWrapper"
-      ]
-    },
-    "/Users/matthausman/moonlight-smart-contracts/node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol": {
-      "lastModificationDate": 1670863697597,
-      "contentHash": "79ff1a7eb801a525aa315fb7a679eede",
-      "sourceName": "@openzeppelin/contracts/token/ERC721/ERC721.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "./IERC721.sol",
-        "./IERC721Receiver.sol",
-        "./extensions/IERC721Metadata.sol",
-        "../../utils/Address.sol",
-        "../../utils/Context.sol",
-        "../../utils/Strings.sol",
-        "../../utils/introspection/ERC165.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "ERC721"
+        "Address"
       ]
     },
     "/Users/matthausman/moonlight-smart-contracts/node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {
@@ -889,10 +701,49 @@
         "IERC721Metadata"
       ]
     },
-    "/Users/matthausman/moonlight-smart-contracts/node_modules/@openzeppelin/contracts/utils/Address.sol": {
-      "lastModificationDate": 1670863697272,
-      "contentHash": "c476b3895a94798b88a4bb97399e6dfe",
-      "sourceName": "@openzeppelin/contracts/utils/Address.sol",
+    "/Users/matthausman/moonlight-smart-contracts/contracts/abstracts/main/AVault.sol": {
+      "lastModificationDate": 1670440804858,
+      "contentHash": "a8ec2e29337a0afc6e2a4888d1f42ff9",
+      "sourceName": "contracts/abstracts/main/AVault.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/utils/math/SafeMath.sol",
+        "@openzeppelin/contracts/access/AccessControl.sol",
+        "../../interfaces/main/IVault.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "AVault"
+      ]
+    },
+    "/Users/matthausman/moonlight-smart-contracts/contracts/interfaces/main/IVault.sol": {
+      "lastModificationDate": 1670440804860,
+      "contentHash": "18fa5e1fd0cd32c7df5db69a18b2dd09",
+      "sourceName": "contracts/interfaces/main/IVault.sol",
       "solcConfig": {
         "version": "0.8.13",
         "settings": {
@@ -918,10 +769,159 @@
       },
       "imports": [],
       "versionPragmas": [
-        "^0.8.1"
+        "^0.8.9"
       ],
       "artifacts": [
-        "Address"
+        "IVault"
+      ]
+    },
+    "/Users/matthausman/moonlight-smart-contracts/contracts/main/MoonVault.sol": {
+      "lastModificationDate": 1670440804861,
+      "contentHash": "9cd1cdb080c4258993586ed145af5d92",
+      "sourceName": "contracts/main/MoonVault.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../abstracts/main/AVault.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "MoonVault"
+      ]
+    },
+    "/Users/matthausman/moonlight-smart-contracts/contracts/abstracts/factories/AVaultFactory.sol": {
+      "lastModificationDate": 1670440804856,
+      "contentHash": "07cc8349a06d663b6dad864c4b55e1df",
+      "sourceName": "contracts/abstracts/factories/AVaultFactory.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/access/AccessControl.sol",
+        "@openzeppelin/contracts/utils/math/SafeMath.sol",
+        "../../interfaces/factories/IVaultFactory.sol",
+        "../../main/MoonVault.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "AVaultFactory"
+      ]
+    },
+    "/Users/matthausman/moonlight-smart-contracts/contracts/interfaces/factories/IVaultFactory.sol": {
+      "lastModificationDate": 1670440804859,
+      "contentHash": "4a6365570de252c692a60b8aefdc9dad",
+      "sourceName": "contracts/interfaces/factories/IVaultFactory.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "IVaultFactory"
+      ]
+    },
+    "/Users/matthausman/moonlight-smart-contracts/node_modules/@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol": {
+      "lastModificationDate": 1670863697771,
+      "contentHash": "9f8822b72fe2702979e40160cb6d9636",
+      "sourceName": "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../utils/introspection/IERC165.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC1155Receiver"
       ]
     },
     "/Users/matthausman/moonlight-smart-contracts/node_modules/@openzeppelin/contracts/token/ERC1155/ERC1155.sol": {
@@ -1003,43 +1003,6 @@
         "IERC1155"
       ]
     },
-    "/Users/matthausman/moonlight-smart-contracts/node_modules/@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol": {
-      "lastModificationDate": 1670863697771,
-      "contentHash": "9f8822b72fe2702979e40160cb6d9636",
-      "sourceName": "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../../utils/introspection/IERC165.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "IERC1155Receiver"
-      ]
-    },
     "/Users/matthausman/moonlight-smart-contracts/node_modules/@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol": {
       "lastModificationDate": 1670863697764,
       "contentHash": "9148c2e10c4efb12c71a7f080da5559b",
@@ -1077,10 +1040,10 @@
         "IERC1155MetadataURI"
       ]
     },
-    "/Users/matthausman/moonlight-smart-contracts/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
-      "lastModificationDate": 1670863697943,
-      "contentHash": "e436cea06129be2c73cda4b1acc848b5",
-      "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
+    "/Users/matthausman/moonlight-smart-contracts/contracts/abstracts/factories/ACrowdsaleFactory.sol": {
+      "lastModificationDate": 1670810635083,
+      "contentHash": "18f441ef654898dc0096b16dcbfeac46",
+      "sourceName": "contracts/abstracts/factories/ACrowdsaleFactory.sol",
       "solcConfig": {
         "version": "0.8.13",
         "settings": {
@@ -1105,13 +1068,243 @@
         }
       },
       "imports": [
-        "../utils/Context.sol"
+        "@openzeppelin/contracts/access/AccessControl.sol",
+        "@openzeppelin/contracts/utils/math/SafeMath.sol",
+        "../../interfaces/factories/ICrowdsaleFactory.sol",
+        "../../interfaces/factories/IMarketWrapperFactory.sol",
+        "../../interfaces/factories/IVaultFactory.sol",
+        "../../interfaces/main/IToken.sol",
+        "../../interfaces/main/IVault.sol",
+        "../../interfaces/main/IMarketWrapper.sol",
+        "../../main/MoonSale.sol"
       ],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "ACrowdsaleFactory"
+      ]
+    },
+    "/Users/matthausman/moonlight-smart-contracts/contracts/interfaces/factories/ICrowdsaleFactory.sol": {
+      "lastModificationDate": 1671238843496,
+      "contentHash": "f8e09bceb75c28ff154dfeced9f89346",
+      "sourceName": "contracts/interfaces/factories/ICrowdsaleFactory.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../main/OrderStructs.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "ICrowdsaleFactory"
+      ]
+    },
+    "/Users/matthausman/moonlight-smart-contracts/contracts/interfaces/main/IToken.sol": {
+      "lastModificationDate": 1670440804860,
+      "contentHash": "9e1853abf07ad86a95582ba93b5e73d7",
+      "sourceName": "contracts/interfaces/main/IToken.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "IToken"
+      ]
+    },
+    "/Users/matthausman/moonlight-smart-contracts/contracts/main/MoonSale.sol": {
+      "lastModificationDate": 1671238076547,
+      "contentHash": "53283605bfa281d212fb3ee4d7964edb",
+      "sourceName": "contracts/main/MoonSale.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../abstracts/main/ACrowdsale.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "MoonSale"
+      ]
+    },
+    "/Users/matthausman/moonlight-smart-contracts/contracts/abstracts/main/ACrowdsale.sol": {
+      "lastModificationDate": 1671237673355,
+      "contentHash": "5ea8d8f9622dbe65a69dcf3af941678d",
+      "sourceName": "contracts/abstracts/main/ACrowdsale.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/utils/math/SafeMath.sol",
+        "@openzeppelin/contracts/access/AccessControl.sol",
+        "@openzeppelin/contracts/security/ReentrancyGuard.sol",
+        "../../interfaces/main/IToken.sol",
+        "../../interfaces/main/IVault.sol",
+        "../../interfaces/main/IMarketWrapper.sol",
+        "../../interfaces/main/ICrowdsale.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "ACrowdsale"
+      ]
+    },
+    "/Users/matthausman/moonlight-smart-contracts/contracts/interfaces/main/ICrowdsale.sol": {
+      "lastModificationDate": 1671238044760,
+      "contentHash": "e0603bda6646fe6b2e76a8a1b0893536",
+      "sourceName": "contracts/interfaces/main/ICrowdsale.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "ICrowdsale"
+      ]
+    },
+    "/Users/matthausman/moonlight-smart-contracts/node_modules/@openzeppelin/contracts/security/ReentrancyGuard.sol": {
+      "lastModificationDate": 1670863697961,
+      "contentHash": "92f9448b23a90ea3bb932ee55cc3ccce",
+      "sourceName": "@openzeppelin/contracts/security/ReentrancyGuard.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
       "versionPragmas": [
         "^0.8.0"
       ],
       "artifacts": [
-        "Ownable"
+        "ReentrancyGuard"
       ]
     },
     "/Users/matthausman/moonlight-smart-contracts/contracts/abstracts/main/AToken.sol": {
@@ -1190,6 +1383,43 @@
       ],
       "artifacts": [
         "DefaultOperatorFilterer"
+      ]
+    },
+    "/Users/matthausman/moonlight-smart-contracts/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
+      "lastModificationDate": 1670863697943,
+      "contentHash": "e436cea06129be2c73cda4b1acc848b5",
+      "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../utils/Context.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Ownable"
       ]
     },
     "/Users/matthausman/moonlight-smart-contracts/node_modules/operator-filter-registry/src/OperatorFilterer.sol": {
@@ -1301,10 +1531,10 @@
         "MoonToken"
       ]
     },
-    "/Users/matthausman/moonlight-smart-contracts/contracts/abstracts/main/AVault.sol": {
-      "lastModificationDate": 1670440804858,
-      "contentHash": "a8ec2e29337a0afc6e2a4888d1f42ff9",
-      "sourceName": "contracts/abstracts/main/AVault.sol",
+    "/Users/matthausman/moonlight-smart-contracts/contracts/MoonSaleFactory.sol": {
+      "lastModificationDate": 1671239759132,
+      "contentHash": "cabe760a846c553480b9f1a2684b56fa",
+      "sourceName": "contracts/MoonSaleFactory.sol",
       "solcConfig": {
         "version": "0.8.13",
         "settings": {
@@ -1329,92 +1559,13 @@
         }
       },
       "imports": [
-        "@openzeppelin/contracts/utils/math/SafeMath.sol",
-        "@openzeppelin/contracts/access/AccessControl.sol",
-        "../../interfaces/main/IVault.sol"
+        "./abstracts/factories/ACrowdsaleFactory.sol"
       ],
       "versionPragmas": [
         "^0.8.9"
       ],
       "artifacts": [
-        "AVault"
-      ]
-    },
-    "/Users/matthausman/moonlight-smart-contracts/contracts/abstracts/factories/AVaultFactory.sol": {
-      "lastModificationDate": 1670440804856,
-      "contentHash": "07cc8349a06d663b6dad864c4b55e1df",
-      "sourceName": "contracts/abstracts/factories/AVaultFactory.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/access/AccessControl.sol",
-        "@openzeppelin/contracts/utils/math/SafeMath.sol",
-        "../../interfaces/factories/IVaultFactory.sol",
-        "../../main/MoonVault.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "AVaultFactory"
-      ]
-    },
-    "/Users/matthausman/moonlight-smart-contracts/contracts/main/MoonVault.sol": {
-      "lastModificationDate": 1670440804861,
-      "contentHash": "9cd1cdb080c4258993586ed145af5d92",
-      "sourceName": "contracts/main/MoonVault.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../abstracts/main/AVault.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "MoonVault"
+        "MoonSaleFactory"
       ]
     },
     "/Users/matthausman/moonlight-smart-contracts/contracts/MoonVaultFactory.sol": {
@@ -1453,145 +1604,6 @@
       "artifacts": [
         "MoonVaultFactory"
       ]
-    },
-    "/Users/matthausman/moonlight-smart-contracts/contracts/abstracts/factories/AMarketWrapperFactory.sol": {
-      "lastModificationDate": 1670440804856,
-      "contentHash": "fe406e227bd8f111f6a915d1e12aa4a1",
-      "sourceName": "contracts/abstracts/factories/AMarketWrapperFactory.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/access/AccessControl.sol",
-        "@openzeppelin/contracts/utils/math/SafeMath.sol",
-        "../../interfaces/factories/IMarketWrapperFactory.sol",
-        "../../main/MarketWrapper.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "AMarketWrapperFactory"
-      ]
-    },
-    "/Users/matthausman/moonlight-smart-contracts/contracts/main/MarketWrapper.sol": {
-      "lastModificationDate": 1671229955631,
-      "contentHash": "03d985916e5bd04987a435e66060ddfc",
-      "sourceName": "contracts/main/MarketWrapper.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../abstracts/main/AMarketWrapper.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "MarketWrapper"
-      ]
-    },
-    "/Users/matthausman/moonlight-smart-contracts/contracts/MarketWrapperFactory.sol": {
-      "lastModificationDate": 1671228086102,
-      "contentHash": "dbf12c477921bb305a0fbcef3c8ec432",
-      "sourceName": "contracts/MarketWrapperFactory.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [],
-      "artifacts": []
-    },
-    "/Users/matthausman/moonlight-smart-contracts/contracts/MoonSaleFactory.sol": {
-      "lastModificationDate": 1671228224498,
-      "contentHash": "9546f6caf23f2dd9132fcc33e9a89d42",
-      "sourceName": "contracts/MoonSaleFactory.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [],
-      "artifacts": []
     }
   }
 }

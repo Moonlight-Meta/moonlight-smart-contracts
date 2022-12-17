@@ -101,3 +101,9 @@ struct BasicOrderParameters {
     bytes signature; // 0x244
     // Total length, excluding dynamic array data: 0x264 (580)
 }
+
+struct MarketWrapperConstructorParameters {
+    BasicOrderParameters orderParams;
+    uint256 buyNowPrice;
+    address marketPlace;
+}

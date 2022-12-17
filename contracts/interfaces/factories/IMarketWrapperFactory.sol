@@ -10,11 +10,7 @@ interface IMarketWrapperFactory {
         address _to
     ) external;
 
-    function newMarketWrapper(
-        uint256 _buyNowPrice,
-        address _marketPlace,
-        BasicOrderParameters calldata orderParams_
-    ) external returns (address);
+    function newMarketWrapper(MarketWrapperConstructorParameters calldata params_) external returns (address);
 
     function getLatestMarketWrapper() external returns (address);
 }

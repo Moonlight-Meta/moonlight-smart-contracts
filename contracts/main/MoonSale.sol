@@ -40,11 +40,12 @@ contract MoonSale is ACrowdsale {
         uint256 _openingTime,
         uint256 _closingTime,
         address payable _vault,
-        address payable _marketWrapper
+        address payable _marketWrapper,
+        uint256 _buyNowPrice
     ) ACrowdsale(_rate, _token, _openingTime, _closingTime) {
         vault = IVault(_vault);
         marketWrapper = IMarketWrapper(_marketWrapper);
-        buyNowPriceInWei = marketWrapper.getBuyNowPrice();
+        buyNowPriceInWei = _buyNowPrice;
         interest = buyNowPriceInWei / 20;
         goal = _ceil(buyNowPriceInWei + interest, ((10**18)/rate));
     }
@@ -54,11 +55,12 @@ contract MoonSale is ACrowdsale {
     // -----------------------------------------
 
     function migration(
-        uint256 _newClosingTime
+        uint256 _newClosingTime,
+        uint256 _buyNowPrice
     ) external override onlyBeforePurchase onlyRole(DEFAULT_ADMIN_ROLE) {
         require(_newClosingTime > openingTime);
 
-        buyNowPriceInWei = marketWrapper.getBuyNowPrice();
+        buyNowPriceInWei = _buyNowPrice;
         interest = uint256(buyNowPriceInWei) / 20;
         goal = _ceil(buyNowPriceInWei + interest, ((10**18)/rate));
 
