@@ -36,12 +36,6 @@ contract MarketWrapper is AMarketWrapper {
         params.orderParams.signature = _params.orderParams.signature;
     }
 
-    function setBuyNowPrice(
-        uint256 _price
-    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        params.buyNowPrice = _price;
-    }
-
     function migration(
         MarketWrapperConstructorParameters calldata _params
     ) external override onlyRole(DEFAULT_ADMIN_ROLE) {

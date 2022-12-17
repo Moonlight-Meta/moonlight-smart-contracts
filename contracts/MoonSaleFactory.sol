@@ -10,6 +10,9 @@ contract MoonSaleFactory is ACrowdsaleFactory {
         uint256 tokenId;
     }
     MSale[] public moonSales;
+    function numSales() public view returns(uint count) {
+        return moonSales.length;
+    }
     mapping(address => address) public saleTokens;
     mapping(address => address) public saleVaults;
     mapping(address => address) public saleMarketWrappers;
