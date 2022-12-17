@@ -10,6 +10,7 @@ interface ICrowdsaleFactory {
     function newMoonSale(
         uint256 _rate,
         uint256 _closingTime,
+        address tokenAddress,
         MarketWrapperConstructorParameters calldata _params
     ) external returns (address);
 
