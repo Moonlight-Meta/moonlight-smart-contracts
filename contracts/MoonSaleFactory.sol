@@ -54,7 +54,7 @@ contract MoonSaleFactory is ACrowdsaleFactory {
 
         address saleAddress = _newMoonSale(
             _rate,
-            _params.orderParams.offerToken,
+            tokenAddress,
             block.timestamp,
             _closingTime,
             payable(vaultAddress),
