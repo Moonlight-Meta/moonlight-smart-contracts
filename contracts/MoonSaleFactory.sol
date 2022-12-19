@@ -28,7 +28,7 @@ contract MoonSaleFactory is ACrowdsaleFactory {
     function newMoonSale(
         uint256 _rate,
         uint256 _closingTime,
-        address tokenAddress,
+        address _tokenAddress,
         MarketWrapperConstructorParameters calldata _params
     ) external override onlyRole(DEFAULT_ADMIN_ROLE) returns (address) {
         address vaultAddress = vaultFactory.newMoonVault();
@@ -54,7 +54,7 @@ contract MoonSaleFactory is ACrowdsaleFactory {
 
         address saleAddress = _newMoonSale(
             _rate,
-            tokenAddress,
+            _tokenAddress,
             block.timestamp,
             _closingTime,
             payable(vaultAddress),
@@ -70,16 +70,20 @@ contract MoonSaleFactory is ACrowdsaleFactory {
             marketWrapperAddress,
             saleAddress
         );
-        IToken token = IToken(tokenAddress);
+        IToken token = IToken(_tokenAddress);
         token.grantOwnerRole(saleAddress);
 
         MoonSale moonSale = MoonSale(payable(saleAddress));
         moonSale.grantOwnerRole(address(this));
         moonSale.grantOwnerRole(msg.sender);
 
-        moonSales.push(MSale(saleAddress, _params.orderParams.offerToken, _params.orderParams.offerIdentifier));
+        MSale memory _newSale;
+        _newSale.saleAddress = saleAddress;
+        _newSale.collectionAddress = _params.orderParams.offerToken;
+        _newSale.tokenId = _params.orderParams.offerIdentifier;
+        moonSales.push(_newSale);
 
-        saleTokens[saleAddress] = tokenAddress;
+        saleTokens[saleAddress] = _tokenAddress;
         saleVaults[saleAddress] = vaultAddress;
         saleMarketWrappers[saleAddress] = marketWrapperAddress;
 
@@ -104,7 +108,6 @@ contract MoonSaleFactory is ACrowdsaleFactory {
             _wrapper,
             _buyNowPrice
         );
-
         return address(moonSale);
     }
     function migration(

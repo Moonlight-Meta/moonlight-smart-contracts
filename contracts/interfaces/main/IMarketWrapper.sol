@@ -17,5 +17,5 @@ interface IMarketWrapper {
         MarketWrapperConstructorParameters calldata params_
     ) external;
 
-    function buyNow() external payable returns (bool);
+    function buyNow() external returns (bool);
 }

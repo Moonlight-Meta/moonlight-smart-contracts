@@ -5,7 +5,6 @@ const { isCallTrace } = require("hardhat/internal/hardhat-network/stack-traces/m
 const { _toEscapedUtf8String } = require("ethers/lib/utils");
 
 describe("MoonSale Testing", function  () {
-
     async function deploySaleFixture() {
 
         const [owner, one, two, three, four, five] = await ethers.getSigners();
@@ -26,12 +25,36 @@ describe("MoonSale Testing", function  () {
         
         const _price = ethers.utils.parseUnits("8.6919","ether")
         const _marketPlace = "0x00000000006c3852cbEf3e08E8dF289169EdE581"
-        const _transactionData = "0x"
-        const marketWrapper = await Wrapper.deploy(
+        const _orderData = {
+            "offerer": "0x7a3fd40f47077d0e9b712129c1ebdeda6493a012",
+            "offererConduitKey": "0x0000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000",
+            "zone": "0x0000000000000000000000000000000000000000",
+            "basicOrderType": 0,
+            "offerToken": "0x3a1E7abA44BF21a66344D7A0f795a7DF0B49ED60",
+            "offerIdentifier": "34278",
+            "offerAmount": "1",
+            "considerationToken": "0x0000000000000000000000000000000000000000",
+            "considerationIdentifier": "0",
+            "considerationAmount": "78000000000000000",
+            "startTime": "1670571710",
+            "endTime": "1673250110",
+            "salt": "0x360c6ebe0000000000000000000000000000000000000000270b86922cbcf86b",
+            "totalOriginalAdditionalRecipients": 1,
+            "signature": "0x6982bb94f68962c7520d829363e5dc01685168414e3cebaa7a1c092033aa4be13e39443372eb917b6904eb8f0b8fbe614919ef6eb5a5b459eef1fd11222b3c081c",
+            "fulfillerConduitKey": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "additionalRecipients": [
+                {
+                    "amount": "2000000000000000",
+                    "recipient": "0x0000a26b00c1F0DF003000390027140000fAa719"
+                }
+            ],
+            "zoneHash": "0x0000000000000000000000000000000000000000000000000000000000000000"
+        }
+        const marketWrapper = await Wrapper.deploy([
             _price,
             _marketPlace,
-            _transactionData
-        )
+            _orderData
+        ])
         await marketWrapper.deployed();
 
         const Token = await ethers.getContractFactory("MoonToken");
@@ -62,7 +85,8 @@ describe("MoonSale Testing", function  () {
             _opening_time,
             _closing_time,
             _vaultAddress,
-            _wrapperAddress
+            _wrapperAddress,
+            _price
         )
         await moonSale.deployed();
 
