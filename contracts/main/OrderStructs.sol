@@ -107,3 +107,9 @@ struct MarketWrapperConstructorParameters {
     uint256 buyNowPrice;
     address marketPlace;
 }
+
+struct MSale {
+    address saleAddress;
+    address collectionAddress;
+    uint256 tokenId;
+}

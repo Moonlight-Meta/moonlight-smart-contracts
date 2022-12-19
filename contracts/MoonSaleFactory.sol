@@ -2,17 +2,10 @@
 pragma solidity ^0.8.9;
 
 import "./abstracts/factories/ACrowdsaleFactory.sol";
-
+import "./main/OrderStructs.sol";
 contract MoonSaleFactory is ACrowdsaleFactory {
-    struct MSale {
-        address saleAddress;
-        address collectionAddress;
-        uint256 tokenId;
-    }
     MSale[] public moonSales;
-    function numSales() public view returns(uint count) {
-        return moonSales.length;
-    }
+    uint public count;
     mapping(address => address) public saleTokens;
     mapping(address => address) public saleVaults;
     mapping(address => address) public saleMarketWrappers;
@@ -33,7 +26,6 @@ contract MoonSaleFactory is ACrowdsaleFactory {
     ) external override onlyRole(DEFAULT_ADMIN_ROLE) returns (address) {
         address vaultAddress = vaultFactory.newMoonVault();
         address marketWrapperAddress = marketWrapperFactory.newMarketWrapper(_params);
-
         vaultFactory.giveContractOwnership(
             vaultAddress, 
             address(this)
@@ -42,7 +34,6 @@ contract MoonSaleFactory is ACrowdsaleFactory {
             marketWrapperAddress,
             address(this)
         );
-
         vaultFactory.giveContractOwnership(
             vaultAddress,
             msg.sender
@@ -51,7 +42,6 @@ contract MoonSaleFactory is ACrowdsaleFactory {
             marketWrapperAddress,
             msg.sender
         );
-
         address saleAddress = _newMoonSale(
             _rate,
             _tokenAddress,
@@ -61,7 +51,6 @@ contract MoonSaleFactory is ACrowdsaleFactory {
             payable(marketWrapperAddress),
             _params.buyNowPrice
         );
-
         vaultFactory.giveContractOwnership(
             vaultAddress, 
             saleAddress
@@ -70,23 +59,18 @@ contract MoonSaleFactory is ACrowdsaleFactory {
             marketWrapperAddress,
             saleAddress
         );
-        IToken token = IToken(_tokenAddress);
-        token.grantOwnerRole(saleAddress);
-
-        MoonSale moonSale = MoonSale(payable(saleAddress));
-        moonSale.grantOwnerRole(address(this));
-        moonSale.grantOwnerRole(msg.sender);
-
-        MSale memory _newSale;
-        _newSale.saleAddress = saleAddress;
-        _newSale.collectionAddress = _params.orderParams.offerToken;
-        _newSale.tokenId = _params.orderParams.offerIdentifier;
-        moonSales.push(_newSale);
-
+        IToken(_tokenAddress).grantOwnerRole(saleAddress);
+        MoonSale(payable(saleAddress)).grantOwnerRole(address(this));
+        MoonSale(payable(saleAddress)).grantOwnerRole(msg.sender);
+        moonSales.push(MSale({
+            saleAddress: saleAddress,
+            collectionAddress: _params.orderParams.offerToken,
+            tokenId: _params.orderParams.offerIdentifier
+        }));
+        count = count + 1;
         saleTokens[saleAddress] = _tokenAddress;
         saleVaults[saleAddress] = vaultAddress;
         saleMarketWrappers[saleAddress] = marketWrapperAddress;
-
         return saleAddress;
     }
 
@@ -116,22 +100,18 @@ contract MoonSaleFactory is ACrowdsaleFactory {
         address _sale,
         MarketWrapperConstructorParameters calldata _params
     ) external override onlyRole(DEFAULT_ADMIN_ROLE) {
-        address _foundSale = address(0);
+        bool _foundSale = false;
         for (uint i = 0; i < moonSales.length; i++) {
             if (_sale == moonSales[i].saleAddress) {
-                _foundSale = _sale;
+                _foundSale = true;
                 moonSales[i].tokenId =_params.orderParams.offerIdentifier;
             }
         }
-        require(_foundSale != address(0), 'That Sale Does not Exist');
-        address iTokenAdd = saleTokens[_sale];
-        IToken token = IToken(iTokenAdd);
-        token.migration(_params.orderParams.offerIdentifier, _fractionalUri);
-        IMarketWrapper wrapper = IMarketWrapper(
+        require(_foundSale == true);
+        IToken(saleTokens[_sale]).migration(_params.orderParams.offerIdentifier, _fractionalUri);
+        IMarketWrapper(
             payable(saleMarketWrappers[_sale])
-        );
-        wrapper.migration(_params);
-        MoonSale moonSale = MoonSale(payable(_sale));
-        moonSale.migration(_newClosingTime, _params.buyNowPrice);
+        ).migration(_params);
+        MoonSale(payable(_sale)).migration(_newClosingTime, _params.buyNowPrice);
     }
 }

@@ -66,7 +66,7 @@ contract MoonSale is ACrowdsale {
 
         address payable vaultAddress = payable(address(vault));
         (bool success, ) = vaultAddress.call{value: currentRefundableWei}("");
-        require(success, "Function failed.");
+        require(success);
 
         currentRefundableWei = 0;
         migrationCount += 1;
@@ -101,7 +101,7 @@ contract MoonSale is ACrowdsale {
         address payable to
     ) external onlyRole(DEFAULT_ADMIN_ROLE) nonReentrant onlyAfterPurchase {
         (bool success, ) = to.call{value: address(this).balance}("");
-        require(success, "Ether transfer failed.");
+        require(success);
     }
 
     // -----------------------------------------
@@ -143,11 +143,11 @@ contract MoonSale is ACrowdsale {
                 value: buyNowPriceInWei
             }("");
 
-            require(success, "Transfer failed.");
+            require(success);
 
             bool purchase = marketWrapper.buyNow();
 
-            require(purchase, "Purchase  failed.");
+            require(purchase);
 
             currentRefundableWei = 0;
             vault.close();
